@@ -7,3 +7,13 @@ page:
     index:
       title: Public Polls
       none: There are no public polls for the moment.
+form:
+  poll:
+    scopes:
+      public:
+        name: Public (anyone can access)
+        hint: Anyone will be able to participate in the poll, and the poll will be visible on our home page.
+      unlisted:
+        name: Unlisted (URL access)
+      private:
+        name: Private (invitation only)

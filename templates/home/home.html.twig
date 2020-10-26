@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'page.home.title' | trans }}{% endblock %}
+
+{% block body %}
+
+<h1>{{ 'page.home.title' | trans }}</h1>
+
+<ul>
+    <li>
+        <a href="{{ path('list_polls_html') }}">
+            {{ 'link.browse_public_polls' | trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('create_poll_html') }}">
+            {{ 'link.create_new_poll' | trans }}
+        </a>
+    </li>
+</ul>
+
+{% endblock %}
