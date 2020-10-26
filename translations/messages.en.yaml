@@ -1,4 +1,9 @@
+meta:
+  title: Majority Judgment
 page:
-  polls:
-    title: Public Polls
-    none: There are no public polls for the moment.
+  poll:
+    create:
+      title: Create a new Poll
+    index:
+      title: Public Polls
+      none: There are no public polls for the moment.

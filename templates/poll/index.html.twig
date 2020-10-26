@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'page.polls.title' | trans }}{% endblock %}
+{% block title %}{{ 'page.poll.index.title' | trans }}{% endblock %}
 
 {% block body %}
 
-<h1>{{ 'page.polls.title' | trans }}</h1>
+<h1>{{ 'page.poll.index.title' | trans }}</h1>
 
 {% if polls %}
 <ul>
@@ -18,7 +18,7 @@
 </ul>
 {% else %}
 <p>
-    {{ 'page.polls.none' | trans }}
+    {{ 'page.poll.index.none' | trans }}
 </p>
 {% endif %}
 
