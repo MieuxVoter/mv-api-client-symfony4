@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ poll.subject }}{% endblock %}
+
+{% block body %}
+<style>
+    .hero-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+</style>
+
+<div class="hero-wrapper">
+    <h2>{{ poll.subject }}</h2>
+    <p>
+        {% for grade in poll.grades %}
+            {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}
+        {% endfor %}
+    </p>
+    <ul>
+        {% for proposal in poll.proposals %}
+            <li>
+                {{ proposal.title }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

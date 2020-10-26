@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
+        "limaju/limaju-client-lib-php": "*@dev",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.4.*",
@@ -47,6 +48,12 @@
         "symfony/var-dumper": "^4.4",
         "symfony/web-profiler-bundle": "^4.4"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@domi41.framagit.org:limaju/limaju-client-lib-php.git",
+        }
+    ],
     "config": {
         "preferred-install": {
             "*": "dist"
