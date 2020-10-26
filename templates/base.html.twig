@@ -3,10 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{{ 'meta.title' }}{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        {% block stylesheets_extra %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% block main_container_wrapper %}
+        <div class="container">
+        {% block main_container %}{% endblock %}
+        </div>
+        {% endblock %}
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

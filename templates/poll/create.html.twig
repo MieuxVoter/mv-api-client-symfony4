@@ -2,10 +2,13 @@
 
 {% block title %}{{ 'page.poll.create.title' | trans }}{% endblock %}
 
-{% block body %}
+{% block main_container %}
 
 <h1>{{ 'page.poll.create.title' | trans }}</h1>
 
+<div class="flex-row">
 {{ form(form) }}
+</div>
+
 
 {% endblock %}
