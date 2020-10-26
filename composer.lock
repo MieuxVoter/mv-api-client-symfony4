@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d16e32de9b66be53da14076e25850acc",
+    "content-hash": "0425b771e09fe97cf576c97492831195",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1774,7 +1774,7 @@
             "source": {
                 "type": "git",
                 "url": "git@domi41.framagit.org:limaju/limaju-client-lib-php.git",
-                "reference": "517b1b2f3f3b1348c00490cf56fafc3268552a57"
+                "reference": "ccdb499b96cbd3097fb80b81e729d01fef91c1e3"
             },
             "require": {
                 "ext-curl": "*",
@@ -1822,7 +1822,7 @@
                 "sdk",
                 "vote"
             ],
-            "time": "2020-10-26T01:26:48+00:00"
+            "time": "2020-10-26T07:42:02+00:00"
         },
         {
             "name": "monolog/monolog",

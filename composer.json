@@ -51,7 +51,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@domi41.framagit.org:limaju/limaju-client-lib-php.git",
+            "url": "git@domi41.framagit.org:limaju/limaju-client-lib-php.git"
         }
     ],
     "config": {
