@@ -10,7 +10,7 @@
 <ul>
 {% for poll in polls %}
     <li>
-        <a href="/polls/{{ poll.uuid }}.html">
+        <a href="{{ path('read_poll_html', {'pollId':poll.uuid}) }}">
             {{ poll.subject }}
         </a>
     </li>
