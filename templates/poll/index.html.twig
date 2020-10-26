@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Public Polls{% endblock %}
+
+{% block body %}
+
+<h1>Public Polls</h1>
+
+{% if polls %}
+<ul>
+{% for poll in polls %}
+    <pre>
+        {{ poll | yaml_dump }}
+    </pre>
+    <li>
+        {{ poll.subject }}
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+<p>
+    There are no polls for the moment.
+</p>
+{% endif %}
+
+
+{% endblock %}
