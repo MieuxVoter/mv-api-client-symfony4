@@ -2,7 +2,7 @@
 A client for MieuxVoter's OpenApi specifications focused on accessibility.
 
 - no javascript
-- compatibility with cli/vocal browsers
+- compatibility with CLI/vocal browsers
 
 
 ## Features
@@ -19,11 +19,17 @@ A client for MieuxVoter's OpenApi specifications focused on accessibility.
 
 This is not ready for production.
 It is used as a tool for API debugging.
- 
+
 
 ## Things to Know
 
-Run-of-mill Symfony 4 project,
+Run-of-the-mill Symfony 4 project,
 using the generated PHP lib from OAS3.
 
+There's no javascript in the website, but we do use Encore for asset compilation during development.
+
+
+## Things of Note
+
+This exposes the need for API keys.
 
