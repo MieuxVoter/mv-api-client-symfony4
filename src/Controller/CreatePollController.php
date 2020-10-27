@@ -36,7 +36,12 @@ class CreatePollController extends AbstractController
         $poll->setScope($request->get('scope', 'unlisted'));
         $poll->setSubject($request->get('subject', ''));
 
-        $form = $this->createForm(PollType::class, $poll);
+        $options = [
+            PollType::OPTION_AMOUNT_OF_GRADES => PollType::DEFAULT_AMOUNT_OF_GRADES,
+            PollType::OPTION_AMOUNT_OF_PROPOSALS => PollType::DEFAULT_AMOUNT_OF_PROPOSALS,
+        ];
+
+        $form = $this->createForm(PollType::class, $poll, $options);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

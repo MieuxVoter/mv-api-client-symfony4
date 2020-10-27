@@ -17,6 +17,28 @@ class Poll
     protected $scope;
 
     /**
+     * @var string[]
+     */
+    public $grades;
+
+    /**
+     * @var string[]
+     */
+    public $proposals;
+
+    ///
+    ///
+    /**
+     * Poll constructor.
+     */
+    public function __construct()
+    {
+        $this->proposals = [];
+        $this->grades = [];
+    }
+
+
+    /**
      * @return string
      */
     public function getSubject(): ?string
