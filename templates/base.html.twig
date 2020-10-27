@@ -9,13 +9,19 @@
         {% block stylesheets_extra %}{% endblock %}
     </head>
     <body>
-        {% block body %}
-        {% block main_container_wrapper %}
+{% block body %}
+
+{% block flash_messages %}
+{% include "partials/flash_messages.html.twig" only %}
+{% endblock %}
+
+{% block main_container_wrapper %}
         <div class="container">
-        {% block main_container %}{% endblock %}
+{% block main_container %}{% endblock %}
         </div>
-        {% endblock %}
-        {% endblock %}
-        {% block javascripts %}{% endblock %}
+{% endblock %}
+
+{% endblock %}
+{% block javascripts %}{% endblock %}
     </body>
 </html>

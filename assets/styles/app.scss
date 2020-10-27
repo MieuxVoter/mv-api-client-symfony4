@@ -9,3 +9,7 @@ body {
     background-color: #ded3a8;
     padding: 1em;
 }
+
+.alert-error {
+    @extend .alert-danger;
+}

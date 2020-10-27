@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Poll;
 use App\Factory\ApiFactory;
 use App\Form\PollType;
+use MjOpenApi\ApiException;
 use MjOpenApi\Model\PollCreate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,7 @@ class CreatePollController extends AbstractController
 
         $poll = new Poll();
         $poll->setScope('unlisted');
+        $poll->setSubject($request->get('subject', ''));
 
         $form = $this->createForm(PollType::class, $poll);
 
@@ -42,10 +44,18 @@ class CreatePollController extends AbstractController
             $pollCreate = new PollCreate();
             $pollCreate->setSubject($poll->getSubject());
             $pollCreate->setScope($poll->getScope());
-            $pollApi->postPollCollection($pollCreate);
 
+            $failed = false;
+            try {
+                $pollApi->postPollCollection($pollCreate);
+            } catch (ApiException $api_exception) {
+                $failed = true;
+                $this->addFlash("error", "Rejected:".$api_exception->getMessage());
+            }
 
-            return $this->redirectToRoute('read_poll_html', ['pollId'=>"okokok"]);
+            if ( ! $failed) {
+                return $this->redirectToRoute('read_poll_html', ['pollId'=>"okokok"]);
+            }
         }
 
 

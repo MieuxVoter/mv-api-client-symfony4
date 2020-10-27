@@ -2,9 +2,14 @@
 
 {% block title %}{{ 'page.poll.create.title' | trans }}{% endblock %}
 
+{# Disable global flash messaages, we're adding our own #}
+{% block flash_messages %}{% endblock %}
+
 {% block main_container %}
 
 <h1>{{ 'page.poll.create.title' | trans }}</h1>
+
+{% include "partials/flash_messages.html.twig" only %}
 
 <div class="flex-row">
 {{ form(form) }}
