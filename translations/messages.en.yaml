@@ -1,12 +1,17 @@
 meta:
   title: Majority Judgment
 page:
+  home:
+    title: Majority Judgment Demo Application
   poll:
     create:
       title: Create a new Poll
     index:
       title: Public Polls
       none: There are no public polls for the moment.
+link:
+  browse_public_polls: Browse public Polls
+  create_new_poll: Create a new Poll
 form:
   poll:
     scopes:
