@@ -33,7 +33,7 @@ class CreatePollController extends AbstractController
         $pollApi = $apiFactory->getPollApi();
 
         $poll = new Poll();
-        $poll->setScope('unlisted');
+        $poll->setScope($request->get('scope', 'unlisted'));
         $poll->setSubject($request->get('subject', ''));
 
         $form = $this->createForm(PollType::class, $poll);
