@@ -110,8 +110,9 @@ class CreatePollController extends AbstractController
             }
 
             $failed = false;
+            $response = null;
             try {
-                $pollApi->postPollCollection($pollCreate);
+                $response = $pollApi->postPollCollection($pollCreate);
             } catch (ApiException $api_exception) {
                 $failed = true;
                 $exceptionAdapter->setFormErrorsIfAny($form, $api_exception);
@@ -122,7 +123,17 @@ class CreatePollController extends AbstractController
             }
 
             if ( ! $failed) {
-                return $this->redirectToRoute('read_poll_html', ['pollId'=>"okokok"]);
+                if (null === $response) {
+                    trigger_error("API response undefined.", E_USER_ERROR);
+                    $this->addFlash("error", "API response is empty");
+                    return $this->render('poll/create.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
+                }
+
+                return $this->redirectToRoute('read_poll_html', [
+                    'pollId' => $response->getUuid(),
+                ]);
             }
         }
 
