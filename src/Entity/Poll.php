@@ -45,7 +45,7 @@ class Poll
      * )
      * @var string
      */
-    public $grading_preset;
+    protected $grading_preset = 'quality_6';
 
     /**
      * @var string[]
@@ -55,7 +55,7 @@ class Poll
     /**
      * @var string[]
      */
-    public $proposals = [];
+    protected $proposals = [];
 
     ///
     ///
@@ -130,6 +130,22 @@ class Poll
         $this->proposals[] = $title;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGradingPreset(): string
+    {
+        return $this->grading_preset;
+    }
+
+    /**
+     * @param string $grading_preset
+     */
+    public function setGradingPreset(string $grading_preset): void
+    {
+        $this->grading_preset = $grading_preset;
     }
 
 }

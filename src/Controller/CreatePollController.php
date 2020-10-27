@@ -7,6 +7,7 @@ use App\Entity\Poll;
 use App\Factory\ApiFactory;
 use App\Form\PollType;
 use MjOpenApi\ApiException;
+use MjOpenApi\Model\GradeCreate;
 use MjOpenApi\Model\PollCreate;
 use MjOpenApi\Model\ProposalCreate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CreatePollController extends AbstractController
 {
@@ -29,6 +31,7 @@ class CreatePollController extends AbstractController
     public function index(
         Request $request,
         ApiExceptionAdapter $exceptionAdapter,
+        TranslatorInterface $translator,
         ApiFactory $apiFactory
     ): Response
     {
@@ -87,7 +90,24 @@ class CreatePollController extends AbstractController
             }
             $pollCreate->setProposals($proposalCreates);
 
+            $gradingPreset = $poll->getGradingPreset();
+            if ('custom' === $gradingPreset) {
+                // TODO : support custom, user-defined grades
+            } else {
+                $amountOfGrades = 6;
 
+                $gradeCreates = [];
+                for ($i=0 ; $i<$amountOfGrades ; $i++) {
+                    $gradeCreate = new GradeCreate();
+                    $gradeCreate->setLevel($i);
+                    $gradeCreate->setName($translator->trans(
+                        "${gradingPreset}.grades.${i}", [], 'grades'
+                    ));
+
+                    $gradeCreates[] = $gradeCreate;
+                }
+                $pollCreate->setGrades($gradeCreates);
+            }
 
             $failed = false;
             try {
