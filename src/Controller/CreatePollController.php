@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Adapter\ApiExceptionAdapter;
 use App\Entity\Poll;
 use App\Factory\ApiFactory;
 use App\Form\PollType;
@@ -19,11 +20,13 @@ class CreatePollController extends AbstractController
      * @Route("/new-poll.html", name="create_poll_html")
      *
      * @param Request $request
+     * @param ApiExceptionAdapter $exceptionAdapter
      * @param ApiFactory $apiFactory
      * @return Response
      */
     public function index(
         Request $request,
+        ApiExceptionAdapter $exceptionAdapter,
         ApiFactory $apiFactory
     ): Response
     {
@@ -38,8 +41,8 @@ class CreatePollController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
-            // but, the original `$poll` variable has also been updated
             //$poll = $form->getData();
+            // but, the original `$poll` variable has also been updated
 
             $pollCreate = new PollCreate();
             $pollCreate->setSubject($poll->getSubject());
@@ -50,7 +53,11 @@ class CreatePollController extends AbstractController
                 $pollApi->postPollCollection($pollCreate);
             } catch (ApiException $api_exception) {
                 $failed = true;
-                $this->addFlash("error", "Rejected:".$api_exception->getMessage());
+                $exceptionAdapter->setFormErrorsIfAny($form, $api_exception);
+                if ($form->isValid()) {
+                    $message = $exceptionAdapter->toString($api_exception);
+                    $this->addFlash("error", $message);
+                }
             }
 
             if ( ! $failed) {
