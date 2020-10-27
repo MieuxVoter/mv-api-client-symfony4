@@ -8,7 +8,9 @@ use App\Factory\ApiFactory;
 use App\Form\PollType;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\PollCreate;
+use MjOpenApi\Model\ProposalCreate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,10 +43,28 @@ class CreatePollController extends AbstractController
             PollType::OPTION_AMOUNT_OF_PROPOSALS => PollType::DEFAULT_AMOUNT_OF_PROPOSALS,
         ];
 
+        /** @var Form $form */
         $form = $this->createForm(PollType::class, $poll, $options);
-
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+
+        $shouldSubmit = $form->isSubmitted() && $form->isValid();
+
+        if ($form->getClickedButton() === $form->get('moreProposals')){
+            // add more proposals
+            $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] = $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] + 5;
+
+            // REBUILD THE WHOLE FORM NOOo
+            /** @var Form $form */
+            $form = $this->createForm(PollType::class, $poll, $options);
+            $form->handleRequest($request);
+            //////////////////////////////
+
+            $form->clearErrors();
+            $shouldSubmit = false;
+        }
+
+
+        if ($shouldSubmit) {
             // $form->getData() holds the submitted values
             //$poll = $form->getData();
             // but, the original `$poll` variable has also been updated
@@ -52,6 +72,22 @@ class CreatePollController extends AbstractController
             $pollCreate = new PollCreate();
             $pollCreate->setSubject($poll->getSubject());
             $pollCreate->setScope($poll->getScope());
+
+            $proposalCreates = [];
+            foreach ($poll->getProposals() as $proposalTitle) {
+                if (empty($proposalTitle)) {
+                    continue;
+                }
+                
+                $proposalCreate = new ProposalCreate();
+                //$proposalCreate->setPoll($pollCreate);  // DO NOT ENABLE THIS, IT WILL BLOW UP
+                $proposalCreate->setTitle($proposalTitle);
+
+                $proposalCreates[] = $proposalCreate;
+            }
+            $pollCreate->setProposals($proposalCreates);
+
+
 
             $failed = false;
             try {

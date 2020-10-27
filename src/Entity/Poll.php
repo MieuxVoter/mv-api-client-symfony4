@@ -9,7 +9,7 @@ class Poll
     /**
      * @var string
      */
-    protected $subject;
+    protected $subject = '';
 
     /**
      * @var string
@@ -19,29 +19,20 @@ class Poll
     /**
      * @var string[]
      */
-    public $grades;
+    public $grades = [];
 
     /**
      * @var string[]
      */
-    public $proposals;
+    public $proposals = [];
 
     ///
     ///
-    /**
-     * Poll constructor.
-     */
-    public function __construct()
-    {
-        $this->proposals = [];
-        $this->grades = [];
-    }
-
 
     /**
      * @return string
      */
-    public function getSubject(): ?string
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -50,7 +41,7 @@ class Poll
      * @param string $subject
      * @return Poll
      */
-    public function setSubject(string $subject): Poll
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
 
@@ -69,9 +60,43 @@ class Poll
      * @param string $scope
      * @return Poll
      */
-    public function setScope(string $scope): Poll
+    public function setScope(string $scope): self
     {
         $this->scope = $scope;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getProposals(): array
+    {
+        return $this->proposals;
+    }
+
+    /**
+     * @param string[] $proposals
+     * @return Poll
+     */
+    public function setProposals(array $proposals): self
+    {
+        $this->proposals = $proposals;
+
+        return $this;
+    }
+
+    /**
+     * @param string $title
+     * @return Poll
+     */
+    public function addProposal(string $title) : self
+    {
+        if (in_array($title, $this->getProposals())) {
+            return $this; // skip duplicates
+        }
+
+        $this->proposals[] = $title;
 
         return $this;
     }

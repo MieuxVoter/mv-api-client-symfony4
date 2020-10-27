@@ -28,7 +28,8 @@ class PollType extends AbstractType
         ];
         $builder
             ->add('subject', TextType::class, [
-                'required' => true,
+                'required' => false, // let the the API handle it, so we can use the "more" buttons
+                'empty_data' => '',
             ])
             ->add('scope', ChoiceType::class, [
                 'choices' => $scopes,
@@ -41,6 +42,7 @@ class PollType extends AbstractType
                 sprintf("proposal_%02d_title", $i),
                 TextType::class,
                 [
+                    'required' => ($i < 2), // 2 = minimum amount of proposals required
                     'property_path' => "proposals[$i]",
                 ]
             );
