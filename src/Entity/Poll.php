@@ -1,20 +1,51 @@
 <?php
 
-
 namespace App\Entity;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class Poll
 {
     /**
+     * The order matters.
+     * These must have definitions in the translations' `grades` domain.
+     */
+    const GRADING_PRESETS = [
+        'quality_2',
+        'quality_3',
+        'quality_6',
+    ];
+
+    const SCOPES = [
+        'public',
+        'unlisted',
+        'private',
+    ];
+
+    /**
+     * @Assert\Length(
+     *     max=142,
+     * )
      * @var string
      */
     protected $subject = '';
 
     /**
+     * @Assert\Choice(
+     *     choices=self::SCOPES,
+     * )
      * @var string
      */
     protected $scope;
+
+    /**
+     * @Assert\Choice(
+     *     choices=self::GRADING_PRESETS,
+     * )
+     * @var string
+     */
+    public $grading_preset;
 
     /**
      * @var string[]

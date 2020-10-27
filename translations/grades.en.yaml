@@ -1,0 +1,34 @@
+#
+#
+# We have to rewrite the grades in the name.  Sorry.
+# We could generate the name suffix, but it adds annoying "missing translations" notices,
+# and we could not find how to tell the FormType to skip the translation step altogether.
+#
+# The order of the gradings in this file do not matter.
+#
+# See App\Entity\Poll::GRADING_PRESETS  to register a new grading.
+
+
+quality_2:
+  name: "2 Quality Grades – Reject, Accept"
+  grades:
+    0: To Reject
+    1: To Accept
+
+quality_3:
+  name: "3 Quality Grades – Bad, Passable, Good"
+  grades:
+    0: Bad
+    1: Passable
+    2: Good
+
+quality_6:
+  name: "6 Quality Grades – To Reject, Poor, Passable, Good, Very Good, Excellent"
+  grades:
+    0: To Reject
+    1: Poor
+    2: Passable
+    3: Good
+    4: Very Good
+    5: Excellent
+
