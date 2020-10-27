@@ -14,6 +14,7 @@ link:
   create_new_poll: Create a new Poll
 button:
   create_poll: Create Poll
+  more_proposals: Add more Proposals
 
 form:
   poll:
