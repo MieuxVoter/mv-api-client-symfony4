@@ -7,6 +7,7 @@ namespace App\Factory;
 use GuzzleHttp\ClientInterface;
 use MjOpenApi\Api\BallotApi;
 use MjOpenApi\Api\PollApi;
+use MjOpenApi\Api\ResultApi;
 use MjOpenApi\Configuration;
 
 
@@ -51,6 +52,12 @@ class ApiFactory
     public function getBallotApi() : BallotApi
     {
         $apiInstance = new BallotApi($this->getClient(), $this->getConfig());
+        return $apiInstance;
+    }
+
+    public function getResultApi() : ResultApi
+    {
+        $apiInstance = new ResultApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 }

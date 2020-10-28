@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ poll.subject }} &mdash; {{ 'page.poll.participation-aftermath.title' | trans }}{% endblock %}
+
+{# Disable global flash messaages, we're adding our own #}
+{% block flash_messages %}{% endblock %}
+
+{% block main_container %}
+
+{% set urlToResults = url('read_result_html', {'id': poll.uuid}) %}
+{% set urlToPoll = url('read_poll_html', {'pollId': poll.uuid}) %}
+
+
+{% include "partials/flash_messages.html.twig" only %}
+
+    <p>
+        <h3>
+            {{ 'page.participation-aftermath.message.success' | trans }}
+        </h3>
+    </p>
+
+    <div class="row">
+        <div class="flex-row">
+            <a href="{{ urlToResults }}" class="btn btn-primary">
+                {{ 'button.view_results' }}
+            </a>
+        </div>
+        <div class="flex-row">
+            <label for="results_link" class="form-label">&nbsp;</label>
+        </div>
+        <div class="flex-row flex-grow-1">
+            <input type="text" class="form-control" id="results_link" value="{{ urlToResults }}" name="results_link">
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="flex-row">
+            <a href="{{ urlToPoll }}" class="btn btn-primary">
+                {{ 'button.back_to_poll' }}
+            </a>
+        </div>
+        <div class="flex-row">
+            <label for="poll_link" class="form-label">&nbsp;</label>
+        </div>
+        <div class="flex-row flex-grow-1">
+            <input type="text" class="form-control" id="poll_link" value="{{ urlToPoll }}" name="poll_link">
+        </div>
+    </div>
+
+
+{#        #}
+
+{#        <br>#}
+
+
+
+{% endblock %}
