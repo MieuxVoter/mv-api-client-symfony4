@@ -9,6 +9,11 @@ page:
     index:
       title: Public Polls
       none: There are no public polls for the moment.
+  result:
+    title: Results of "{{ subject }}"
+    rank: Rank {{ rank }}
+    summary:
+      title: Summary
 link:
   browse_public_polls: Browse public Polls
   create_new_poll: Create a new Poll

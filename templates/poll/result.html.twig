@@ -1,32 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ poll.subject }}{% endblock %}
+{% block title %}{{ 'page.result.title' | trans({'subject': poll.subject}) }}{% endblock %}
 
 {% block main_container %}
 
-    <h2>{{ poll.subject }}</h2>
+    <h2>{{ 'page.result.title' | trans({'subject': poll.subject}) }}</h2>
 {#    <p>#}
 {#        {% for grade in poll.grades %}#}
 {#            {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}#}
 {#        {% endfor %}#}
 {#    </p>#}
-    <ul>
-        {% for proposal in poll.proposals %}
-            <li>
-                {{ proposal.title }}
 
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
 
-    <ul>
-        {% for proposalResult in result.leaderboard %}
-            <li>
-                {{ proposalResult.proposal.rank }}
-                {{ proposalResult.proposal.title }}
-            </li>
-        {% endfor %}
-    </ul>
+{% for proposalResult in result.leaderboard %}
+        <div class="row">
+            <div class="flex-row mr-2">
+                <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
+                    {% if 1 == proposalResult.rank -%}
+                        &#129351;
+                    {%- elseif 2 == proposalResult.rank -%}
+                        &#129352;
+                    {%- elseif 3 == proposalResult.rank -%}
+                        &#129353;
+                    {%- else -%}
+                        &#127941;
+                    {%- endif -%}
+                    {{- ' : ' -}}
+                    {{- proposalResult.proposal.title }}
+                </h3>
+            </div>
+            <div class="flex-grow">
+                <span>
+{% for gradeResult in proposalResult.gradesResults %}
+                    {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}
+                    {{- loop.last ? '' : ',' }}
+{% endfor %}
+                </span>
+            </div>
+        </div>
+{% endfor %}
 
-</div>
+        <section class="row row-cols-1">
+            <h2>
+                {{ 'page.result.summary.title' | trans }}
+            </h2>
+            <p>
+                A total of ? judgments were cast by ? participants.
+            </p>
+        </section>
+
+    </div>
+{#<p>#}
+{#    A total of {{ result.tally }} judgments were cast by {{ result.participants }} participants.#}
+{#</p>#}
+
 {% endblock %}

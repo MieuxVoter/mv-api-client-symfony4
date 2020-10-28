@@ -27,5 +27,17 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
+    # Allow Twig in translations.
+    App\Translator\TwiggyTranslator:
+        decorates: translator
+        arguments:
+            # Translation domains to enable Twig for (other domains will be ignored)
+            - ['messages', '', ]
+            # Pass the old service as an argument, it has all the I18N config
+            # This service id only exists because we're decorating the translator
+            - '@App\Translator\TwiggyTranslator.inner'
+            # Twig also has the extensions and global vars available
+            - "@twig"
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

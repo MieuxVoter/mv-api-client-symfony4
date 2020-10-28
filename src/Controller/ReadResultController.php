@@ -36,7 +36,7 @@ class ReadResultController extends AbstractController
             $result = $resultApi->getForPollResultItem($pollId);
         } catch (ApiException $e) {
 
-            dd($e);
+            dd($e); // fixme
 //            $showFormResponse = $this->render('poll/participate.html.twig', [
 //                'poll' => $pollRead,
 //                'form' => $form->createView(),
@@ -44,9 +44,15 @@ class ReadResultController extends AbstractController
 //            return $exceptionAdapter->respond($e, $showFormResponse);
         }
 
+        $grades = [];
+        foreach ($poll->getGrades() as $grade) {
+            $grades['/grades/'.$grade->getUuid()] = $grade;
+        }
+
         return $this->render('poll/result.html.twig', [
             'poll' => $poll,
             'result' => $result,
+            'grades' => $grades,
         ]);
     }
 }
