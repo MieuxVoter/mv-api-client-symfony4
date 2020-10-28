@@ -4,22 +4,23 @@
 
 {% block main_container %}
 
-<h1>{{ 'page.poll.index.title' | trans }}</h1>
+    <h1>{{ 'page.poll.index.title' | trans }}</h1>
 
 {% if polls %}
-<ul>
+
+    <div class="list-group">
 {% for poll in polls %}
-    <li>
-        <a href="{{ path('read_poll_html', {'pollId':poll.uuid}) }}">
+        {# also supports "active" and "disabled" #}
+        <a href="{{ path('read_poll_html', {'pollId':poll.uuid}) }}" class="list-group-item list-group-item-action">
             {{ poll.subject }}
         </a>
-    </li>
 {% endfor %}
-</ul>
+    </div>
+
 {% else %}
-<p>
-    {{ 'page.poll.index.none' | trans }}
-</p>
+    <p>
+        {{ 'page.poll.index.none' | trans }}
+    </p>
 {% endif %}
 
 
