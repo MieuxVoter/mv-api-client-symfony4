@@ -19,7 +19,7 @@ use Twig\Environment as TwigEnvironment ;
         decorates: translator
         arguments:
             # Translation domains to enable Twig for (other domains _should_ behave like usual)
-            - ['messages', '', ]
+            - ['messages']
             # Pass the old service as an argument, it has all the I18N config
             # This service id only exists because we're decorating the translator
             - '@App\Translator\TwiggyTranslator.inner'
@@ -49,6 +49,9 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
      */
     private $domains;
 
+    ///
+    ///
+
     public function __construct(array $domains, Translator $translator, TwigEnvironment $twig)
     {
         $this->domains = $domains;
@@ -61,12 +64,20 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
      */
     public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null)
     {
+        if (null === $domain) {
+            $domain = 'messages';
+        }
         if (in_array($domain, $this->domains)) {
             $template = $this->translator->trans($id, [], $domain, $locale);
             $name = "${domain}__${id}";
             $tw = $this->twig->createTemplate($template, $name);
-            $parameters['e'] = (0 == random_int(0, 1)) ? 'e' : '';
-//            dd($name);
+            $coin = 0;
+            try {
+                $coin = random_int(0, 1);
+            } catch (\Exception $e) {} // there are three gods: true, false, random.
+            if ( ! isset($parameters['e'])) {
+                $parameters['e'] = (0 == $coin) ? 'e' : '';
+            }
             return $this->twig->render($tw, $parameters);
         }
 
@@ -81,24 +92,24 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
         return $this->translator->getCatalogue($locale);
     }
 
-    /**
-     * Translates the given choice message by choosing a translation according to a number.
-     * This won't use Twig.  It's here because of legacy support of things like debug:event-dispatcher
-     *
-     * @deprecated
-     *
-     * @param string $id The message id (may also be an object that can be cast to string)
-     * @param int $number The number to use to find the index of the message
-     * @param array $parameters An array of parameters for the message
-     * @param string|null $domain The domain for the message or null to use the default
-     * @param string|null $locale The locale or null to use the default
-     *
-     * @return string The translated string
-     *
-     * @throws InvalidArgumentException If the locale contains invalid characters
-     */
-    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
-    {
-        return $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
-    }
+//    /**
+//     * Translates the given choice message by choosing a translation according to a number.
+//     * This won't use Twig.  It's here because of legacy support of things like debug:event-dispatcher
+//     *
+//     * @deprecated
+//     *
+//     * @param string $id The message id (may also be an object that can be cast to string)
+//     * @param int $number The number to use to find the index of the message
+//     * @param array $parameters An array of parameters for the message
+//     * @param string|null $domain The domain for the message or null to use the default
+//     * @param string|null $locale The locale or null to use the default
+//     *
+//     * @return string The translated string
+//     *
+//     * @throws InvalidArgumentException If the locale contains invalid characters
+//     */
+//    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+//    {
+//        return $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
+//    }
 }
