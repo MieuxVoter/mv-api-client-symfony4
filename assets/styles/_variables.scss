@@ -146,9 +146,14 @@ $progress-bg:                       $gray-700 !default;
 
 // List group
 
+$list-group-color:                  $gray-200 !default;
 $list-group-bg:                     $gray-800 !default;
 $list-group-border-color:           $gray-700 !default;
 $list-group-hover-bg:               $gray-700 !default;
+$list-group-action-color:           $gray-200 !default;
+$list-group-action-hover-color:     lighten($list-group-action-color, 5%) !default;
+$list-group-action-active-bg:       $body-color !default;
+$list-group-action-active-color:    invert($list-group-action-active-bg) !default;
 
 // Breadcrumbs
 
