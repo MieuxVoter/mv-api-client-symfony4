@@ -15,6 +15,7 @@ $period: 0.8s;
     top: calc(50% - #{$spinner-size / 2});
     left: calc(50% - #{$spinner-size / 2});
     //background: #f39;
+    text-shadow: rgba(226, 226, 0, 0.42) 0 0 35px;
 
     -webkit-animation:spin $period linear infinite;
     -moz-animation:spin $period linear infinite;
