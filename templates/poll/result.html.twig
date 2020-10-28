@@ -17,6 +17,7 @@
         <div class="row">
             <div class="flex-row mr-2">
                 <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
+                    <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
                     {% if 1 == proposalResult.rank -%}
                         &#129351;
                     {%- elseif 2 == proposalResult.rank -%}
@@ -26,6 +27,7 @@
                     {%- else -%}
                         &#127941;
                     {%- endif %}
+                    </span>
                     {{ proposalResult.proposal.title }}
                 </h3>
             </div>
