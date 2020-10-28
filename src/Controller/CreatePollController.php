@@ -50,7 +50,7 @@ class CreatePollController extends AbstractController
         $form = $this->createForm(PollType::class, $poll, $options);
         $form->handleRequest($request);
 
-        $shouldSubmit = $form->isSubmitted() && $form->isValid();
+        $shouldSend = $form->isSubmitted() && $form->isValid();
 
         if ($form->getClickedButton() === $form->get('moreProposals')){
             // add more proposals
@@ -63,11 +63,11 @@ class CreatePollController extends AbstractController
             //////////////////////////////
 
             $form->clearErrors();
-            $shouldSubmit = false;
+            $shouldSend = false;
         }
 
 
-        if ($shouldSubmit) {
+        if ($shouldSend) {
             // $form->getData() holds the submitted values
             //$poll = $form->getData();
             // but, the original `$poll` variable has also been updated

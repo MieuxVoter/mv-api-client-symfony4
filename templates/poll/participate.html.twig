@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ poll.subject }} &mdash; {{ 'page.poll.participate.title' | trans }}{% endblock %}
+
+{# Disable global flash messaages, we're adding our own #}
+{% block flash_messages %}{% endblock %}
+
+{% block main_container %}
+
+{#<h1>{{ 'page.poll.participate.title' | trans }}</h1>#}
+<h1>{{ poll.subject }}</h1>
+
+{% include "partials/flash_messages.html.twig" only %}
+
+<div class="flex-row">
+{{ form(form) }}
+</div>
+
+
+{% endblock %}

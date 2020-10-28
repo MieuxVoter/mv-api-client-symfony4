@@ -1,9 +1,17 @@
 {% if app.session.flashbag.peekAll|length > 0 %}
+
 {% for type, messages in app.session.flashbag.all %}
 {% for message in messages %}
+{% if 'error' == type %}
+            <div class="alert alert-{{ type ? type : '' }}">
+                {{ message|raw }}
+            </div>
+{% else %}
             <div class="alert alert-{{ type ? type : '' }}">
                 {{ message|trans({}, domain|default('messages')) }}
             </div>
+{% endif %}
 {% endfor %}
 {% endfor %}
+
 {% endif %}

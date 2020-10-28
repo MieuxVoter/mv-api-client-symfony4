@@ -5,13 +5,31 @@ namespace App\Adapter;
 
 
 use MjOpenApi\ApiException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
 
 
 class ApiExceptionAdapter
 {
+
+    /** @var ContainerInterface */
+    protected $container;
+
+    /**
+     * CreateBallotController constructor.
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    ///
+    ///
+
     /**
      * @param FormInterface $form
      * @param ApiException $exception
@@ -71,16 +89,16 @@ class ApiExceptionAdapter
         }
 
         if (null === $data) {
-            return $body;
-        }
-
-        if (isset($data['hydra:title'])) {
-            $output .= empty($output) ? '' : "  \n";
-            $output .= $data['hydra:title'] . "!";
-        }
-        if (isset($data['hydra:description'])) {
-            $output .= empty($output) ? '' : "  \n";
-            $output .= $data['hydra:description'];
+            $output = $body;
+        } else {
+            if (isset($data['hydra:title'])) {
+                $output .= empty($output) ? '' : "  \n";
+                $output .= $data['hydra:title'] . "!";
+            }
+            if (isset($data['hydra:description'])) {
+                $output .= empty($output) ? '' : "  \n";
+                $output .= $data['hydra:description'];
+            }
         }
 
         if (empty($output)) {
@@ -92,5 +110,32 @@ class ApiExceptionAdapter
         }
 
         return $output;
+    }
+
+    public function respond(ApiException $exception, Response $response)
+    {
+//        dump($exception);
+//        dd($response);
+        $message = $this->toString($exception);
+        $this->addFlash("error", $message);
+        return $response;
+    }
+
+
+
+    /**
+     * Adds a flash message to the current session for type.
+     *
+     * @throws \LogicException
+     *
+     * @final
+     */
+    protected function addFlash(string $type, $message)
+    {
+        if (!$this->container->has('session')) {
+            throw new \LogicException('You can not use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".');
+        }
+
+        $this->container->get('session')->getFlashBag()->add($type, $message);
     }
 }
