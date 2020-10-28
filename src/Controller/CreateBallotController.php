@@ -78,45 +78,36 @@ class CreateBallotController extends AbstractController
             $judgments = $ballot->getJudgments();
 
             $ballotsCreated = [];
-            $i = 0;
 
-            $proposal = $proposals[$i];
+            foreach ($proposals as $proposal) {
 
-            $ballotCreate = new BallotCreate();
-//            $ballotCreate->setProposal(
-//                sprintf("/proposals/%s", $proposal->getUuid())
-//            );
-            $ballotCreate->setGrade(
-                sprintf("/grades/%s", $judgments[$proposal->getUuid()])
-            );
-
-            $ballotResponse = null;
-            try {
-//                dd($pollRead);
-                $ballotResponse = $ballotApi->postBallotCollection(
-//                    sprintf("/Poll/%s", $pollRead->getModelName(), $pollRead->getUuid()),
-//                    sprintf("/Proposal/%s", $proposal->getModelName(), $proposal->getUuid()),
-                    $pollRead->getUuid(),
-                    $proposal->getUuid(),
-                    $ballotCreate
+                $ballotCreate = new BallotCreate();
+                $ballotCreate->setGrade(
+                    sprintf("/grades/%s", $judgments[$proposal->getUuid()])
                 );
-            } catch (ApiException $e) {
-                //dd($e);
-                $showFormResponse = $this->render('poll/participate.html.twig', [
-                    'poll' => $pollRead,
-                    'form' => $form->createView(),
-                ]);
-                return $exceptionAdapter->respond($e, $showFormResponse);
+
+                $ballotResponse = null;
+                try {
+                    $ballotResponse = $ballotApi->postBallotCollection(
+                        $pollRead->getUuid(),
+                        $proposal->getUuid(),
+                        $ballotCreate
+                    );
+                } catch (ApiException $e) {
+                    //dd($e);
+                    $showFormResponse = $this->render('poll/participate.html.twig', [
+                        'poll' => $pollRead,
+                        'form' => $form->createView(),
+                    ]);
+                    return $exceptionAdapter->respond($e, $showFormResponse);
+                }
+
+                $ballotsCreated[] = $ballotResponse;
+
             }
-
-            $ballotsCreated[] = $ballotResponse;
-
-            ///
-            ///
 
             return $this->render('poll/participation-aftermath.html.twig', [
                 'poll' => $pollRead,
-//                'form' => $form->createView(),
                 'ballots' => $ballotsCreated,
             ]);
 
