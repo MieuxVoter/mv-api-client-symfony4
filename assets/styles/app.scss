@@ -1,15 +1,54 @@
 // customize some Bootstrap variables
 $primary: darken(#428bca, 20%);
 
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 940px,
+        xl: 1000px
+);
+$link-color: #e6d79c;
+$body-color: #8fa1b5;
+$body-bg: #25250f;
+
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 
+html, body {
+    height: 100%;
+}
 
 body {
-    background-color: #ded3a8;
-    padding: 1em;
+    //background-color: #ded3a8;
+    //padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    & > header {
+        padding: 0.3em 1em;
+    }
+}
+
+
+
+body > .content.container {
+    flex: 1 0 auto;
+}
+
+body > footer {
+    flex-shrink: 0;
+    background-color: lighten($body-bg, 10%);
+    padding: 2em 1em;
 }
 
 .alert-error {
     @extend .alert-danger;
+}
+
+.line {
+    display: inline-block;
+}
+
+h2 {
+    margin-top: 1em;
 }

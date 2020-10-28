@@ -3,6 +3,8 @@ meta:
 page:
   home:
     title: Majority Judgment Demo Application
+    title1: Majority Judgment
+    title2: Demo Application
   poll:
     create:
       title: Create a new Poll
