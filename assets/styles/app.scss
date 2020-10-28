@@ -13,6 +13,10 @@ $link-color: #e6d79c;
 $body-color: #e1ded2;
 $body-bg: #25250f;
 
+$spacer: 2.618rem;
+$headings-margin-bottom: $spacer / 1.1 !default;
+
+// Modded Darkly
 @import "_variables";
 
 
@@ -56,6 +60,6 @@ body > .content.container {
 ///
 ///
 
-h2 {
-    margin-top: 1em;
-}
+//h2 {
+//    margin-top: 1em;
+//}
