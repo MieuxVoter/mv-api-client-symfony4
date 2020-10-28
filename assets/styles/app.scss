@@ -19,6 +19,9 @@ $headings-margin-bottom: $spacer / 1.1 !default;
 // Modded Darkly
 @import "_variables";
 
+// Local imports
+@import "spinner";
+
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
