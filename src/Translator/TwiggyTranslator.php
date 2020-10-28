@@ -2,13 +2,12 @@
 
 namespace App\Translator;
 
-use Symfony\Component\Translation\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorTrait;
-use Twig\Environment as TwigEnvironment ;
+use Twig\Environment as TwigEnvironment;
 
 
 /**
@@ -28,11 +27,16 @@ use Twig\Environment as TwigEnvironment ;
  *
  *
  * Class TwiggyTranslator
+ * @license WTFPL
  * @package App\Translator
  */
 class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
 {
+
     use TranslatorTrait;
+
+    ///
+    ///
 
     /**
      * @var Translator
@@ -52,6 +56,14 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
     ///
     ///
 
+    /**
+     * Instantiate a TwiggyTranslator.  The Container will handle this for you.
+     *
+     * TwiggyTranslator constructor.
+     * @param array $domains
+     * @param Translator $translator
+     * @param TwigEnvironment $twig
+     */
     public function __construct(array $domains, Translator $translator, TwigEnvironment $twig)
     {
         $this->domains = $domains;
@@ -71,6 +83,10 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
             $template = $this->translator->trans($id, [], $domain, $locale);
             $name = "${domain}__${id}";
             $tw = $this->twig->createTemplate($template, $name);
+
+            // Move this to a plugin //
+            // I. Grab all services extending a specific interface like TwiggyTranslatorPluginInterface
+            // II. Run their hooks around here, perhaps one before template creation and one after
             $coin = 0;
             try {
                 $coin = random_int(0, 1);
@@ -78,6 +94,8 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
             if ( ! isset($parameters['e'])) {
                 $parameters['e'] = (0 == $coin) ? 'e' : '';
             }
+            ///////////////////////////
+
             return $this->twig->render($tw, $parameters);
         }
 
@@ -92,24 +110,4 @@ class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, L
         return $this->translator->getCatalogue($locale);
     }
 
-//    /**
-//     * Translates the given choice message by choosing a translation according to a number.
-//     * This won't use Twig.  It's here because of legacy support of things like debug:event-dispatcher
-//     *
-//     * @deprecated
-//     *
-//     * @param string $id The message id (may also be an object that can be cast to string)
-//     * @param int $number The number to use to find the index of the message
-//     * @param array $parameters An array of parameters for the message
-//     * @param string|null $domain The domain for the message or null to use the default
-//     * @param string|null $locale The locale or null to use the default
-//     *
-//     * @return string The translated string
-//     *
-//     * @throws InvalidArgumentException If the locale contains invalid characters
-//     */
-//    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
-//    {
-//        return $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
-//    }
 }
