@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form 'form/theme.html.twig' %}
+
 {% block title %}{{ poll.subject }} &mdash; {{ 'page.poll.participate.title' | trans }}{% endblock %}
 
 {# Disable global flash messaages, we're adding our own #}
