@@ -106,10 +106,13 @@ class CreateBallotController extends AbstractController
 
             }
 
-            return $this->render('ballot/aftermath.html.twig', [
-                'poll' => $pollRead,
-                'ballots' => $ballotsCreated,
+            return $this->redirectToRoute('confirm_ballot_created_html', [
+                'pollId' => $pollId,
             ]);
+//            return $this->render('ballot/aftermath.html.twig', [
+//                'poll' => $pollRead,
+//                'ballots' => $ballotsCreated,
+//            ]);
 
         }
 
