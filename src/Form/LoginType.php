@@ -15,10 +15,10 @@ final class LoginType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'label.username',
+                'label' => 'form.register.email.label',
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'label.password',
+                'label' => 'form.register.password.label',
             ])
         ;
     }

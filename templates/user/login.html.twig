@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block main_container %}
-        <h1>{{ 'title.login'|trans }}</h1>
+        <h1>{{ 'page.login.title' | trans }}</h1>
+
+        <p>
+            {{ 'page.login.rationale' | trans }}
+        </p>
 
 {% if error %}
-        <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+        <p>{{ error.messageKey | trans(error.messageData, 'security') }}</p>
 {% endif %}
 
-    {{ form_start(form) }}
-        {{ form_errors(form) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.password) }}
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
 
-        <div>
-            <input type="submit" value="{{ 'action.login'|trans }}" />
-            <p><a href="{{ url('forgot_password') }}">{{ 'action.forgot_password'|trans }}</a></p>
+            <div class="float-right">
+                <input type="submit" class="btn btn-primary" value="{{ 'action.login.label' | trans }}" />
+            </div>
+
+            <p>
+                <a href="{{ path('forgot_password') }}">
+                    {{ 'action.forgot_password.label' | trans }}
+                </a>
+            </p>
+        {{ form_end(form) }}
+
+        <hr class="clearfix">
+
+        <div class="text-center">
+
+            <p>
+                {{ 'page.login.may_also_register' | trans }}
+            </p>
+
+            <a href="{{ path('register') }}" class="btn btn-primary">
+                {{ 'action.register.label' | trans }}
+            </a>
+
+            <br><br><br><br>
+
+            {% include "partials/spinner.html.twig" only %}
+
         </div>
-    {{ form_end(form) }}
 {% endblock %}

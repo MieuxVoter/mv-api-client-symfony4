@@ -22,9 +22,21 @@ page:
       title: Summary
   register:
     title: Join the adventure
+  login:
+    title: Connect
+    rationale: |
+      In order to create private polls and handle their invitations, you need an account.
+      Otherwise, anyone would be able to access them.
+    may_also_register: |
+      No account?  Not a problem.  We have room.
+
 action:
   register:
     label: Sign up!
+  login:
+    label: Login
+  forgot_password:
+    label: Forgotten password?
 link:
   browse_public_polls: Browse public Polls
   create_new_poll: Create a new Poll
