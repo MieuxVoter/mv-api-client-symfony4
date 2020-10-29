@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 
 class ApiExceptionAdapter
@@ -124,7 +126,10 @@ class ApiExceptionAdapter
         if (null === $jsonData) {
             $output = $body;
         } else {
-            $output = dump($jsonData);
+            $cloner = new VarCloner();
+            $dumper = new HtmlDumper();
+            $output = $dumper->dump($cloner->cloneVar($jsonData), true);
+//            $output = dump($jsonData);
 //            if (isset($jsonData['hydra:title'])) {
 //                $output .= empty($output) ? '' : "  \n";
 //                $output .= $jsonData['hydra:title'] . "!";
