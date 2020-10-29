@@ -20,6 +20,11 @@ page:
     rank: Rank {{ rank }}
     summary:
       title: Summary
+  register:
+    title: Join the adventure
+action:
+  register:
+    label: Sign up!
 link:
   browse_public_polls: Browse public Polls
   create_new_poll: Create a new Poll
@@ -30,6 +35,18 @@ button:
   view_results: View Results
   back_to_poll: Back to Poll
 form:
+  register:
+    email:
+      label: "📧 Email"
+    password:
+      label: "🔑 Password"
+    password_confirm:
+      label: "🔑 Confirm"
+    cookie_consent:
+      label: "I acknowledge that authentication won't work without a session cookie.  (we do not track you)"
+    eula_agreement:
+      label: "I solemnly swear I will behave respectfully."
+
   poll:
     subject:
       label: Subject

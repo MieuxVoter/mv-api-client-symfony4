@@ -27,10 +27,10 @@
         <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png" />
         <meta name="msapplication-square310x310logo" content="/mstile-310x310.png" />
         
-        {% block stylesheets %}
+{% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-        {% block stylesheets_extra %}{% endblock %}
+{% endblock %}
+{% block stylesheets_extra %}{% endblock %}
     </head>
     <body>
 {% block body %}
@@ -42,6 +42,17 @@
            aria-label="Home">
             &#127968;
         </a>
+
+        <ul>
+            {% if app.user %}
+                <li>{{ 'user.logged_in_as'|trans({ '%username%': msgphp_user.current.email })|raw }}</li>
+                <li><a href="{{ path('profile') }}">{{ 'action.view_profile'|trans }}</a></li>
+                <li><a href="{{ path('logout') }}">{{ 'action.logout'|trans }}</a></li>
+            {% else %}
+                <li><a href="{{ path('login') }}">{{ 'action.login'|trans }}</a></li>
+                <li><a href="{{ path('register') }}">{{ 'action.register'|trans }}</a></li>
+            {% endif %}
+        </ul>
     </header>
 {% endblock %}
 
@@ -53,9 +64,10 @@
     <div class="content container">
 {% block main_container %}{% endblock %}
     </div>
-{% endblock %}
+{% endblock %}{# body #}
 
 {% endblock %}
+
 {% block footer %}
     <footer>
         <div class="row justify-content-evenly align-items-center">

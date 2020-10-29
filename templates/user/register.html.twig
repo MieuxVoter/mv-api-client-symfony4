@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block main_container %}
+    <h1>{{ 'page.register.title' | trans }} </h1>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.cookie_consent) }}
+        {{ form_row(form.eula_agreement) }}
+
+        <div>
+            <input type="submit" class="btn btn-primary float-right" value="{{ 'action.register.label' | trans }}" />
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
