@@ -24,8 +24,7 @@ class ConfirmBallotCreationController extends AbstractController
 
     public function __invoke(
         string $pollId,
-        Request $request,
-        ApiExceptionAdapter $exceptionAdapter
+        Request $request
     )
     {
         /// REFACTOR ME ///

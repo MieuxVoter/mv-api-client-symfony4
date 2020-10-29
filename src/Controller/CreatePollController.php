@@ -19,23 +19,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CreatePollController extends AbstractController
 {
+    use Has\ApiAccess;
+
     /**
      * @Route("/new-poll", name="create_poll")
      * @Route("/new-poll.html", name="create_poll_html")
      *
      * @param Request $request
-     * @param ApiExceptionAdapter $exceptionAdapter
-     * @param ApiFactory $apiFactory
+     * @param TranslatorInterface $translator
      * @return Response
      */
     public function index(
         Request $request,
-        ApiExceptionAdapter $exceptionAdapter,
-        TranslatorInterface $translator,
-        ApiFactory $apiFactory
+        TranslatorInterface $translator
     ): Response
     {
-        $pollApi = $apiFactory->getPollApi();
+        $pollApi = $this->getApiFactory()->getPollApi();
 
         $poll = new Poll();
         $poll->setScope($request->get('scope', 'unlisted'));
@@ -115,9 +114,9 @@ class CreatePollController extends AbstractController
                 $response = $pollApi->postPollCollection($pollCreate);
             } catch (ApiException $api_exception) {
                 $failed = true;
-                $exceptionAdapter->setFormErrorsIfAny($form, $api_exception);
+                $this->getApiExceptionAdapter()->setFormErrorsIfAny($form, $api_exception);
                 if ($form->isValid()) {
-                    $message = $exceptionAdapter->toString($api_exception);
+                    $message = $this->getApiExceptionAdapter()->toString($api_exception);
                     $this->addFlash("error", $message);
                 }
             }

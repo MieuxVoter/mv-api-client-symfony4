@@ -12,22 +12,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 
 /**
+ * For now the result id is the poll id.
+ * But results may be 'hidden' and have their own id.
+ *
  * @Route(
- *     path="/results/{id}.html",
+ *     path="/results/{resultId}.html",
  *     name="read_result_html",
  *     requirements={"id"="[^.]+"},
  * )
  */
 class ReadResultController extends AbstractController
 {
-    public function __invoke(
-        string $id,
-        ApiFactory $apiFactory
-    )
+    use Has\ApiAccess;
+
+    public function __invoke(string $resultId)
     {
-        $pollId = $id; // TBD: Result id? (could be kept secret?)
-        $pollApi = $apiFactory->getPollApi();
-        $resultApi = $apiFactory->getResultApi();
+        $pollId = $resultId; // TBD: Result id? (could be kept secret?)
+        $pollApi = $this->getApiFactory()->getPollApi();
+        $resultApi = $this->getApiFactory()->getResultApi();
 
         $poll = null;
         $result = null;
@@ -35,13 +37,7 @@ class ReadResultController extends AbstractController
             $poll = $pollApi->getPollItem($pollId);
             $result = $resultApi->getForPollResultItem($pollId);
         } catch (ApiException $e) {
-
-            dd($e); // fixme
-//            $showFormResponse = $this->render('poll/participate.html.twig', [
-//                'poll' => $pollRead,
-//                'form' => $form->createView(),
-//            ]);
-//            return $exceptionAdapter->respond($e, $showFormResponse);
+            return $this->renderApiException($e);
         }
 
         $grades = [];

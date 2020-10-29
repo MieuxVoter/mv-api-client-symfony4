@@ -29,24 +29,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 class CreateBallotController extends AbstractController
 {
 
+    use Has\ApiAccess;
 
     public function __invoke(
         string $pollId,
-        Request $request,
-        ApiExceptionAdapter $exceptionAdapter,
-        ApiFactory $apiFactory
+        Request $request
     )
     {
         /// REFACTOR ME ///
-        $apiInstance = $apiFactory->getPollApi();
+        $apiInstance = $this->getApiFactory()->getPollApi();
         $pollRead = null;
         try {
             $pollRead = $apiInstance->getPollItem($pollId);
         } catch (ApiException $e) {
-            if (Response::HTTP_NOT_FOUND == $e->getCode()) {
-                throw new NotFoundHttpException("No poll found.");
-            }
-            throw $e;
+//            if (Response::HTTP_NOT_FOUND == $e->getCode()) {
+//                throw new NotFoundHttpException("No poll found.");
+//            }
+//            throw $e;
+            return $this->renderApiException($e);
         }
         ///////////////////
 
@@ -72,7 +72,7 @@ class CreateBallotController extends AbstractController
 
         // …
         if ($shouldSend) {
-            $ballotApi = $apiFactory->getBallotApi();
+            $ballotApi = $this->getApiFactory()->getBallotApi();
 
             $proposals = $pollRead->getProposals();
             $judgments = $ballot->getJudgments();
@@ -99,7 +99,7 @@ class CreateBallotController extends AbstractController
                         'poll' => $pollRead,
                         'form' => $form->createView(),
                     ]);
-                    return $exceptionAdapter->respond($e, $showFormResponse);
+                    return $this->getApiExceptionAdapter()->respond($e, $showFormResponse);
                 }
 
                 $ballotsCreated[] = $ballotResponse;

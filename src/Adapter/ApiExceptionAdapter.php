@@ -112,6 +112,38 @@ class ApiExceptionAdapter
         return $output;
     }
 
+    public function toHtml(ApiException $exception): string
+    {
+        $output = "";
+        $body = $exception->getResponseBody();
+        $jsonData = null;
+        try {
+            $jsonData = json_decode($body, true);
+        } catch (\Exception $e) {}
+
+        if (null === $jsonData) {
+            $output = $body;
+        } else {
+            $output = dump($jsonData);
+//            if (isset($jsonData['hydra:title'])) {
+//                $output .= empty($output) ? '' : "  \n";
+//                $output .= $jsonData['hydra:title'] . "!";
+//            }
+//            if (isset($jsonData['hydra:description'])) {
+//                $output .= empty($output) ? '' : "  \n";
+//                $output .= $jsonData['hydra:description'];
+//            }
+        }
+
+        if (empty($output)) {
+            $output = $exception->getMessage();
+        }
+
+        return $output;
+    }
+
+
+
     public function respond(ApiException $exception, Response $response)
     {
 //        dump($exception);

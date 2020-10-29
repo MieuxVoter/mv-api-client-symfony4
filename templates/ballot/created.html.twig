@@ -7,7 +7,7 @@
 
 {% block main_container %}
 
-{% set urlToResults = url('read_result_html', {'id': poll.uuid}) %}
+{% set urlToResults = url('read_result_html', {'resultId': poll.uuid}) %}
 {% set urlToPoll = url('read_poll_html', {'pollId': poll.uuid}) %}
 
 

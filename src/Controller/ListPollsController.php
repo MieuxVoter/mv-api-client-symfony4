@@ -7,17 +7,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+/**
+ * Show a list of public polls.
+ *
+ * @Route("/polls", name="list_polls")
+ * @Route("/polls.html", name="list_polls_html")
+ */
 class ListPollsController extends AbstractController
 {
-    /**
-     * @Route("/polls", name="list_polls")
-     * @Route("/polls.html", name="list_polls_html")
-     */
-    public function index(
-        ApiFactory $apiFactory
-    ): Response
+    use Has\ApiAccess;
+
+    public function __invoke(): Response
     {
-        $pollApi = $apiFactory->getPollApi();
+        $pollApi = $this->getApiFactory()->getPollApi();
         $polls = $pollApi->getPollCollection();
 
         return $this->render('poll/index.html.twig', [

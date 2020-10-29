@@ -32,12 +32,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
  */
 class ReadPollController extends AbstractController
 {
-    public function __invoke(
-        string $pollId,
-        ApiFactory $apiFactory
-    )
+    use Has\ApiAccess;
+
+    public function __invoke(string $pollId)
     {
-        $apiInstance = $apiFactory->getPollApi();
+        $apiInstance = $this->getApiFactory()->getPollApi();
 
         $result = null;
         try {

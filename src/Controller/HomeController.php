@@ -9,13 +9,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    use Has\ApiAccess;
+
     /**
      * @Route("/", name="home")
      * @Route("/home.html", name="home_html")
      */
-    public function index(
-        ApiFactory $apiFactory
-    ): Response
+    public function index(): Response
     {
         // TODO: check API status, perhaps?
 

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'page.error.api_exception.title' | trans }}{% endblock %}
+
+{% block main_container %}
+
+    <h1>
+        {{ 'page.error.api_exception.title' | trans }}
+    </h1>
+
+    {# todo: only if env is not prod #}
+    <div class="alert alert-danger">
+        {{ apiResponse | raw }}
+    </div>
+    {# ///////////////////////////// #}
+
+{% endblock %}
