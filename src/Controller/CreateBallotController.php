@@ -36,19 +36,14 @@ class CreateBallotController extends AbstractController
         Request $request
     )
     {
-        /// REFACTOR ME ///
         $apiInstance = $this->getApiFactory()->getPollApi();
         $pollRead = null;
         try {
             $pollRead = $apiInstance->getPollItem($pollId);
         } catch (ApiException $e) {
-//            if (Response::HTTP_NOT_FOUND == $e->getCode()) {
-//                throw new NotFoundHttpException("No poll found.");
-//            }
-//            throw $e;
+            //$this->addStrike(Strike::WARNING, $e, $request?);
             return $this->renderApiException($e);
         }
-        ///////////////////
 
         $ballot = new Ballot();
 
@@ -60,13 +55,6 @@ class CreateBallotController extends AbstractController
         /** @var Form $form */
         $form = $this->createForm(BallotType::class, $ballot, $options);
         $form->handleRequest($request);
-
-
-//        $showFormResponse = $this->render('poll/participate.html.twig', [
-//            'poll' => $pollRead,
-//            'form' => $form->createView(),
-//        ]);
-
 
         $shouldSend = $form->isSubmitted() && $form->isValid();
 
@@ -95,7 +83,7 @@ class CreateBallotController extends AbstractController
                     );
                 } catch (ApiException $e) {
                     //dd($e);
-                    $showFormResponse = $this->render('poll/participate.html.twig', [
+                    $showFormResponse = $this->render('ballot/create.html.twig', [
                         'poll' => $pollRead,
                         'form' => $form->createView(),
                     ]);
@@ -109,14 +97,9 @@ class CreateBallotController extends AbstractController
             return $this->redirectToRoute('confirm_ballot_created_html', [
                 'pollId' => $pollId,
             ]);
-//            return $this->render('ballot/aftermath.html.twig', [
-//                'poll' => $pollRead,
-//                'ballots' => $ballotsCreated,
-//            ]);
-
         }
 
-        return $this->render('poll/participate.html.twig', [
+        return $this->render('ballot/create.html.twig', [
             'poll' => $pollRead,
             'form' => $form->createView(),
         ]);
