@@ -52,6 +52,19 @@ body > .content.container {
 ///
 ///
 
+hr {
+  border-bottom-color: $secondary;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+label {
+  cursor: pointer;
+}
+
+///
+///
+
 .alert-error {
     @extend .alert-danger;
 }
@@ -67,6 +80,37 @@ body > .content.container {
 ///
 ///
 
-//h2 {
-//    margin-top: 1em;
-//}
+.form-radio-grade {
+
+  display: flex;
+
+  .form-check {
+
+    flex-grow: 1;
+
+
+    input[type=radio] {
+
+      // Keep display for keyboard accessibility, use opacity instead
+      //display: none;
+      opacity: 0;
+
+      & + label.form-check-label {
+        display: inline-block;
+        padding: $spacer/3 $spacer/4;
+        border: 1px solid $secondary;
+        width: 100%;
+        text-align: center;
+        user-select: none;
+      }
+      &:checked + label {
+        border: 1px solid $primary;
+        background-color: darken($primary, 5%);
+        //color: black;
+      }
+      &:focus + label {
+        border: 1px dotted white;
+      }
+    }
+  }
+}

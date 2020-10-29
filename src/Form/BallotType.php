@@ -29,6 +29,12 @@ class BallotType extends AbstractType
                     'choices' => $choices,
                     'multiple' => false,
                     'expanded' => true,
+//                    'row_attr' => [
+//                        'class' => 'form-radio-grade',
+//                    ],
+                    'attr' => [
+                        'class' => 'form-radio-grade',
+                    ],
                     'property_path' => "judgments[".$proposal->getUuid()."]",
     //                'translation_domain' => 'grades',
                 ]);
