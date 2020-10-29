@@ -3,7 +3,9 @@ $period: 0.8s;
 
 
 .spinner-container {
-  background: #f93;
+  //min-width: $spinner-size;
+  //min-height: $spinner-size;
+  //background: #f93;
 
   .spinner {
     pointer-events: none;
@@ -24,8 +26,8 @@ $period: 0.8s;
     color: darken($body-color, 10%);
   }
   .spinner2 {
-    animation-delay: $period / 3;
     color: darken($body-color, 5%);
+    animation-delay: $period / 3;
   }
   .spinner3 {
     animation-delay: 2 * $period / 3;
