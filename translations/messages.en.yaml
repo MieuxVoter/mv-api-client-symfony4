@@ -11,6 +11,10 @@ page:
     index:
       title: Public Polls
       none: There are no public polls for the moment.
+  ballot:
+    aftermath:
+      title: Ballots were submitted.
+      success: Your participation was recorded successfully.
   result:
     title: Results of "{{ subject }}"
     rank: Rank {{ rank }}
@@ -23,6 +27,8 @@ button:
   create_poll: Create Poll
   more_proposals: Add more Proposals
   submit_ballot: Submit Judgments
+  view_results: View Results
+  back_to_poll: Back to Poll
 
 form:
   poll:

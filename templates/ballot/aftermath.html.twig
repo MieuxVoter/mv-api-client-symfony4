@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ poll.subject }} &mdash; {{ 'page.poll.participation-aftermath.title' | trans }}{% endblock %}
+{% block title %}{{ poll.subject }} &mdash; {{ 'page.ballot.aftermath.title' | trans }}{% endblock %}
 
 {# Disable global flash messaages, we're adding our own #}
 {% block flash_messages %}{% endblock %}
@@ -15,14 +15,14 @@
 
     <p>
         <h3>
-            {{ 'page.participation-aftermath.message.success' | trans }}
+            {{ 'page.ballot.aftermath.success' | trans }}
         </h3>
     </p>
 
     <div class="row">
         <div class="flex-row">
             <a href="{{ urlToResults }}" class="btn btn-primary">
-                {{ 'button.view_results' }}
+                {{ 'button.view_results' | trans }}
             </a>
         </div>
         <div class="flex-row">
@@ -38,7 +38,7 @@
     <div class="row">
         <div class="flex-row">
             <a href="{{ urlToPoll }}" class="btn btn-primary">
-                {{ 'button.back_to_poll' }}
+                {{ 'button.back_to_poll' | trans }}
             </a>
         </div>
         <div class="flex-row">
