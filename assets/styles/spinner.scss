@@ -6,6 +6,7 @@ $period: 0.8s;
   //min-width: $spinner-size;
   //min-height: $spinner-size;
   //background: #f93;
+  position: relative;
 
   .spinner {
     pointer-events: none;
