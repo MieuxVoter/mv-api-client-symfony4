@@ -58,15 +58,19 @@
 {% endblock %}
 {% block footer %}
     <footer>
-        <div class="row justify-content-evenly">
-            <div class="flex-row">
+        <div class="row justify-content-evenly align-items-center">
+            <div class="flex-row text-center">
                 <a href="https://mieuxvoter.fr">MieuxVoter</a>
                 &copy; 2020
                 </div>
-            <div class="flex-row">
+            <div class="flex-row text-center">
                 <spen class="version" title="Version number of the software. Come back here later for a link to the source code!">
-                v{{ shivas_app_version }}
+                    v{{ shivas_app_version }} (beta)
                 </spen>
+                <br>
+                <span class="license">
+                    AGPL-3.0-or-later
+                </span>
             </div>
         </div>
     </footer>
