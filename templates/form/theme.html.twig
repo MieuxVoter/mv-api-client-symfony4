@@ -1,41 +1,6 @@
 {% use 'bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block choice_widget_expanded -%}
-{#    {%- if '-inline' in label_attr.class|default('') -%}#}
-{#        {%- for child in form %}#}
-{#            {{- form_widget(child, {#}
-{#                parent_label_class: label_attr.class|default(''),#}
-{#                translation_domain: choice_translation_domain,#}
-{#            }) -}}#}
-{#        {% endfor -%}#}
-{#    {%- else -%}#}
-{#        <div {{ block('widget_container_attributes') }}>#}
-{#            {%- for child in form %}#}
-{#                {{- form_widget(child, {#}
-{#                    parent_label_class: label_attr.class|default(''),#}
-{#                    translation_domain: choice_translation_domain,#}
-{#                }) -}}#}
-{#            {%- endfor -%}#}
-{#        </div>#}
-{#    {%- endif -%}#}
-    {{ parent() }}
-{#    <hr>#}
-{%- endblock choice_widget_expanded %}
-
-
 {% block form_row -%}
-{#    {%- if compound is defined and compound -%}#}
-{#        {%- set element = 'fieldset' -%}#}
-{#    {%- endif -%}#}
-{#    {%- set widget_attr = {} -%}#}
-{#    {%- if help is not empty -%}#}
-{#        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}#}
-{#    {%- endif -%}#}
-{#    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>#}
-{#    {{- form_label(form) -}}#}
-{#    {{- form_widget(form, widget_attr) -}}#}
-{#    {{- form_help(form) -}}#}
-{#    </{{ element|default('div') }}>#}
 {{ parent() }}
 {% if compound is defined and compound %}
     <hr />
