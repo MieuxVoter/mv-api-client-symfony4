@@ -51,6 +51,11 @@ class PollType extends AbstractType
             ->add('subject', TextType::class, [
                 'required' => false, // let the the API handle it, so we can use the "more" buttons
                 'empty_data' => '',
+                'label' => 'form.poll.subject.label',
+                'attr' => [
+                    'placeholder' => 'form.poll.subject.placeholder',
+                    'title' => 'form.poll.subject.title',
+                ],
             ]);
 
         $builder
@@ -58,6 +63,7 @@ class PollType extends AbstractType
                 'choices' => $presets,
                 'multiple' => false,
                 'translation_domain' => 'grades',
+                'label' => 'entity.poll.grading_preset',
             ]);
 
         for ($i = 0; $i < $options[self::OPTION_AMOUNT_OF_PROPOSALS]; $i++) {
@@ -79,6 +85,10 @@ class PollType extends AbstractType
             ->add('scope', ChoiceType::class, [
                 'choices' => $scopes,
                 'multiple' => false,
+                'label' => 'form.poll.scope.label',
+                'attr' => [
+                    'title' => 'form.poll.scope.title',
+                ],
             ]);
 
         $builder->add('save',SubmitType::class, [

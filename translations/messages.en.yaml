@@ -29,9 +29,15 @@ button:
   submit_ballot: Submit Judgments
   view_results: View Results
   back_to_poll: Back to Poll
-
 form:
   poll:
+    subject:
+      label: Subject
+      placeholder: What is this poll about?
+      title: Careful wording is advised.  Be specific.
+    scope:
+      label: Scope
+      title: Determines who can access this poll, and how.
     scopes:
       public:
         name: "🌍 Public (anyone can access)"

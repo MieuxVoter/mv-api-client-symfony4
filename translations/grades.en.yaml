@@ -8,6 +8,12 @@
 #
 # See App\Entity\Poll::GRADING_PRESETS  to register a new grading.
 
+##########################################################################################
+# This is here because we can't configure the translation domain differently for the label
+entity:
+  poll:
+    grading_preset: Grading
+##########################################################################################
 
 quality_2:
   name: "2 Quality Grades – Reject, Accept"
