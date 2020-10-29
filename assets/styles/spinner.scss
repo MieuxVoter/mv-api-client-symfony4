@@ -4,8 +4,6 @@ $period: 0.8s;
 
 .spinner-container {
   background: #f93;
-  //width: 100%;
-  //height: 100%;
 
   .spinner {
     pointer-events: none;
@@ -17,9 +15,9 @@ $period: 0.8s;
     //background: #f39;
     text-shadow: rgba(226, 226, 0, 0.42) 0 0 35px;
 
-    -webkit-animation:spin $period linear infinite;
-    -moz-animation:spin $period linear infinite;
-    animation:spin $period linear infinite;
+    -webkit-animation:spin $period ease-out infinite;
+    -moz-animation:spin $period ease-out infinite;
+    animation:spin $period ease-out infinite;
   }
 
   .spinner1 {
