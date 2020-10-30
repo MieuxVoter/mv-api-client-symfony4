@@ -3,14 +3,20 @@ security:
         MsgPhp\User\Infrastructure\Security\UserIdentity: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        msgphp_user: { id: MsgPhp\User\Infrastructure\Security\UserIdentityProvider }
+        msgphp_users: { id: MsgPhp\User\Infrastructure\Security\UserIdentityProvider }
+#        mvapi_users: { id: App\Security\UserProvider }
+#        all_users:
+#            chain:
+#                providers:
+#                    - msgphp_users
+#                    - mvapi_users
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
-            provider: msgphp_user
+            provider: msgphp_users
 
             # activate different ways to authenticate
 
