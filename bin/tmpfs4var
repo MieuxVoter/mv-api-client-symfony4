@@ -11,3 +11,6 @@ USER_ID=$(id -u `whoami`)
 GROUP_ID=$(id -g `whoami`)
 
 sudo mount -t tmpfs -o size=512m,mode=0755,uid=$USER_ID,gid=$GROUP_ID tmpfs ./var
+
+bin/console doctrine:database:create
+bin/console doctrine:schema:create
