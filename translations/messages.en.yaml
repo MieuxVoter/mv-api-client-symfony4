@@ -90,3 +90,7 @@ form:
         name: "🔗 Unlisted (URL access)"
       private:
         name: "🔒 Private (invitation only)"
+
+flash:
+  user:
+    registered: Registration was successful!  Welcome!

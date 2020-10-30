@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Form\RegisterType;
 use MsgPhp\User\Command\CreateUser;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +23,7 @@ use Twig\Environment;
  *     name="register",
  * )
  */
-final class RegisterController
+final class RegisterController extends AbstractController
 {
     public function __invoke(
         Request $request,
@@ -37,9 +38,8 @@ final class RegisterController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $bus->dispatch(new CreateUser($form->getData()));
-            $flashBag->add('success', 'user.registered');
-
-            return new RedirectResponse('/login');
+            $flashBag->add('success', 'flash.user.registered');
+            return new RedirectResponse($this->generateUrl('login', ['redirect' => $redirect]));
         }
 
         return new Response($twig->render('user/register.html.twig', [

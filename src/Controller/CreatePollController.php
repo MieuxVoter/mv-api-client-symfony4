@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Adapter\ApiExceptionAdapter;
@@ -17,7 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CreatePollController extends AbstractController
+
+final class CreatePollController extends AbstractController
 {
     use Has\ApiAccess;
 

@@ -8,7 +8,7 @@
         </p>
 
 {% if error %}
-        <p>{{ error.messageKey | trans(error.messageData, 'security') }}</p>
+        <p class="alert alert-error">{{ error.messageKey | trans(error.messageData, 'security') }}</p>
 {% endif %}
 
         {{ form_start(form) }}

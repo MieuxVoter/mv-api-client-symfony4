@@ -19,9 +19,9 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             form_login:
-                login_path: /login
-                check_path: /login
-                default_target_path: /profile
+                login_path: /login.html
+                check_path: /login.html
+                default_target_path: /profile.html
                 username_parameter: email
                 password_parameter: password
 
