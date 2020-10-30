@@ -1,5 +1,6 @@
 meta:
   title: Majority Judgment
+
 page:
   home:
     title: Majority Judgment Demo Application
@@ -30,13 +31,25 @@ page:
     may_also_register: |
       No account?  Not a problem.  We have room.
 
+nav:
+  auth:
+    logged_in_as:
+      label: Logged in as {{ user.email }}
+    logout:
+      label: logout
+
 action:
+  home:
+    label: Home
+    title: Go back to the homepage
   register:
     label: Sign up!
   login:
     label: Login
   forgot_password:
     label: Forgotten password?
+
+# deprecated -- use `action` above instead
 link:
   browse_public_polls: Browse public Polls
   create_new_poll: Create a new Poll
@@ -46,6 +59,8 @@ button:
   submit_ballot: Submit Judgments
   view_results: View Results
   back_to_poll: Back to Poll
+###########################################
+
 form:
   register:
     email:

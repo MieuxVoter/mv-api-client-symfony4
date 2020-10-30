@@ -37,22 +37,46 @@
 
 {% block header %}
     <header>
-        <a href="{{ path('home') }}"
-           class="btn btn-outline-secondary"
-           aria-label="Home">
-            &#127968;
-        </a>
+        <div class="row pl-1 pr-1 align-items-center">
 
-        <ul>
-            {% if app.user %}
-                <li>{{ 'user.logged_in_as'|trans({ '%username%': msgphp_user.current.email })|raw }}</li>
-                <li><a href="{{ path('profile') }}">{{ 'action.view_profile'|trans }}</a></li>
-                <li><a href="{{ path('logout') }}">{{ 'action.logout'|trans }}</a></li>
-            {% else %}
-                <li><a href="{{ path('login') }}">{{ 'action.login'|trans }}</a></li>
-                <li><a href="{{ path('register') }}">{{ 'action.register'|trans }}</a></li>
-            {% endif %}
-        </ul>
+            <nav class="flex-grow-1">
+                <a href="{{ path('home') }}"
+                    class="btn btn-outline-secondary"
+                    aria-label="{{ 'action.home.label' | trans }}"
+                    title="{{ 'action.home.title' | trans }}">
+                    &#127968;
+                </a>
+            </nav>
+
+            <nav class="flex-grow-1 text-right">
+{% if app.user %}
+                <span>
+                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': msgphp_user.current }) }}
+                    <a href="{{ path('logout') }}">
+                    ({{ 'nav.auth.logout.label' | trans }})
+                    </a>
+                </span>
+{% else %}
+                <a href="{{ path('login') }}"
+                    class="btn btn-danger"
+                    title="{{ 'action.login.title' | trans }}">
+                    {{ 'action.login.label' | trans }}
+                </a>
+{% endif %}
+            </nav>
+
+        </div>
+{#        <ul>#}
+{#            {% if app.user %}#}
+{#                <li>{{ 'user.logged_in_as'|trans({ '%username%': msgphp_user.current.email })|raw }}</li>#}
+{#                <li><a href="{{ path('profile') }}">{{ 'action.view_profile'|trans }}</a></li>#}
+{#                <li><a href="{{ path('logout') }}">{{ 'action.logout'|trans }}</a></li>#}
+{#            {% else %}#}
+{#                <li><a href="{{ path('login') }}">{{ 'action.login'|trans }}</a></li>#}
+{#                <li><a href="{{ path('register') }}">{{ 'action.register'|trans }}</a></li>#}
+{#            {% endif %}#}
+{#        </ul>#}
+
     </header>
 {% endblock %}
 
