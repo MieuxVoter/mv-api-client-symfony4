@@ -15,8 +15,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+
 /**
- * @Route("/register", name="register")
+ * @Route(
+ *     path="/register.html",
+ *     name="register",
+ * )
  */
 final class RegisterController
 {
@@ -27,6 +31,7 @@ final class RegisterController
         Environment $twig,
         MessageBusInterface $bus
     ): Response {
+        $redirect = $request->get('redirect', null);
         $form = $formFactory->createNamed('', RegisterType::class);
         $form->handleRequest($request);
 

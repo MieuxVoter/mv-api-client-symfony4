@@ -11,8 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment;
 
+
 /**
- * @Route("/login", name="login")
+ * @Route(
+ *     path="/login.html",
+ *     name="login",
+ * )
  */
 final class LoginController
 {
