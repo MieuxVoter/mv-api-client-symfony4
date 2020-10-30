@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 //use Symfony\Contracts\Translation\TranslatorInterface;
 
+
+
 class PollType extends AbstractType
 {
     const OPTION_AMOUNT_OF_PROPOSALS = 'amount_of_proposals';
@@ -63,7 +65,7 @@ class PollType extends AbstractType
                 'choices' => $presets,
                 'multiple' => false,
                 'translation_domain' => 'grades',
-                'label' => 'entity.poll.grading_preset',
+                'label' => 'grading_preset',
             ]);
 
         for ($i = 0; $i < $options[self::OPTION_AMOUNT_OF_PROPOSALS]; $i++) {
@@ -71,6 +73,10 @@ class PollType extends AbstractType
                 sprintf("proposal_%02d_title", $i),
                 TextType::class,
                 [
+                    'label' => 'form.poll.proposal.label',
+                    'label_translation_parameters' => [
+                        'id' => \num2alpha($i),
+                    ],
                     'required' => ($i < 2), // 2 = minimum amount of proposals required
                     'property_path' => "proposals[$i]",
                 ]

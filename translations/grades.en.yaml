@@ -10,9 +10,7 @@
 
 ##########################################################################################
 # This is here because we can't configure the translation domain differently for the label
-entity:
-  poll:
-    grading_preset: Grading
+grading_preset: Grading
 ##########################################################################################
 
 quality_2:

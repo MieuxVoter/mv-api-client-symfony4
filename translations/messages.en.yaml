@@ -82,6 +82,8 @@ form:
     scope:
       label: Scope
       title: Determines who can access this poll, and how.
+    proposal:
+      label: Proposal {{ id }}
     scopes:
       public:
         name: "🌍 Public (anyone can access)"
