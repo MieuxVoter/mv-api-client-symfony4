@@ -79,6 +79,17 @@ class ApiExceptionAdapter
         }
     }
 
+    public function toData(ApiException $exception)
+    {
+        $body = $exception->getResponseBody();
+        $data = null;
+        try {
+            $data = json_decode($body, true);
+        } catch (\Exception $e) {}
+
+        return $data;
+    }
+
     public function toString(ApiException $exception, $html = false): string
     {
         $output = "";
