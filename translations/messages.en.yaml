@@ -67,8 +67,13 @@ form:
       unauthorized: "Your credentials are invalid."
       unresponsive: "The login server did not respond.  Retry later?"
   register:
+    username:
+      label: "🧘 Username"
+      placeholder: "Concerned Citizen"
+      help: "What you will use to log in.  Will NOT be public, as best we can."
     email:
       label: "📧 Email"
+      placeholder: "Optional, but mandatory for lost password recovery."
     password:
       label: "🔑 Password"
     password_confirm:
