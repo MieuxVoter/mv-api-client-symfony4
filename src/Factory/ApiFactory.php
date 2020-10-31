@@ -8,6 +8,7 @@ use GuzzleHttp\ClientInterface;
 use MjOpenApi\Api\BallotApi;
 use MjOpenApi\Api\PollApi;
 use MjOpenApi\Api\ResultApi;
+use MjOpenApi\Api\TokenApi;
 use MjOpenApi\Api\UserApi;
 use MjOpenApi\Configuration;
 
@@ -47,6 +48,12 @@ class ApiFactory
     public function getUserApi() : UserApi
     {
         $apiInstance = new UserApi($this->getClient(), $this->getConfig());
+        return $apiInstance;
+    }
+
+    public function getTokenApi() : TokenApi
+    {
+        $apiInstance = new TokenApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
