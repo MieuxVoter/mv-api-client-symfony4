@@ -55,6 +55,11 @@ trait ApiAccess
         $this->api_exception_adapter = $api_exception_adapter;
     }
 
+    public function getApiExceptionData(ApiException $exception)
+    {
+        return $this->getApiExceptionAdapter()->toData($exception);
+    }
+
     /**
      * Sugar to handle api exceptions in controllers.
      *
