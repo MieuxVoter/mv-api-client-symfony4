@@ -8,8 +8,8 @@ A client for MieuxVoter's OpenApi specifications focused on accessibility.
 ## Features
 
 - [x] Browse Public Polls
-- [ ] Create a Poll
-- [ ] Participate to a Public Poll
+- [x] Create a Poll
+- [x] Participate to a Public Poll
 - [ ] Participate to a Private Poll
 - [ ] View Results of a Poll
 - [ ] At least *some* Resilience
