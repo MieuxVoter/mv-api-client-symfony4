@@ -1774,7 +1774,7 @@
             "source": {
                 "type": "git",
                 "url": "git@domi41.framagit.org:limaju/limaju-client-lib-php.git",
-                "reference": "9fb45bd7a30361e991c1592967f96f071846e6c0"
+                "reference": "fd130c2bd13d8c1533b43cdd28c47993ae3e0741"
             },
             "require": {
                 "ext-curl": "*",
@@ -1822,7 +1822,7 @@
                 "sdk",
                 "vote"
             ],
-            "time": "2020-10-28T07:55:33+00:00"
+            "time": "2020-10-31T15:03:37+00:00"
         },
         {
             "name": "monolog/monolog",
