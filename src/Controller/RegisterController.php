@@ -131,8 +131,8 @@ final class RegisterController extends AbstractController
             $flashBag->add('success', 'flash.user.registered');
 
             $redirect = $session->get('register_redirect', $this->generateUrl('home_html'));
+            $session->remove("register_redirect");
             return new RedirectResponse($redirect);
-//            return new RedirectResponse($this->generateUrl('login', ['redirect' => $redirect]));
         }
 
         return $this->renderForm($form);

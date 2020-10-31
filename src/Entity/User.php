@@ -13,6 +13,9 @@ use MsgPhp\User\Model\ResettablePassword;
 use MsgPhp\User\Model\RolesField;
 
 /**
+ * We don't use this anymore.  Best disable it entirely.
+ * Unless we figure out a way of using it without Doctrine?
+ *
  * @ORM\Entity()
  */
 class User extends BaseUser implements DomainEventHandler
