@@ -34,7 +34,7 @@ page:
 nav:
   auth:
     logged_in_as:
-      label: Logged in as {{ user.email }}
+      label: Logged in as {{ user.username }}
     logout:
       label: logout
 

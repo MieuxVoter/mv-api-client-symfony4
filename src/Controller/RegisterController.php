@@ -88,7 +88,7 @@ final class RegisterController extends AbstractController
             // The registration seemed to work.
             // Let's login, if we can, after a fashion
 
-            sleep(0.5);
+            sleep(1);
 
             $tokenApi = $this->getApiFactory()->getTokenApi();
 

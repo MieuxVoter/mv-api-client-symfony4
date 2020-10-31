@@ -49,9 +49,11 @@
             </nav>
 
             <nav class="flex-grow-1 text-right">
-{% if app.user %}
+{#{% if app.user %}#}
+{% if is_user_logged() %}
                 <span>
-                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': msgphp_user.current }) }}
+{#                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': msgphp_user.current }) }}#}
+                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': get_user() }) }}
                     <a href="{{ path('logout') }}">
                     ({{ 'nav.auth.logout.label' | trans }})
                     </a>
