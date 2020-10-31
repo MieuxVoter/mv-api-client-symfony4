@@ -4,6 +4,7 @@
 namespace App\Factory;
 
 
+use App\Security\UserSession;
 use GuzzleHttp\ClientInterface;
 use MjOpenApi\Api\BallotApi;
 use MjOpenApi\Api\PollApi;
@@ -15,6 +16,10 @@ use MjOpenApi\Configuration;
 
 class ApiFactory
 {
+    /** @var UserSession */
+    protected $session;
+
+    /** @var Configuration */
     protected $config;
 
     /**
@@ -24,10 +29,36 @@ class ApiFactory
     {
         // Configure API key authorization: apiKey
         $this->config = Configuration::getDefaultConfiguration();
-        $this->config->setApiKey('Authorization', 'YOUR_API_KEY');
+//        $this->config->setApiKey('Authorization', 'YOUR_API_KEY');
         // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
         // $this->config->setApiKeyPrefix('Authorization', 'Bearer');
         $this->config->setHost("http://localhost:8001");
+    }
+
+    public function setToken(string $token)
+    {
+        $this->config->setAccessToken($token);
+    }
+
+    /**
+     * @return UserSession
+     */
+    public function getSession(): UserSession
+    {
+        return $this->session;
+    }
+
+    /**
+     * @required
+     * @param UserSession $session
+     */
+    public function setSession(UserSession $session): void
+    {
+        $this->session = $session;
+        $user = $session->getUser();
+        if (null !== $user) {
+            $this->setToken($user['token']);
+        }
     }
 
     protected function getClient() : ClientInterface

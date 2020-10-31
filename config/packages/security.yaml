@@ -24,12 +24,14 @@ security:
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-            form_login:
-                login_path: /login.html
-                check_path: /login.html
-                default_target_path: /profile.html
-                username_parameter: email
-                password_parameter: password
+            # Disabling this to try out sessions instead of accounts.
+            # This way we don't have to have a database on this client.
+#            form_login:
+#                login_path: /login.html
+#                check_path: /login.html
+#                default_target_path: /profile.html
+#                username_parameter: email
+#                password_parameter: password
 
             logout:
                 path: logout

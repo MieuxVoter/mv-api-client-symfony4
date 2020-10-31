@@ -9,6 +9,7 @@ use MsgPhp\User\Infrastructure\Validator\UniqueUsername;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -18,9 +19,23 @@ final class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('username', TextType::class, [
+                'label' => 'form.register.username.label',
+                'required' => true,
+                'help' => 'form.register.username.help',
+                'attr' => [
+                    'placeholder' => 'form.register.username.placeholder',
+                ],
+                'constraints' => [new NotBlank(), new UniqueUsername()],
+            ])
             ->add('email', EmailType::class, [
                 'label' => 'form.register.email.label',
-                'constraints' => [new NotBlank(), new Email(), new UniqueUsername()],
+                'attr' => [
+                    'placeholder' => 'form.register.email.placeholder',
+                ],
+                'constraints' => [],
+//                'constraints' => [new Email()],
+                'required' => false,
             ])
             ->add('password', HashedPasswordType::class, [
                 'password_confirm' => true,
