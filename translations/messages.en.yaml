@@ -62,6 +62,10 @@ button:
 ###########################################
 
 form:
+  login:
+    error:
+      unauthorized: "Your credentials are invalid."
+      unresponsive: "The login server did not respond.  Retry later?"
   register:
     email:
       label: "📧 Email"
