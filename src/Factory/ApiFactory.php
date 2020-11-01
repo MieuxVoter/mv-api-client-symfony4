@@ -37,7 +37,9 @@ class ApiFactory
 
     public function setToken(string $token)
     {
-        $this->config->setAccessToken($token);
+        $this->config->setApiKey('Authorization', $token);
+        $this->config->setApiKeyPrefix('Authorization', 'Bearer');
+//        $this->config->setAccessToken($token);
     }
 
     /**

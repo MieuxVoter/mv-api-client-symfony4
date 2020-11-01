@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\Factory\ApiFactory;
 use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 
 /**
@@ -22,12 +20,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
  * @Route(
  *     path="/polls/{pollId}",
  *     name="read_poll",
- *     requirements={"pollId"="[^.]+"},
+ *     requirements={"pollId"="[^./]+"},
  * )
  * @Route(
  *     path="/polls/{pollId}.html",
  *     name="read_poll_html",
- *     requirements={"pollId"="[^.]+"},
+ *     requirements={"pollId"="[^./]+"},
  * )
  */
 class ReadPollController extends AbstractController
@@ -38,21 +36,18 @@ class ReadPollController extends AbstractController
     {
         $apiInstance = $this->getApiFactory()->getPollApi();
 
-        $result = null;
+        $pollRead = null;
         try {
-            $result = $apiInstance->getPollItem($pollId);
-//            [$result, $code, $headers] = $apiInstance->getPollItemWithHttpInfo($pollId);
+            $pollRead = $apiInstance->getPollItem($pollId);
         } catch (ApiException $e) {
             if (Response::HTTP_NOT_FOUND == $e->getCode()) {
                 throw new NotFoundHttpException("No poll found.");
             }
-
-//            echo 'Exception when calling Api: ', $e->getMessage(), PHP_EOL;
-            throw $e;
+            return $this->renderApiException($e);
         }
 
         return $this->render('poll/read.html.twig', [
-            'poll' => $result,
+            'poll' => $pollRead,
         ]);
     }
 }

@@ -59,7 +59,7 @@
                     </a>
                 </span>
 {% else %}
-                <a href="{{ path('login') }}"
+                <a href="{{ path('login_html') }}"
                     class="btn btn-danger"
                     title="{{ 'action.login.title' | trans }}">
                     {{ 'action.login.label' | trans }}
@@ -68,17 +68,6 @@
             </nav>
 
         </div>
-{#        <ul>#}
-{#            {% if app.user %}#}
-{#                <li>{{ 'user.logged_in_as'|trans({ '%username%': msgphp_user.current.email })|raw }}</li>#}
-{#                <li><a href="{{ path('profile') }}">{{ 'action.view_profile'|trans }}</a></li>#}
-{#                <li><a href="{{ path('logout') }}">{{ 'action.logout'|trans }}</a></li>#}
-{#            {% else %}#}
-{#                <li><a href="{{ path('login') }}">{{ 'action.login'|trans }}</a></li>#}
-{#                <li><a href="{{ path('register') }}">{{ 'action.register'|trans }}</a></li>#}
-{#            {% endif %}#}
-{#        </ul>#}
-
     </header>
 {% endblock %}
 
@@ -102,9 +91,9 @@
                 &copy; 2020
                 </div>
             <div class="flex-row text-center">
-                <spen class="version" title="Version number of the software. Come back here later for a link to the source code!">
+                <span class="version" title="Version number of the software. Come back here later for a link to the source code!">
                     v{{ shivas_app_version }} (beta)
-                </spen>
+                </span>
                 <br>
                 <span class="license">
                     AGPL-3.0-or-later
