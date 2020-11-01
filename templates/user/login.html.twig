@@ -3,9 +3,7 @@
 {% block main_container %}
         <h1>{{ 'page.login.title' | trans }}</h1>
 
-        <p>
-            {{ 'page.login.rationale' | trans }}
-        </p>
+        <p>{{ 'page.login.rationale' | trans }}</p>
 
 {% if error %}
         <p class="alert alert-error">{{ error.messageKey | trans(error.messageData) }}</p>
@@ -31,16 +29,13 @@
 
         <div class="text-center">
 
-            <p>
-                {{ 'page.login.may_also_register' | trans }}
-            </p>
+            <p>{{ 'page.login.may_also_register' | trans }}</p>
 
             <a href="{{ path('register') }}" class="btn btn-primary">
                 {{ 'action.register.label' | trans }}
             </a>
 
             <br><br><br><br>
-
             {% include "partials/spinner.html.twig" only %}
 
         </div>

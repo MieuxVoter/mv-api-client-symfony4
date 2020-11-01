@@ -1,0 +1,9 @@
+{% if 'public' == poll.scope -%}
+    &#127757;
+{%- elseif 'unlisted' == poll.scope -%}
+    &#128279;
+{%- elseif 'private' == poll.scope -%}
+    &#128274;
+{%- else -%}
+    &#128009;
+{%- endif %}

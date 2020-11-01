@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{#{% block title %}{{ ? }}{% endblock %}#}
+
+{% block main_container %}
+
+    <p>
+        {{ 'page.invitation.was_accepted' | trans }}
+    </p>
+
+    <a href="{{ path('create_ballot_html', {'pollId': invitation.poll.uuid}) }}" class="btn btn-primary">
+        Participate to the Private Poll
+    </a>
+
+    <hr>
+    <details>
+        <summary>&#128421;</summary>
+        <pre>
+{{ invitation }}
+        </pre>
+    </details>
+
+{% endblock %}

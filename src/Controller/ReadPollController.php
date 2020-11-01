@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use MjOpenApi\ApiException;
@@ -28,17 +30,17 @@ use Symfony\Component\Routing\Annotation\Route;
  *     requirements={"pollId"="[^./]+"},
  * )
  */
-class ReadPollController extends AbstractController
+final class ReadPollController extends AbstractController
 {
     use Has\ApiAccess;
 
-    public function __invoke(string $pollId)
+    public function __invoke(string $pollId) : Response
     {
-        $apiInstance = $this->getApiFactory()->getPollApi();
+        $pollApi = $this->getApiFactory()->getPollApi();
 
         $pollRead = null;
         try {
-            $pollRead = $apiInstance->getPollItem($pollId);
+            $pollRead = $pollApi->getPollItem($pollId);
         } catch (ApiException $e) {
             if (Response::HTTP_NOT_FOUND == $e->getCode()) {
                 throw new NotFoundHttpException("No poll found.");

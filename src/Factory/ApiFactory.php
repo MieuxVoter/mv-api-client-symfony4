@@ -7,6 +7,7 @@ namespace App\Factory;
 use App\Security\UserSession;
 use GuzzleHttp\ClientInterface;
 use MjOpenApi\Api\BallotApi;
+use MjOpenApi\Api\InvitationApi;
 use MjOpenApi\Api\PollApi;
 use MjOpenApi\Api\ResultApi;
 use MjOpenApi\Api\TokenApi;
@@ -105,6 +106,12 @@ class ApiFactory
     public function getResultApi() : ResultApi
     {
         $apiInstance = new ResultApi($this->getClient(), $this->getConfig());
+        return $apiInstance;
+    }
+
+    public function getInvitationApi() : InvitationApi
+    {
+        $apiInstance = new InvitationApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 }

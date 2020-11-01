@@ -1,12 +1,17 @@
 meta:
   title: Majority Judgment
 
+
 page:
   home:
     title: Majority Judgment Demo Application
     title1: Majority Judgment
     title2: Demo Application
   poll:
+    read:
+      invitation_only: |
+        That poll is restricted to invitations only.
+#        Enter your invitation token below to participate.
     create:
       title: Create a new Poll
     index:
@@ -21,6 +26,10 @@ page:
     rank: Rank {{ rank }}
     summary:
       title: Summary
+  invitation:
+    was_accepted: |
+      You accepted this invitation!
+      No-one else may accept this invitation anymore.
   register:
     title: Join the adventure
   login:
@@ -30,6 +39,10 @@ page:
       Otherwise, anyone would be able to access them.
     may_also_register: |
       No account?  Not a problem.  We have room.
+  error:
+    api_exception:
+      title: Ooops!  An error occurred with the API.
+
 
 nav:
   auth:
@@ -37,6 +50,7 @@ nav:
       label: Logged in as {{ user.username }}
     logout:
       label: logout
+
 
 action:
   home:
@@ -49,6 +63,7 @@ action:
   forgot_password:
     label: Forgotten password?
 
+
 # deprecated -- use `action` above instead
 link:
   browse_public_polls: Browse public Polls
@@ -60,6 +75,7 @@ button:
   view_results: View Results
   back_to_poll: Back to Poll
 ###########################################
+
 
 form:
   login:
@@ -82,7 +98,6 @@ form:
       label: "I acknowledge that authentication won't work without a session cookie.  (we do not track you)"
     eula_agreement:
       label: "I solemnly swear I will behave respectfully."
-
   poll:
     subject:
       label: Subject
@@ -101,6 +116,10 @@ form:
         name: "🔗 Unlisted (URL access)"
       private:
         name: "🔒 Private (invitation only)"
+  invitation:
+    invitation_token:
+      label: Invitation Token
+
 
 flash:
   user:

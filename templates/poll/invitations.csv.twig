@@ -1,0 +1,3 @@
+{% for invitation in invitations %}
+{{ invitation.uuid }}, "{{ url('accept_invitation_html', {'invitationId': invitation.uuid}) }}"
+{% endfor %}

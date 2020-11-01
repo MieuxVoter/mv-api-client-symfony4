@@ -7,11 +7,14 @@ namespace App\Controller\Has;
 use App\Adapter\ApiExceptionAdapter;
 use App\Factory\ApiFactory;
 use MjOpenApi\ApiException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
 trait ApiAccess
 {
+    use UserSession;
+
     /** @var ApiFactory $api_factory */
     protected $api_factory;
 
@@ -62,12 +65,20 @@ trait ApiAccess
 
     /**
      * Sugar to handle api exceptions in controllers.
+     * NO.
+     * We need a way to get multiple Services, this can't be in this Trait.
      *
      * @param ApiException $exception
      * @return Response
      */
-    public function renderApiException(ApiException $exception) : Response
+    public function renderApiException(ApiException $exception, Request $request) : Response
     {
+        $data = $this->getApiExceptionData($exception);
+
+        if (isset($data['code']) && (401 == $data['code'])) {
+            $this->userSession->logout();
+        }
+
         $apiResponse = $this->getApiExceptionAdapter()->toHtml($exception);
 
         // todo: fetch the env, react accordingly

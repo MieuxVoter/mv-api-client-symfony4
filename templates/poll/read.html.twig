@@ -5,25 +5,48 @@
 {% block main_container %}
 
 <div class="flex-row">
-    <h1>{{ poll.subject }}</h1>
-{#    <p>#}
-{#        {% for grade in poll.grades %}#}
-{#            {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}#}
-{#        {% endfor %}#}
-{#    </p>#}
+    <h1>
+        {% include 'partials/scope_emote.html.twig' with {'poll': poll} %}
+        {{ poll.subject }}
+    </h1>
+
     <ul>
-        {% for proposal in poll.proposals %}
+{% for proposal in poll.proposals %}
             <li>
                 {{ proposal.title }}
             </li>
-        {% endfor %}
+{% endfor %}
     </ul>
 
+
+{% if poll.scope == 'private' %}
+    <p>
+        {{ 'page.poll.read.invitation_only' | trans }}
+    </p>
+
+{% if poll.canGenerateInvitations %}
+    <a href="{{ path('generate_invitations_csv', {'pollId': poll.uuid}) }}" class="btn btn-primary">
+        {{ 'action.generate_invitations.label' | trans }}
+    </a>
+{% endif %}
+
+{% else %}
     <a href="{{ path('create_ballot_html', {'pollId': poll.uuid}) }}" class="btn btn-primary">
         Judge:
         {% for grade in poll.grades %}
             {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}
         {% endfor %}
     </a>
+{% endif %}
+
+    <hr>
+
+    <details>
+        <summary>&#128421;</summary>
+        <pre>
+{{ poll }}
+        </pre>
+    </details>
+
 </div>
 {% endblock %}

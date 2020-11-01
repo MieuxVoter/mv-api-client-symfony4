@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 /**
  * @Route(
- *     path="/polls/{pollId}-participate.html",
+ *     path="/polls/{pollId}/participate.html",
  *     name="create_ballot_html",
  *     requirements={"pollId"="[^.]+"},
  * )

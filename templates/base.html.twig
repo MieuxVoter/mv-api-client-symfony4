@@ -59,7 +59,7 @@
                     </a>
                 </span>
 {% else %}
-                <a href="{{ path('login_html') }}"
+                <a href="{{ path('login_html', {'redirect': app.request.requesturi}) }}"
                     class="btn btn-danger"
                     title="{{ 'action.login.title' | trans }}">
                     {{ 'action.login.label' | trans }}
