@@ -84,7 +84,6 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
         return null;
     }
 
@@ -117,5 +116,13 @@ class User implements UserInterface
     {
         // FIXME: test this
 //        $this->api_token = null;
+    }
+
+
+    public function getWithoutToken() : self
+    {
+        $user = clone $this;
+        $user->setApiToken(null);
+        return $user;
     }
 }
