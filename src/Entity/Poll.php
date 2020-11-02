@@ -17,10 +17,14 @@ class Poll
         'quality_6',
     ];
 
+    const SCOPE_PUBLIC = 'public';
+    const SCOPE_UNLISTED = 'unlisted';
+    const SCOPE_PRIVATE = 'private';
+
     const SCOPES = [
-        'public',
-        'unlisted',
-        'private',
+        self::SCOPE_PUBLIC,
+        self::SCOPE_UNLISTED,
+        self::SCOPE_PRIVATE,
     ];
 
     /**
