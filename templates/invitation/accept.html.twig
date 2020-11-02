@@ -4,14 +4,38 @@
 
 {% block main_container %}
 
-    <p>
-        {{ 'page.invitation.was_accepted' | trans }}
-    </p>
+{% if invitation and invitation.poll %}
+    <h1>{{ 'page.invitation.title' | trans({'invitation': invitation}) }}</h1>
+{% else %}
+    <h1>{{ 'page.invitation.title_invalid' | trans }}</h1>
+{% endif %}
+
+{% if invitation.acceptedByYou %}
+    <p>{{ 'page.invitation.accepted_by_you' | trans({'user': get_user()}) }}
+        accepted_by_you: |
+        You accepted this invitation.</p>
 
     <a href="{{ path('create_ballot_html', {'pollId': invitation.poll.uuid}) }}" class="btn btn-primary">
-        Participate to the Private Poll
+        {{ 'action.participate_to_private_poll.label' | trans }}
     </a>
+{% elseif invitation.accepted %}
+    <p>{{ 'page.invitation.already_accepted' | trans }}</p>
 
+{% if not is_user_logged() %}
+    <p>{{ 'page.invitation.not_logged_in' | trans }}</p>
+
+    <a href="{{ path('login_html', {'redirect': app.request.requesturi}) }}" class="btn btn-primary">
+        {{ 'action.login.label' | trans }}
+    </a>
+{% endif %}
+
+{% else %}
+    <p>{{ 'page.invitation.not_yet_accepted' | trans }}</p>
+
+    <a href="{{ path('login_html', {'redirect': app.request.requesturi}) }}" class="btn btn-primary">
+        {{ 'action.login_to_accept_invitation.label' | trans }}
+    </a>
+{% endif %}
     <hr>
     <details>
         <summary>&#128421;</summary>
@@ -20,4 +44,4 @@
         </pre>
     </details>
 
-{% endblock %}
+{% endblock %}{# main_container #}

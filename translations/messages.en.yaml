@@ -27,9 +27,18 @@ page:
     summary:
       title: Summary
   invitation:
-    was_accepted: |
-      You accepted this invitation!
+    title: "Invitation for \"{{ invitation.poll.subject }}\""
+    title_invalid: Invalid Invitation
+#    title: "Invitation for \"{{ invitation }}\""
+    already_accepted: |
+      Somebody accepted this invitation!
       No-one else may accept this invitation anymore.
+    not_yet_accepted: |
+      That invitation is still open.
+    accepted_by_you: |
+      You accepted this invitation.
+    not_logged_in: |
+      You are currently not logged in.  Perhaps it was you?
   register:
     title: Join the adventure
   login:
@@ -62,6 +71,11 @@ action:
     label: Login
   forgot_password:
     label: Forgotten password?
+  participate_to_private_poll:
+    label: Participate to the Private Poll
+  login_to_accept_invitation:
+    label: Login to Accept the Invitation
+
 
 
 # deprecated -- use `action` above instead
