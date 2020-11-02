@@ -2,75 +2,43 @@
 
 namespace App\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
-//use MsgPhp\User\User as BaseUser;
-//use MsgPhp\User\UserId;
-//use MsgPhp\Domain\Event\DomainEventHandler;
-//use MsgPhp\Domain\Event\DomainEventHandlerTrait;
-//use MsgPhp\User\Credential\EmailPassword;
-//use MsgPhp\User\Model\EmailPasswordCredential;
-//use MsgPhp\User\Model\ResettablePassword;
-//use MsgPhp\User\Model\RolesField;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-// * @ORM\Entity()
+
 /**
- * We don't use this anymore.  Best disable it entirely.
- * Unless we figure out a way of using it without Doctrine?
- *
+ * Class User
+ * @package App\Entity
  */
-
-
-class User
-    implements UserInterface
-    //extends BaseUser implements DomainEventHandler
+class User implements UserInterface
 {
-//    use DomainEventHandlerTrait;
-//    use EmailPasswordCredential;
-//    use ResettablePassword;
-//    use RolesField;
-//
-//    /** @ORM\Id() @ORM\GeneratedValue() @ORM\Column(type="msgphp_user_id", length=191) */
-//    private $id;
 
+    /** @var string $username */
+    private $username;
+
+    /** @var string|null $api_token */
     private $api_token;
 
-//
-//    public function __construct(UserId $id, string $email, string $password)
-//    {
-//        $this->id = $id;
-//        $this->credential = new EmailPassword($email, $password);
-//    }
-//
-//    public function getId(): UserId
-//    {
-//        return $this->id;
-//    }
+    ///
+    ///
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getApiToken()
+    public function getApiToken() : ?string
     {
         return $this->api_token;
     }
 
     /**
-     * @param mixed $api_token
+     * @param string|null $api_token
      */
-    public function setApiToken($api_token): void
+    public function setApiToken(?string $api_token): void
     {
         $this->api_token = $api_token;
     }
 
-
     /**
      * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return ['ROLE_USER'];
-     *     }
      *
      * Alternatively, the roles might be stored on a ``roles`` property,
      * and populated in any number of different ways when the user object
@@ -84,17 +52,27 @@ class User
     }
 
     /**
-     * Returns the password used to authenticate the user.
-     *
+     * Initially returns the password used to authenticate the user.
      * This should be the encoded password. On authentication, a plain-text
      * password will be salted, encoded, and then compared to this value.
      *
+     * But!
+     * We store no password, and we do not use this in the login guard.
+     * Still, the Security internals use this, amongst other to see if the User changed.
+     * They check if the password changed **before** checking the username.
+     * See symfony/security-core/Authentication/Token/AbstractToken.php line 312
+     *
+     * So, we're returning the API token if there's one.
+     * We could also return a static string, perhaps?  It worked in preliminary tests.
+     *
      * @return string|null The encoded password if any
+     * @throws \Exception
      */
     public function getPassword()
     {
-        return 'nope';
-        // TODO: Implement getPassword() method.
+        return $this->getApiToken();
+//        throw new \Exception("The method User#getPassword() was used. It should not.");
+//        return 'The method getPassword() was used. It should not.';
     }
 
     /**
@@ -110,7 +88,6 @@ class User
         return null;
     }
 
-    private $username;
 
     /**
      * Returns the username used to authenticate the user.
@@ -123,6 +100,14 @@ class User
     }
 
     /**
+     * @param string $username
+     */
+    public function setUsername($username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like
@@ -130,14 +115,7 @@ class User
      */
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
-    }
-
-    /**
-     * @param mixed $username
-     */
-    public function setUsername($username): void
-    {
-        $this->username = $username;
+        // FIXME: test this
+//        $this->api_token = null;
     }
 }

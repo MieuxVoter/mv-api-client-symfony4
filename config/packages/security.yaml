@@ -13,14 +13,11 @@ security:
             anonymous: true
             provider: mvapi_users
 
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
             guard:
                 authenticators:
                     - App\Security\ApiGuardAuthenticator
 
-            # activate different ways to authenticate
-
-            # http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             # Disabling this to try out sessions instead of accounts.
