@@ -127,6 +127,15 @@ form:
         since you (and only you) will be able to generate invitations for the poll.
     proposal:
       label: Proposal {{ id }}
+      title:
+        required: |
+          The name of a proposal for the subject of the poll, that participants will grade.
+          This field is required because at least two proposals are required for a poll.
+        optional: |
+          The name of a proposal for the subject of the poll, that participants will grade.
+      placeholder:
+        required: Required
+        optional: Optional
     scopes:
       public:
         name: "🌍 Public (anyone can access)"

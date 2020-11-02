@@ -107,16 +107,21 @@ class PollType extends AbstractType
             ]);
 
         for ($i = 0; $i < $options[self::OPTION_AMOUNT_OF_PROPOSALS]; $i++) {
+            $required = ($i < 2);  // 2 = minimum amount of proposals required
             $builder->add(
                 sprintf("proposal_%02d_title", $i),
                 TextType::class,
                 [
+                    'required' => $required,
+                    'property_path' => "proposals[$i]",
                     'label' => 'form.poll.proposal.label',
                     'label_translation_parameters' => [
                         'id' => \num2alpha($i),
                     ],
-                    'required' => ($i < 2), // 2 = minimum amount of proposals required
-                    'property_path' => "proposals[$i]",
+                    'attr' => [
+                        'title' => 'form.poll.proposal.title.'.($required?'required':'optional'),
+                        'placeholder' => 'form.poll.proposal.placeholder.'.($required?'required':'optional'),
+                    ],
                 ]
             );
         }
