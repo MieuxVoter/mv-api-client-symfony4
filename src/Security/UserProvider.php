@@ -23,12 +23,19 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
     protected $apiFactory;
 
     /**
+     * @var UserSession
+     */
+    private $userSession;
+
+    /**
      * UserProvider constructor.
      * @param ApiFactory $apiFactory
+     * @param UserSession $userSession
      */
-    public function __construct(ApiFactory $apiFactory)
+    public function __construct(ApiFactory $apiFactory, UserSession $userSession)
     {
         $this->apiFactory = $apiFactory;
+        $this->userSession = $userSession;
     }
 
 
@@ -50,8 +57,10 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
         // it is whatever value is being returned by the getUsername()
         // method in your User class.
 
-        $userApi = $this->apiFactory->getUserApi();
-//        $userApi->get
+//        $userApi = $this->apiFactory->getUserApi();
+////        $userApi->get
+//        $this->userSession->
+
 
 
         throw new \Exception('TODO: fill in loadUserByUsername() inside '.__FILE__);

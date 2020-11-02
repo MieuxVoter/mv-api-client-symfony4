@@ -1,22 +1,21 @@
 security:
     encoders:
-        MsgPhp\User\Infrastructure\Security\UserIdentity: auto
+        # Not 100% sure we need this, with our setup
+        App\Entity\User: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        msgphp_users: { id: MsgPhp\User\Infrastructure\Security\UserIdentityProvider }
-#        mvapi_users: { id: App\Security\UserProvider }
-#        all_users:
-#            chain:
-#                providers:
-#                    - msgphp_users
-#                    - mvapi_users
+        mvapi_users: { id: App\Security\UserProvider }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
-            provider: msgphp_users
+            provider: mvapi_users
+
+            guard:
+                authenticators:
+                    - App\Security\ApiGuardAuthenticator
 
             # activate different ways to authenticate
 
@@ -30,7 +29,7 @@ security:
 #                login_path: /login.html
 #                check_path: /login.html
 #                default_target_path: /profile.html
-#                username_parameter: email
+#                username_parameter: username
 #                password_parameter: password
 
             logout:

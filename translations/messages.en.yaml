@@ -75,6 +75,8 @@ action:
     label: Participate to the Private Poll
   login_to_accept_invitation:
     label: Login to Accept the Invitation
+  generate_invitations:
+    label: Generate Invitations
 
 
 

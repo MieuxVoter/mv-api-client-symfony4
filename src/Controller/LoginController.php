@@ -59,13 +59,18 @@ final class LoginController extends AbstractController
             if ( ! empty($redirect)) {
                 $session->set("login_redirect", $redirect);
                 $session->set("register_redirect", $redirect);
-                //$this->saveTargetPath($session, 'main', $redirect);
+                $this->saveTargetPath($session, 'main', $redirect);
             }
             ///////////////////////////////////////////
 //        } else if ($request->getMethod() == Request::METHOD_POST) {
         } else if ($form->isSubmitted() && $form->isValid()) {
 
+
             $data = $form->getData();
+
+            // FIXME : IGNORED NOW, REMOVE
+
+            dd($data);
 
             $credentials = new Credentials();
             $credentials->setUsernameOrEmail($data['username']);

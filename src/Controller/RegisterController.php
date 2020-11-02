@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\RegisterType;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\Credentials;
@@ -60,12 +61,14 @@ final class RegisterController extends AbstractController
             $username = $data['username'];
             $email = $data['email'];
             //$password = $data['password']; // encrypted
-            $password = $request->get('password', ['plain' => null]);
-            if ( ! isset($password['plain'])) {
-                $form->addError(new FormError($this->trans('form.register.error.password_shape')));
-                return $this->renderForm($form);
-            }
-            $passwordPlain = $password['plain'];
+            $password = $request->get('password');
+            $passwordConfirm = $request->get('password_confirm');
+//            $password = $request->get('password', ['plain' => null]);
+//            if ( ! isset($password['plain'])) {
+//                $form->addError(new FormError($this->trans('form.register.error.password_shape')));
+//                return $this->renderForm($form);
+//            }
+            $passwordPlain = $password;
 
             $userCreate = new UserCreate();
             $userCreate->setEmail($email);
@@ -102,7 +105,7 @@ final class RegisterController extends AbstractController
             } catch (ApiException $e) {
                 // Registration was a success, but login was not.
                 // Poll Subject: What should we do here?
-                return $this->renderApiException($e);                            // Proposal A
+                return $this->renderApiException($e, $request);                            // Proposal A
 //                return new RedirectResponse($redirect);                        // Proposal B
 //                return new RedirectResponse($this->generateUrl('login_html')); // Proposal C
             }
@@ -112,19 +115,24 @@ final class RegisterController extends AbstractController
 
             // All's well!  Save the JWT in the session.
 
+            $user = new User();
+            $user->setUsername($username);
+            $user->setApiToken($token->getToken());
+
+
             $this->userSession->login(
                 $userRead->getUuid(),
                 $username,
                 $token->getToken()
             );
-            $this->getApiFactory()->setToken($token->getToken());
+            $this->getApiFactory()->setApiToken($token->getToken());
 
             // Wipe the memory…
             // libsodium installation hassle
             // → not worth it?  (perhaps later?)
-//            memzero($password['plain']);
+//            memzero($password);
 //            memzero($passwordPlain);
-            $password['plain'] = "Elleavaitprisceplidanssonâgeenfantin";
+            $password = "Elleavaitprisceplidanssonâgeenfantin";
             $passwordPlain = "Devenirdansmachambreunpeuchaquematin";
             $token = null;
 

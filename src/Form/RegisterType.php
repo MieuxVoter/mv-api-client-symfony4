@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use MsgPhp\User\Infrastructure\Form\Type\HashedPasswordType;
-use MsgPhp\User\Infrastructure\Validator\UniqueUsername;
+//use MsgPhp\User\Infrastructure\Form\Type\HashedPasswordType;
+//use MsgPhp\User\Infrastructure\Validator\UniqueUsername;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -26,7 +27,7 @@ final class RegisterType extends AbstractType
                 'attr' => [
                     'placeholder' => 'form.register.username.placeholder',
                 ],
-                'constraints' => [new NotBlank(), new UniqueUsername()],
+                'constraints' => [new NotBlank()],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'form.register.email.label',
@@ -37,16 +38,24 @@ final class RegisterType extends AbstractType
 //                'constraints' => [new Email()],
                 'required' => false,
             ])
-            ->add('password', HashedPasswordType::class, [
-                'password_confirm' => true,
-                'password_options' => [
-                    'label' => 'form.register.password.label',
-                    'constraints' => new NotBlank()
-                ],
-                'password_confirm_options' => [
-                    'label' => 'form.register.password_confirm.label',
-                ],
+            ->add('password', PasswordType::class, [
+                'label' => 'form.register.password.label',
+                'constraints' => new NotBlank(),
             ])
+            ->add('password_confirm', PasswordType::class, [
+                'label' => 'form.register.password_confirm.label',
+                'constraints' => new NotBlank(),
+            ])
+//            ->add('password', PasswordType::class, [
+//                'password_confirm' => true,
+//                'password_options' => [
+//                    'label' => 'form.register.password.label',
+//                    'constraints' => new NotBlank()
+//                ],
+//                'password_confirm_options' => [
+//                    'label' => 'form.register.password_confirm.label',
+//                ],
+//            ])
             ->add('cookie_consent', CheckboxType::class, [
                 'label' => 'form.register.cookie_consent.label',
                 'required' => true,

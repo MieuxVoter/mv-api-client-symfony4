@@ -11,9 +11,7 @@
 {% endif %}
 
 {% if invitation.acceptedByYou %}
-    <p>{{ 'page.invitation.accepted_by_you' | trans({'user': get_user()}) }}
-        accepted_by_you: |
-        You accepted this invitation.</p>
+    <p>&#10004; {{ 'page.invitation.accepted_by_you' | trans({'user': get_user()}) }}</p>
 
     <a href="{{ path('create_ballot_html', {'pollId': invitation.poll.uuid}) }}" class="btn btn-primary">
         {{ 'action.participate_to_private_poll.label' | trans }}

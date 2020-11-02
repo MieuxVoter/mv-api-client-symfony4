@@ -4,6 +4,7 @@
 namespace App\Factory;
 
 
+use App\Entity\User;
 use App\Security\UserSession;
 use GuzzleHttp\ClientInterface;
 use MjOpenApi\Api\BallotApi;
@@ -13,6 +14,7 @@ use MjOpenApi\Api\ResultApi;
 use MjOpenApi\Api\TokenApi;
 use MjOpenApi\Api\UserApi;
 use MjOpenApi\Configuration;
+use Symfony\Component\Security\Core\Security;
 
 
 class ApiFactory
@@ -23,10 +25,13 @@ class ApiFactory
     /** @var Configuration */
     protected $config;
 
+    /** @var Security $security */
+    protected $security;
+
     /**
      * ApiFactory constructor.
      */
-    public function __construct()
+    public function __construct(Security $security)
     {
         // Configure API key authorization: apiKey
         $this->config = Configuration::getDefaultConfiguration();
@@ -34,11 +39,19 @@ class ApiFactory
         // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
         // $this->config->setApiKeyPrefix('Authorization', 'Bearer');
         $this->config->setHost("http://localhost:8001");
+
+        $this->security = $security;
+
+        // Cannot do that here, Security->getUser returns null ; see getClient
+//        $user = $security->getUser();
+//        if ($user instanceof User) {
+//            $this->setApiToken($user->getApiToken());
+//        }
     }
 
-    public function setToken(string $token)
+    public function setApiToken(string $apiToken)
     {
-        $this->config->setApiKey('Authorization', $token);
+        $this->config->setApiKey('Authorization', $apiToken);
         $this->config->setApiKeyPrefix('Authorization', 'Bearer');
 //        $this->config->setAccessToken($token);
     }
@@ -58,17 +71,19 @@ class ApiFactory
     public function setSession(UserSession $session): void
     {
         $this->session = $session;
-        $user = $session->getUser();
-        if (null !== $user) {
-            $this->setToken($user['token']);
-        }
     }
 
     protected function getClient() : ClientInterface
     {
-            // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-            // This is optional, `GuzzleHttp\Client` will be used as default.
-            return new \GuzzleHttp\Client();
+
+        $user = $this->security->getUser();
+        if ($user instanceof User) {
+            $this->setApiToken($user->getApiToken());
+        }
+
+        // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+        // This is optional, `GuzzleHttp\Client` will be used as default.
+        return new \GuzzleHttp\Client();
     }
 
     /**
