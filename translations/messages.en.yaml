@@ -122,6 +122,9 @@ form:
     scope:
       label: Scope
       title: Determines who can access this poll, and how.
+      private_requires_login: |
+        You need to login first, in order to use this scope,
+        since you (and only you) will be able to generate invitations for the poll.
     proposal:
       label: Proposal {{ id }}
     scopes:
@@ -131,7 +134,7 @@ form:
       unlisted:
         name: "🔗 Unlisted (URL access)"
       private:
-        name: "🔒 Private (invitation only)"
+        name: "🔒 Private (invitation only, login required)"
   invitation:
     invitation_token:
       label: Invitation Token

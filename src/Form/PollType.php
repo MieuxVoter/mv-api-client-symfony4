@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
+
 //use Symfony\Contracts\Translation\TranslatorInterface;
 
 
@@ -33,13 +35,23 @@ class PollType extends AbstractType
 //    {
 //        $this->translator = $translator;
 //    }
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $scopes = [
-            'form.poll.scopes.public.name' => 'public',
-            'form.poll.scopes.unlisted.name' => 'unlisted',
-            'form.poll.scopes.private.name' => 'private',
+            'form.poll.scopes.public.name' => Poll::SCOPE_PUBLIC,
+            'form.poll.scopes.unlisted.name' => Poll::SCOPE_UNLISTED,
+            'form.poll.scopes.private.name' => Poll::SCOPE_PRIVATE,
         ];
         $presets = [];
         foreach (Poll::GRADING_PRESETS as $preset) {
@@ -48,6 +60,8 @@ class PollType extends AbstractType
 
             $presets[$presetLabel] = $preset;
         }
+
+        $isLoggedIn = (null !== $this->security->getUser());
 
         $builder
             ->add('subject', TextType::class, [
@@ -68,6 +82,20 @@ class PollType extends AbstractType
                 'attr' => [
                     'title' => 'form.poll.scope.title',
                 ],
+                'choice_attr' => function($val, $key, $index) use ($isLoggedIn) {
+                    $attr = [];
+
+                    $disabled = false;
+                    if ((! $isLoggedIn) && (Poll::SCOPE_PRIVATE === $val)) {
+                        $disabled = true; // private is only for logged-in users, for now
+                        $attr = array_merge($attr, ['title' => 'form.poll.scope.private_requires_login']);
+                    }
+                    if ($disabled) {
+                        $attr = array_merge($attr, ['disabled' => 'disabled']);
+                    }
+
+                    return $attr;
+                },
             ]);
 
         $builder
@@ -99,6 +127,9 @@ class PollType extends AbstractType
 
         $builder->add('save',SubmitType::class, [
             'label' => 'button.create_poll',
+            'attr' => [
+                'class' => 'btn btn-primary float-right',
+            ],
         ]);
     }
 
