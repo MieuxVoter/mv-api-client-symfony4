@@ -61,6 +61,16 @@ class PollType extends AbstractType
             ]);
 
         $builder
+            ->add('scope', ChoiceType::class, [
+                'choices' => $scopes,
+                'multiple' => false,
+                'label' => 'form.poll.scope.label',
+                'attr' => [
+                    'title' => 'form.poll.scope.title',
+                ],
+            ]);
+
+        $builder
             ->add('grading_preset', ChoiceType::class, [
                 'choices' => $presets,
                 'multiple' => false,
@@ -86,16 +96,6 @@ class PollType extends AbstractType
         $builder->add('moreProposals',SubmitType::class, [
             'label' => 'button.more_proposals',
         ]);
-
-        $builder
-            ->add('scope', ChoiceType::class, [
-                'choices' => $scopes,
-                'multiple' => false,
-                'label' => 'form.poll.scope.label',
-                'attr' => [
-                    'title' => 'form.poll.scope.title',
-                ],
-            ]);
 
         $builder->add('save',SubmitType::class, [
             'label' => 'button.create_poll',
