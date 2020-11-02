@@ -8,7 +8,6 @@ use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -38,11 +37,11 @@ final class GenerateInvitationsController extends AbstractController
             'invitations' => $invitations,
         ]);
 
-//        $response->headers->set('Content-Type', 'text/csv');
-//        $response->headers->set(
-//            'Content-Disposition',
-//            'attachment; filename="invitations-'.$pollId.'.csv"'
-//        );
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment; filename="invitations-'.$pollId.'.csv"'
+        );
 
         return $response;
     }
