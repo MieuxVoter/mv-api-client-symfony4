@@ -58,6 +58,7 @@ final class LoginController extends AbstractController
             $redirect = $request->get('redirect');
             if ( ! empty($redirect)) {
                 $session->set("login_redirect", $redirect);
+                $session->set("register_redirect", $redirect);
                 //$this->saveTargetPath($session, 'main', $redirect);
             }
             ///////////////////////////////////////////
@@ -96,7 +97,7 @@ final class LoginController extends AbstractController
                     ]);
                 }
 
-                return $this->renderApiException($e);
+                return $this->renderApiException($e, $request);
             }
 
             if (null === $token) {
@@ -105,6 +106,7 @@ final class LoginController extends AbstractController
                 $this->userSession->login('', $data['username'], $token->getToken());
                 $redirect = $session->get("login_redirect", $this->generateUrl('home_html'));
                 $session->remove("login_redirect");
+                $session->remove("register_redirect");
                 return new RedirectResponse($redirect);
             }
 
