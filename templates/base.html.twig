@@ -52,7 +52,7 @@
             <nav class="flex-grow-1 text-right">
 {% if app.user %}
                 <span>
-                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': app.user }) }}
+                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': app.user.withoutToken }) }}
                     <a href="{{ path('logout') }}">
                     ({{ 'nav.auth.logout.label' | trans }})
                     </a>
