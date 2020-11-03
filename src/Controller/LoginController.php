@@ -21,7 +21,7 @@ use Twig\Environment as TwigEnvironment;
 
 
 /**
- * This is disconnected from MsgPHP login.
+ * Note: we never go through this as POST, since the Guard redirects before that.
  *
  * @Route(
  *     path="/login",
@@ -52,70 +52,16 @@ final class LoginController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-
+        // redirection shenanigans //////////////////////////////////////////
         if ($request->getMethod() == Request::METHOD_GET) {
-            // redirect shenanigans ///////////////////
             $redirect = $request->get('redirect');
             if ( ! empty($redirect)) {
                 $session->set("login_redirect", $redirect);
                 $session->set("register_redirect", $redirect);
                 $this->saveTargetPath($session, 'main', $redirect);
             }
-            ///////////////////////////////////////////
-//        } else if ($request->getMethod() == Request::METHOD_POST) {
-        } else if ($form->isSubmitted() && $form->isValid()) {
-
-
-            $data = $form->getData();
-
-            // FIXME : IGNORED NOW, REMOVE
-
-            dd($data);
-
-            $credentials = new Credentials();
-            $credentials->setUsernameOrEmail($data['username']);
-            $credentials->setPassword($data['password']);
-
-            $token = null;
-            try {
-                $token = $this->getApiFactory()->getTokenApi()->postCredentialsItem($credentials);
-            } catch (ApiException $e) {
-                $apiResponseData = $this->getApiExceptionData($e);
-                if (
-                    ($apiResponseData)
-                    &&
-                    (isset($apiResponseData['code']))
-                    &&
-                    (Response::HTTP_UNAUTHORIZED == $apiResponseData['code'])
-                ) {
-
-                    $form->addError(new FormError(
-                        $this->trans('form.login.error.unauthorized')
-                    ));
-                    return $this->render('user/login.html.twig', [
-                        'error' => null,
-//                        'error' => [
-//                            'messageKey' => "form.login.error.unauthorized",
-//                            'messageData' => [],
-//                        ],
-                        'form' => $form->createView(),
-                    ]);
-                }
-
-                return $this->renderApiException($e, $request);
-            }
-
-            if (null === $token) {
-                trigger_error("core.error.token.empty");
-            } else {
-                $this->userSession->login('', $data['username'], $token->getToken());
-                $redirect = $session->get("login_redirect", $this->generateUrl('home_html'));
-                $session->remove("login_redirect");
-                $session->remove("register_redirect");
-                return new RedirectResponse($redirect);
-            }
-
         }
+        /////////////////////////////////////////////////////////////////////
 
         return $this->render('user/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
