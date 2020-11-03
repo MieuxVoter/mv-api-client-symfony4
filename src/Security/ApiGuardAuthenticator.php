@@ -1,15 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security;
 
-
-use App\Controller\Has\ApiAccess;
+use App\Controller\Has;
 use App\Entity\User;
-use App\Factory\ApiFactory;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\Credentials;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,34 +17,24 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 
 
+/** @noinspection PhpUnused */
+
+/**
+ * Declared in config/packages/security.yaml
+ *
+ * Class ApiGuardAuthenticator
+ * @package App\Security
+ */
 class ApiGuardAuthenticator extends AbstractGuardAuthenticator
 {
 
-    use ApiAccess;
-//    /** @var ApiFactory */
-//    protected $apiFactory;
-//
-//    /**
-//     * @return ApiFactory
-//     */
-//    public function getApiFactory(): ApiFactory
-//    {
-//        return $this->apiFactory;
-//    }
-//
-//    /**
-//     * @required
-//     * @param ApiFactory $apiFactory
-//     */
-//    public function setApiFactory(ApiFactory $apiFactory): void
-//    {
-//        $this->apiFactory = $apiFactory;
-//    }
+    use TargetPathTrait;
 
-
+    use Has\ApiAccess;
+    use Has\FlashBag;
+    use Has\Translator;
 
     /**
      * Returns a response that directs the user to authenticate.
@@ -67,7 +55,7 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @return Response
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null) : Response
     {
         return new RedirectResponse('/login.html');
     }
@@ -79,10 +67,13 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @return bool
      */
-    public function supports(Request $request)
+    public function supports(Request $request) : bool
     {
-        return 'login_html' === $request->attributes->get('_route') && $request->isMethod('POST');
-//        return true;
+        return (
+            ($request->isMethod('POST'))
+            &&
+            ('login_html' === $request->attributes->get('_route'))
+        );
     }
 
     /**
@@ -128,11 +119,8 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      * @throws AuthenticationException
      *
      */
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider) : ?UserInterface
     {
-
-//        dd($credentials);
-
         $apiCredentials = new Credentials();
         $apiCredentials->setUsernameOrEmail($credentials['username']);
         $apiCredentials->setPassword($credentials['password']);
@@ -141,56 +129,8 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
         try {
             $token = $this->getApiFactory()->getTokenApi()->postCredentialsItem($apiCredentials);
         } catch (ApiException $e) {
-            $apiResponseData = $this->getApiExceptionData($e);
-//            dd($apiResponseData);
-//            array:1 [▼
-//              "error" => array:3 [▼
-//                "code" => 400
-//                "message" => "Bad Request"
-//                "exception" => array:2 [▼
-//                  0 => array:3 [▼
-//                    "message" => "The key "usernameOrEmail" must be provided."
-//                    "class" => "Symfony\Component\HttpKernel\Exception\BadRequestHttpException"
-//                    "trace" => array:13 [▶]
-//                  ]
-//                  1 => array:3 [▼
-//                    "message" => "Neither the property "usernameOrEmail" nor one of the methods "getUsernameOrEmail()", "usernameOrEmail()", "isUsernameOrEmail()", "hasUsernameOrEmail()", "__get ▶"
-//                    "class" => "Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException"
-//                    "trace" => array:15 [▶]
-//                  ]
-//                ]
-//              ]
-//            ]
-
-            if (
-                ($apiResponseData)
-                &&
-                (isset($apiResponseData['code']))
-                &&
-                (Response::HTTP_UNAUTHORIZED == $apiResponseData['code'])
-            ) {
-
-                return null;
-
-//                $form->addError(new FormError(
-//                    $this->trans('form.login.error.unauthorized')
-//                ));
-//                return $this->render('user/login.html.twig', [
-//                    'error' => null,
-////                        'error' => [
-////                            'messageKey' => "form.login.error.unauthorized",
-////                            'messageData' => [],
-////                        ],
-//                    'form' => $form->createView(),
-//                ]);
-            }
-
             return null;
-
-//            return $this->renderApiException($e, $request);
         }
-
-        //$this->userSession->login();
 
         $user = new User();
         $user->setUsername($credentials['username']);
@@ -213,7 +153,7 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @throws AuthenticationException
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user) : bool
     {
         // This method in only called if getUser() returns a User,
         // and in that case we already know the credentials are correct
@@ -232,15 +172,12 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @return Response|null
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception) : ?Response
     {
-        // TODO: add flash msg
-        dump("Authentication Failure");
-        dd($exception);
+        $this->getFlashBag()->add('error', $this->trans("form.login.error.authentication_failure"));
         return new RedirectResponse('/login.html');
     }
 
-    use TargetPathTrait;
 
     /**
      * Called when authentication executed and was successful!
@@ -255,12 +192,10 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @return Response|null
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey) : ?Response
     {
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
         if ($targetPath) {
-//            dump("Authentication Success");
-//            dd($targetPath);
             return new RedirectResponse($targetPath);
         }
         return null;
@@ -280,9 +215,8 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @return bool
      */
-    public function supportsRememberMe()
+    public function supportsRememberMe() : bool
     {
-        // TODO: perhaps support "remember me"?
         return false;
     }
 }

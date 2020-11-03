@@ -98,6 +98,7 @@ form:
     error:
       unauthorized: "Your credentials are invalid."
       unresponsive: "The login server did not respond.  Retry later?"
+      authentication_failure: "The credentials you provided are invalid."
   register:
     username:
       label: "🧘 Username"
