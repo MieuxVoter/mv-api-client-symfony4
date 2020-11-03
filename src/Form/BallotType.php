@@ -29,6 +29,7 @@ class BallotType extends AbstractType
                     'choices' => $choices,
                     'multiple' => false,
                     'expanded' => true,
+                    'data' => ($options['grades'][0])->getUuid(),
 //                    'row_attr' => [
 //                        'class' => 'form-radio-grade',
 //                    ],
