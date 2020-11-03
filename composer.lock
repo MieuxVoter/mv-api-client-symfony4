@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16f54bb653a2a13f76599743b4d9fc18",
+    "content-hash": "cfdfc89388bf72c60e6c658265147cdf",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1823,6 +1823,43 @@
                 "vote"
             ],
             "time": "2020-11-01T18:42:11+00:00"
+        },
+        {
+            "name": "matthewbaggett/clamp",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthewbaggett/php-clamp.git",
+                "reference": "1c43a3a628827756cd0f362703d73ad5644ded7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthewbaggett/php-clamp/zipball/1c43a3a628827756cd0f362703d73ad5644ded7e",
+                "reference": "1c43a3a628827756cd0f362703d73ad5644ded7e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^2.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Clamp.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Baggett",
+                    "email": "matthew@baggett.me"
+                }
+            ],
+            "description": "PHP clamp function to clamp a number between a minimum and a maximum.",
+            "time": "2018-02-07T14:50:03+00:00"
         },
         {
             "name": "monolog/monolog",

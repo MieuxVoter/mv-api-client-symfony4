@@ -102,6 +102,9 @@
     "limaju/limaju-client-lib-php": {
         "version": "dev-master"
     },
+    "matthewbaggett/clamp": {
+        "version": "v1.1"
+    },
     "monolog/monolog": {
         "version": "1.25.5"
     },

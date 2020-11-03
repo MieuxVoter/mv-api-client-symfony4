@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "limaju/limaju-client-lib-php": "*@dev",
+        "matthewbaggett/clamp": "^1.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "shivas/versioning-bundle": "^3.2",
