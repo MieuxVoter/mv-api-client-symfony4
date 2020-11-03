@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Adapter\ApiExceptionAdapter;
 use App\Entity\Poll;
-use App\Factory\ApiFactory;
 use App\Form\PollType;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\GradeCreate;
@@ -17,35 +15,47 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 
+/** @noinspection PhpUnused */
+/**
+ * @Route("/new-poll", name="create_poll")
+ * @Route("/new-poll.html", name="create_poll_html")
+ *
+ * Class CreatePollController
+ * @package App\Controller
+ */
 final class CreatePollController extends AbstractController
 {
+
     use Has\ApiAccess;
+    use Has\Translator;
 
     /**
-     * @Route("/new-poll", name="create_poll")
-     * @Route("/new-poll.html", name="create_poll_html")
-     *
      * @param Request $request
-     * @param TranslatorInterface $translator
      * @return Response
      */
-    public function index(
-        Request $request,
-        TranslatorInterface $translator
-    ): Response
+    public function __invoke(Request $request): Response
     {
         $pollApi = $this->getApiFactory()->getPollApi();
 
+        $sentPoll = $request->get('poll');
+
+        $amountOfProposals = PollType::DEFAULT_AMOUNT_OF_PROPOSALS;
+
         $poll = new Poll();
-        $poll->setScope($request->get('scope', 'unlisted'));
-        $poll->setSubject($request->get('subject', ''));
+        if (null !== $sentPoll && \is_array($sentPoll)) {
+            $poll->setScope($sentPoll['scope'] ?? 'unlisted');
+            $poll->setSubject($sentPoll['subject'] ?? '');
+            $amountOfProposals = $this->sanitizeAmountOfProposals($sentPoll[PollType::OPTION_AMOUNT_OF_PROPOSALS] ?? $amountOfProposals);
+        }
+        $poll->setAmountOfProposals($amountOfProposals);
+
+//        dd($request);
 
         $options = [
             PollType::OPTION_AMOUNT_OF_GRADES => PollType::DEFAULT_AMOUNT_OF_GRADES,
-            PollType::OPTION_AMOUNT_OF_PROPOSALS => PollType::DEFAULT_AMOUNT_OF_PROPOSALS,
+            PollType::OPTION_AMOUNT_OF_PROPOSALS => $amountOfProposals,
         ];
 
         /** @var Form $form */
@@ -56,12 +66,17 @@ final class CreatePollController extends AbstractController
 
         if ($form->getClickedButton() === $form->get('moreProposals')){
             // add more proposals
-            $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] = $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] + 5;
-
+            $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] = $this->sanitizeAmountOfProposals(
+                $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] + 5
+            );
+            $poll->setAmountOfProposals($options[PollType::OPTION_AMOUNT_OF_PROPOSALS]);
+            $request->request->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
+            $request->query->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
+            $request->attributes->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
             // REBUILD THE WHOLE FORM NOOo
             /** @var Form $form */
             $form = $this->createForm(PollType::class, $poll, $options);
-            $form->handleRequest($request);
+//            $form->handleRequest($request);
             //////////////////////////////
 
             $form->clearErrors();
@@ -102,7 +117,7 @@ final class CreatePollController extends AbstractController
                 for ($i=0 ; $i<$amountOfGrades ; $i++) {
                     $gradeCreate = new GradeCreate();
                     $gradeCreate->setLevel($i);
-                    $gradeCreate->setName($translator->trans(
+                    $gradeCreate->setName($this->trans(
                         "${gradingPreset}.grades.${i}", [], 'grades'
                     ));
 
@@ -143,5 +158,14 @@ final class CreatePollController extends AbstractController
         return $this->render('poll/create.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    private function sanitizeAmountOfProposals($amount)
+    {
+        return clamp(
+            PollType::MINIMUM_AMOUNT_OF_PROPOSALS,
+            PollType::MAXIMUM_AMOUNT_OF_PROPOSALS,
+            (int) $amount
+        );
     }
 }

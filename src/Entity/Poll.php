@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
+use App\Form\PollType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 class Poll
 {
     /**
-     * The order matters.
+     * The order matters ; they will be displayed in that order.
      * These must have definitions in the translations' `grades` domain.
+     * Only latin letters, numbers and underscores.  NO DOTS.
      */
     const GRADING_PRESETS = [
         'quality_2',
@@ -60,6 +62,12 @@ class Poll
      * @var string[]
      */
     protected $proposals = [];
+
+    /**
+     * Hidden form input, to help processing a dynamic amount of proposals.
+     * @var int
+     */
+    protected $amount_of_proposals = PollType::DEFAULT_AMOUNT_OF_PROPOSALS;
 
     ///
     ///
@@ -150,6 +158,22 @@ class Poll
     public function setGradingPreset(string $grading_preset): void
     {
         $this->grading_preset = $grading_preset;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmountOfProposals(): int
+    {
+        return $this->amount_of_proposals;
+    }
+
+    /**
+     * @param int $amount_of_proposals
+     */
+    public function setAmountOfProposals(int $amount_of_proposals): void
+    {
+        $this->amount_of_proposals = $amount_of_proposals;
     }
 
 }

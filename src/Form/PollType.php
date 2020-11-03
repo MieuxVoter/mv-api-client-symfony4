@@ -5,36 +5,28 @@ namespace App\Form;
 use App\Entity\Poll;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
-//use Symfony\Contracts\Translation\TranslatorInterface;
-
-
 
 class PollType extends AbstractType
 {
+
     const OPTION_AMOUNT_OF_PROPOSALS = 'amount_of_proposals';
     const OPTION_AMOUNT_OF_GRADES = 'amount_of_grades';
 
+    const MINIMUM_AMOUNT_OF_PROPOSALS = 2;
+    const MAXIMUM_AMOUNT_OF_PROPOSALS = 250;
     const DEFAULT_AMOUNT_OF_PROPOSALS = 5;
     const DEFAULT_AMOUNT_OF_GRADES = 7;
 
-    // TBD: I prefer keeping the "missing translations" clean
-//    /** @var TranslatorInterface */
-//    protected $translator;
-//
-//    /**
-//     * PollType constructor.
-//     * @param TranslatorInterface $translator
-//     */
-//    public function __construct(TranslatorInterface $translator)
-//    {
-//        $this->translator = $translator;
-//    }
+    ///
+    ///
+
     /**
      * @var Security
      */
@@ -45,6 +37,8 @@ class PollType extends AbstractType
         $this->security = $security;
     }
 
+    ///
+    ///
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -56,12 +50,17 @@ class PollType extends AbstractType
         $presets = [];
         foreach (Poll::GRADING_PRESETS as $preset) {
             $presetLabel = "${preset}.name";
-//            $presetLabel = $this->translator->trans("grading.${preset}.name");
 
             $presets[$presetLabel] = $preset;
         }
 
         $isLoggedIn = (null !== $this->security->getUser());
+
+        $builder
+            ->add(self::OPTION_AMOUNT_OF_PROPOSALS, HiddenType::class, [
+                'data' => $options[self::OPTION_AMOUNT_OF_PROPOSALS],
+//                'mapped' => false,
+            ]);
 
         $builder
             ->add('subject', TextType::class, [
