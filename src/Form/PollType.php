@@ -59,7 +59,6 @@ class PollType extends AbstractType
         $builder
             ->add(self::OPTION_AMOUNT_OF_PROPOSALS, HiddenType::class, [
                 'data' => $options[self::OPTION_AMOUNT_OF_PROPOSALS],
-//                'mapped' => false,
             ]);
 
         $builder

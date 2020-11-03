@@ -51,8 +51,6 @@ final class CreatePollController extends AbstractController
         }
         $poll->setAmountOfProposals($amountOfProposals);
 
-//        dd($request);
-
         $options = [
             PollType::OPTION_AMOUNT_OF_GRADES => PollType::DEFAULT_AMOUNT_OF_GRADES,
             PollType::OPTION_AMOUNT_OF_PROPOSALS => $amountOfProposals,
@@ -70,9 +68,9 @@ final class CreatePollController extends AbstractController
                 $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] + 5
             );
             $poll->setAmountOfProposals($options[PollType::OPTION_AMOUNT_OF_PROPOSALS]);
-            $request->request->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
-            $request->query->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
-            $request->attributes->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
+//            $request->request->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
+//            $request->query->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
+//            $request->attributes->remove(PollType::OPTION_AMOUNT_OF_PROPOSALS);
             // REBUILD THE WHOLE FORM NOOo
             /** @var Form $form */
             $form = $this->createForm(PollType::class, $poll, $options);
