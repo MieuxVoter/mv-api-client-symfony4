@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Factory\ApiFactory;
 use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +26,7 @@ class ReadResultController extends AbstractController
 {
     use Has\ApiAccess;
 
-    public function __invoke(string $resultId)
+    public function __invoke(string $resultId, Request $request)
     {
         $pollId = $resultId; // TBD: Result id? (could be kept secret?)
         $pollApi = $this->getApiFactory()->getPollApi();
@@ -37,7 +38,7 @@ class ReadResultController extends AbstractController
             $poll = $pollApi->getPollItem($pollId);
             $result = $resultApi->getForPollResultItem($pollId);
         } catch (ApiException $e) {
-            return $this->renderApiException($e);
+            return $this->renderApiException($e, $request);
         }
 
         $grades = [];
