@@ -17,6 +17,12 @@ use MjOpenApi\Configuration;
 use Symfony\Component\Security\Core\Security;
 
 
+/**
+ * Helper Service to configure communication with MV OpenAPI.
+ *
+ * Class ApiFactory
+ * @package App\Factory
+ */
 class ApiFactory
 {
     /** @var UserSession */
@@ -31,22 +37,36 @@ class ApiFactory
     /**
      * ApiFactory constructor.
      */
-    public function __construct(Security $security)
+    public function __construct()
     {
-        // Configure API key authorization: apiKey
         $this->config = Configuration::getDefaultConfiguration();
-//        $this->config->setApiKey('Authorization', 'YOUR_API_KEY');
-        // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-        // $this->config->setApiKeyPrefix('Authorization', 'Bearer');
-        $this->config->setHost("http://localhost:8001");
+        $this->config->setHost("http://localhost:8000");
+    }
 
+    /**
+     * @required → Called by the Dependency Injection Container
+     * @param Security $security
+     */
+    public function setSecurity(Security $security): void
+    {
         $this->security = $security;
+    }
 
-        // Cannot do that here, Security->getUser returns null ; see getClient
-//        $user = $security->getUser();
-//        if ($user instanceof User) {
-//            $this->setApiToken($user->getApiToken());
-//        }
+    /**
+     * @required → Called by the Dependency Injection Container
+     * @param UserSession $session
+     */
+    public function setSession(UserSession $session): void
+    {
+        $this->session = $session;
+    }
+
+    /**
+     * @return UserSession The service injected by the DIC
+     */
+    protected function getSession(): UserSession
+    {
+        return $this->session;
     }
 
     public function setApiToken(string $apiToken)
@@ -56,33 +76,13 @@ class ApiFactory
 //        $this->config->setAccessToken($token);
     }
 
-    /**
-     * @return UserSession
-     */
-    public function getSession(): UserSession
-    {
-        return $this->session;
-    }
-
-    /**
-     * @required
-     * @param UserSession $session
-     */
-    public function setSession(UserSession $session): void
-    {
-        $this->session = $session;
-    }
-
     protected function getClient() : ClientInterface
     {
-
         $user = $this->security->getUser();
         if ($user instanceof User) {
             $this->setApiToken($user->getApiToken());
         }
 
-        // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-        // This is optional, `GuzzleHttp\Client` will be used as default.
         return new \GuzzleHttp\Client();
     }
 
