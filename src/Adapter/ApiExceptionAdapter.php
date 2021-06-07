@@ -4,6 +4,7 @@
 namespace App\Adapter;
 
 
+use App\Controller\Has\Translator;
 use MjOpenApi\ApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
@@ -16,6 +17,8 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 class ApiExceptionAdapter
 {
+
+    use Translator;
 
     /** @var ContainerInterface */
     protected $container;
@@ -74,6 +77,14 @@ class ApiExceptionAdapter
                         }
 
                     }
+                    break;
+            }
+        }
+
+        if (isset($data['code'])) {
+            switch ($data['code']) {
+                case Response::HTTP_UNAUTHORIZED:
+                    $this->addFlash("error", $this->trans("flash.user.not_authenticated"));
                     break;
             }
         }
@@ -159,11 +170,15 @@ class ApiExceptionAdapter
     }
 
 
-
+    /**
+     * @deprecated since it adds the flash message AFTER the response is computed
+     *
+     * @param ApiException $exception
+     * @param Response $response
+     * @return Response
+     */
     public function respond(ApiException $exception, Response $response)
     {
-//        dump($exception);
-//        dd($response);
         $message = $this->toString($exception);
         $this->addFlash("error", $message);
         return $response;
@@ -180,7 +195,7 @@ class ApiExceptionAdapter
      */
     protected function addFlash(string $type, $message)
     {
-        if (!$this->container->has('session')) {
+        if ( ! $this->container->has('session')) {
             throw new \LogicException('You can not use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".');
         }
 
