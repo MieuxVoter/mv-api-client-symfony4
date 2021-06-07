@@ -52,20 +52,19 @@ final class LoginController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        // redirection shenanigans //////////////////////////////////////////
+        $redirect = $request->get('redirect');
         if ($request->getMethod() == Request::METHOD_GET) {
-            $redirect = $request->get('redirect');
             if ( ! empty($redirect)) {
                 $session->set("login_redirect", $redirect);
                 $session->set("register_redirect", $redirect);
                 $this->saveTargetPath($session, 'main', $redirect);
             }
         }
-        /////////////////////////////////////////////////////////////////////
 
         return $this->render('user/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'form' => $form->createView(),
+            'redirect' => $redirect,
         ]);
     }
 }

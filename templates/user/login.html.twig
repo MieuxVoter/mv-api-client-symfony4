@@ -31,7 +31,7 @@
 
             <p>{{ 'page.login.may_also_register' | trans }}</p>
 
-            <a href="{{ path('register') }}" class="btn btn-primary">
+            <a href="{% if redirect %}{{ path('register', {'redirect': redirect}) }}{% else %}{{ path('register') }}{% endif %}" class="btn btn-primary">
                 {{ 'action.register.label' | trans }}
             </a>
 
