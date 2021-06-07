@@ -42,7 +42,7 @@ class CreateBallotController extends AbstractController
             $pollRead = $apiInstance->getPollItem($pollId);
         } catch (ApiException $e) {
             //$this->addStrike(Strike::WARNING, $e, $request?);
-            return $this->renderApiException($e);
+            return $this->renderApiException($e, $request);
         }
 
         $ballot = new Ballot();
@@ -82,12 +82,12 @@ class CreateBallotController extends AbstractController
                         $ballotCreate
                     );
                 } catch (ApiException $e) {
-                    //dd($e);
+                    $this->getApiExceptionAdapter()->setFormErrorsIfAny($form, $e);
                     $showFormResponse = $this->render('ballot/create.html.twig', [
                         'poll' => $pollRead,
                         'form' => $form->createView(),
                     ]);
-                    return $this->getApiExceptionAdapter()->respond($e, $showFormResponse);
+                    return $showFormResponse;
                 }
 
                 $ballotsCreated[] = $ballotResponse;
