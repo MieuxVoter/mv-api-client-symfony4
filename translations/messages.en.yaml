@@ -153,3 +153,4 @@ form:
 flash:
   user:
     registered: Registration was successful!  Welcome!
+    not_authenticated: You are not authenticated!  Did you disallow authentication cookies?

@@ -13,7 +13,7 @@
             <div class="flex-row mr-2">
                 <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
                     <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
-                    {% if 1 == proposalResult.rank -%}
+                    {%- if 1 == proposalResult.rank -%}
                         &#129351;
                     {%- elseif 2 == proposalResult.rank -%}
                         &#129352;
@@ -21,7 +21,7 @@
                         &#129353;
                     {%- else -%}
                         &#127941;
-                    {%- endif %}
+                    {%- endif -%}
                     </span>
                     {{ proposalResult.proposal.title }}
                 </h3>
@@ -42,7 +42,7 @@
                 {{ 'page.result.summary.title' | trans }}
             </h2>
             <p>
-                A total of ? judgments were cast by ? participants.
+                A total of ? judgments were cast by ? participants.  (todo)
             </p>
         </section>
 
