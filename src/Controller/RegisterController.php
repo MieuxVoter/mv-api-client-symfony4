@@ -9,9 +9,7 @@ use App\Form\RegisterType;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\Credentials;
 use MjOpenApi\Model\UserCreate;
-use MsgPhp\User\Command\CreateUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -60,14 +58,12 @@ final class RegisterController extends AbstractController
             $data = $form->getData();
             $username = $data['username'];
             $email = $data['email'];
-            //$password = $data['password']; // encrypted
             $password = $request->get('password');
             $passwordConfirm = $request->get('password_confirm');
-//            $password = $request->get('password', ['plain' => null]);
-//            if ( ! isset($password['plain'])) {
-//                $form->addError(new FormError($this->trans('form.register.error.password_shape')));
-//                return $this->renderForm($form);
-//            }
+            if ($password !== $passwordConfirm) {
+                $form->addError(new FormError($this->trans('form.register.error.passwords_mismatch')));
+                return $this->renderForm($form);
+            }
             $passwordPlain = $password;
 
             $userCreate = new UserCreate();
@@ -79,7 +75,6 @@ final class RegisterController extends AbstractController
             try {
                 $userRead = $userApi->postUserCollection($userCreate);
             } catch (ApiException $e) {
-//                return $this->renderApiException($e);
                 $this->getApiExceptionAdapter()->setFormErrorsIfAny($form, $e);
 
                 return $this->getApiExceptionAdapter()->respond(
@@ -141,6 +136,7 @@ final class RegisterController extends AbstractController
             $redirect = $session->get('register_redirect', $this->generateUrl('home_html'));
             $session->remove("login_redirect");
             $session->remove("register_redirect");
+
             return new RedirectResponse($redirect);
         }
 

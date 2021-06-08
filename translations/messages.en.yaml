@@ -100,6 +100,8 @@ form:
       unresponsive: "The login server did not respond.  Retry later?"
       authentication_failure: "The credentials you provided are invalid."
   register:
+    error:
+      passwords_mismatch: "Password confirmation failed because the passwords were not the same.  Try again?"
     username:
       label: "🧘 Username"
       placeholder: "Concerned Citizen"
