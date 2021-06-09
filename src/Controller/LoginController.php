@@ -48,7 +48,7 @@ final class LoginController extends AbstractController
     ): Response {
 
         $form = $formFactory->createNamed('', LoginType::class, [
-            'username' => $authenticationUtils->getLastUsername(),
+            'username' => $authenticationUtils->getLastUsername(), // TBD ; probably not a good idea here
         ]);
         $form->handleRequest($request);
 

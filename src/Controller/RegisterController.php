@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterType;
+use App\Security\ApiGuardAuthenticator;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\Credentials;
 use MjOpenApi\Model\UserCreate;
@@ -20,6 +21,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /** @noinspection PhpUnused */
 
@@ -41,7 +44,9 @@ final class RegisterController extends AbstractController
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
         SessionInterface $session,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
+        GuardAuthenticatorHandler $guard,
+        ApiGuardAuthenticator $authenticator
     ): Response {
         $redirect = $request->get('redirect', null);
         if (null !== $redirect) {
@@ -105,15 +110,10 @@ final class RegisterController extends AbstractController
 //                return new RedirectResponse($this->generateUrl('login_html')); // Proposal C
             }
 
-            ///
-            ///
-
             // All's well!  Save the JWT in the session.
-
             $user = new User();
             $user->setUsername($username);
             $user->setApiToken($token->getToken());
-
 
             $this->userSession->login(
                 $userRead->getUuid(),
@@ -122,14 +122,19 @@ final class RegisterController extends AbstractController
             );
             $this->getApiFactory()->setApiToken($token->getToken());
 
+            // Authenticate with Symfony
+            $t = new UsernamePasswordToken($user, null, 'mvapi_users', $user->getRoles());
+            $guard->authenticateWithToken($t, $request, 'mvapi_users');
+
             // Wipe the memory…
             // libsodium installation hassle
             // → not worth it?  (perhaps later?)
 //            memzero($password);
 //            memzero($passwordPlain);
-            $password = "Elleavaitprisceplidanssonâgeenfantin";
-            $passwordPlain = "Devenirdansmachambreunpeuchaquematin";
-            $token = null;
+            $username = uniqid();
+            $password = uniqid();
+            $passwordPlain = uniqid();
+            $token = uniqid();
 
             $flashBag->add('success', 'flash.user.registered');
 
@@ -137,6 +142,7 @@ final class RegisterController extends AbstractController
             $session->remove("login_redirect");
             $session->remove("register_redirect");
 
+//            return $guard->authenticateUserAndHandleSuccess($user, $request, $authenticator, 'mvapi_users');
             return new RedirectResponse($redirect);
         }
 

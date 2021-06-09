@@ -46,8 +46,9 @@ page:
     rationale: |
       In order to create private polls and handle their invitations, you need an account.
       Otherwise, anyone would be able to access them.
-    may_also_register: |
-      No account?  Not a problem.  We have room.
+    register_title: No Account?
+    register_disclaimer: |
+      Read the Terms of Service, and if you consent, then:
   error:
     api_exception:
       title: Ooops!  An error occurred with the API.
@@ -67,6 +68,9 @@ action:
     title: Go back to the homepage
   register:
     label: Sign up!
+  quick_register:
+    label: Sign up in One Click!
+    title: By signing up you accept our Terms of Service
   login:
     label: Login
   forgot_password:

@@ -29,14 +29,23 @@
 
         <div class="text-center">
 
-            <p>{{ 'page.login.may_also_register' | trans }}</p>
+            <h2>{{ 'page.login.register_title' | trans }}</h2>
+            <p>{{ 'page.login.register_disclaimer' | trans }}</p>
 
             <a href="{% if redirect %}{{ path('register', {'redirect': redirect}) }}{% else %}{{ path('register') }}{% endif %}" class="btn btn-primary">
                 {{ 'action.register.label' | trans }}
             </a>
 
-            <br><br><br><br>
-            {% include "partials/spinner.html.twig" only %}
+            <a
+                    href="{% if redirect %}{{ path('quick_register', {'redirect': redirect}) }}{% else %}{{ path('quick_register') }}{% endif %}" class="btn btn-primary"
+                    title="{{ 'action.quick_register.title' | trans }}"
+            >
+                {{ 'action.quick_register.label' | trans }}
+            </a>
+
+{#            <br><br><br><br>#}
+
+{#            {% include "partials/spinner.html.twig" only %}#}
 
         </div>
 {% endblock %}

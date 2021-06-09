@@ -1,10 +1,6 @@
 <?php
 
 
-/// Cul de Sac?
-/// Disabled.
-
-
 namespace App\Security;
 
 
@@ -83,14 +79,14 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof User) {
+        // Return a User object after making sure its data is "fresh".
+        // Or throw a UsernameNotFoundException if the user no longer exists.
+
+        if ( ! $user instanceof User) {
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
-        // Return a User object after making sure its data is "fresh".
-        // Or throw a UsernameNotFoundException if the user no longer exists.
         return $user;
-//        throw new \Exception('TODO: fill in refreshUser() inside '.__FILE__);
     }
 
     /**
