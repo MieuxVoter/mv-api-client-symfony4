@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +35,7 @@ final class ReadPollController extends AbstractController
 {
     use Has\ApiAccess;
 
-    public function __invoke(string $pollId) : Response
+    public function __invoke(string $pollId, Request $request) : Response
     {
         $pollApi = $this->getApiFactory()->getPollApi();
 
@@ -42,10 +43,10 @@ final class ReadPollController extends AbstractController
         try {
             $pollRead = $pollApi->getPollItem($pollId);
         } catch (ApiException $e) {
-            if (Response::HTTP_NOT_FOUND == $e->getCode()) {
+            if (Response::HTTP_NOT_FOUND === $e->getCode()) {
                 throw new NotFoundHttpException("No poll found.");
             }
-            return $this->renderApiException($e);
+            return $this->renderApiException($e, $request);
         }
 
         return $this->render('poll/read.html.twig', [

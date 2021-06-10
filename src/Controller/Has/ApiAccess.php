@@ -7,6 +7,7 @@ namespace App\Controller\Has;
 use App\Adapter\ApiExceptionAdapter;
 use App\Factory\ApiFactory;
 use MjOpenApi\ApiException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 trait ApiAccess
 {
     use UserSession;
+    use FlashBag;
+    use Translator;
 
     /** @var ApiFactory $api_factory */
     protected $api_factory;
@@ -67,6 +70,7 @@ trait ApiAccess
      * Sugar to handle api exceptions in controllers.
      * NO.
      * We need a way to get multiple Services, this can't be in this Trait.
+     * Perhaps it's okay to load the services we need, on second thought.
      *
      * @param ApiException $exception
      * @return Response
@@ -75,8 +79,11 @@ trait ApiAccess
     {
         $data = $this->getApiExceptionData($exception);
 
-        if (isset($data['code']) && (401 == $data['code'])) {
+        if (isset($data['code']) && (Response::HTTP_UNAUTHORIZED == $data['code'])) {
             $this->userSession->logout();
+            $this->getFlashBag()->add('warning', $this->trans("flash.error.requires_authentication"));
+            // todo: redirect to /gate.html
+            return new RedirectResponse("/login.html?redirect=".urlencode($request->getRequestUri()));
         }
 
         $apiResponse = $this->getApiExceptionAdapter()->toHtml($exception);
