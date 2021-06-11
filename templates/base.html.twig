@@ -37,10 +37,9 @@
 {% block body %}
 
 {% block header %}
-    <header>
-        <div class="row pl-1 pr-1 align-items-center">
-
-            <nav class="flex-grow-1">
+    <header class="navbar bg-primary">
+        <section class="navbar-section">
+            <nav>
                 <a href="{{ path('home') }}"
                     class="btn btn-outline-secondary"
                     aria-label="{{ 'action.home.label' | trans }}"
@@ -48,8 +47,9 @@
                     &#127968;
                 </a>
             </nav>
-
-            <nav class="flex-grow-1 text-right">
+        </section>
+        <section class="navbar-section">
+            <nav>
 {% if app.user %}
                 <span>
                     {{ 'nav.auth.logged_in_as.label' | trans({ 'user': app.user.withoutToken }) }}
@@ -65,8 +65,7 @@
                 </a>
 {% endif %}{# app.user #}
             </nav>
-
-        </div>
+        </section>
     </header>
 {% endblock %}{# header #}
 
@@ -75,7 +74,7 @@
 {% endblock %}
 
 {% block main_container_wrapper %}
-    <div class="content container">
+    <div class="content container grid-lg">
 {% block main_container %}{% endblock %}
     </div>
 {% endblock %}{# main_container_wrapper #}
@@ -84,12 +83,12 @@
 
 {% block footer %}
     <footer>
-        <div class="row justify-content-evenly align-items-center">
-            <div class="flex-row text-center">
+        <div class="columns">
+            <div class="column col-6 text-center justify-content-evenly">
                 <a href="https://mieuxvoter.fr">MieuxVoter</a>
                 &copy; 2020
-                </div>
-            <div class="flex-row text-center">
+            </div>
+            <div class="column col-6 text-center justify-content-evenly">
                 <span class="version" title="Version number of the software. Come back here later for a link to the source code!">
                     v{{ shivas_app_version }} (beta)
                 </span>

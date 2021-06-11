@@ -1,30 +1,21 @@
-// customize some Bootstrap variables
-
-// Our content is small, let's adapt.
-$container-max-widths: (
-        sm: 540px,
-        md: 720px,
-        lg: 940px,
-        xl: 1000px
-);
-
-$primary: #537b65;
-$link-color: #e6d79c;
-$body-color: #e1ded2;
-$body-bg: #25250f;
+// Main Entrypoint.
 
 $spacer: 2.618rem;
-$headings-margin-bottom: $spacer / 1.1 !default;
+//$headings-margin-bottom: $spacer / 1.1 !default;
 
-// Modded Darkly
+// See _variables.scss for the available variables
+// We may import it as well for code completion convenience,
+// but we did not mod it and therefore do not need it.
 @import "_variables";
+
+// the ~ allows referencing things in node_modules
+// We're using Spectre.css : https://picturepan2.github.io/spectre/
+//@import "~bootstrap/scss/bootstrap";
+@import "~spectre.css";
 
 // Local imports
 @import "spinner";
 
-
-// the ~ allows you to reference things in node_modules
-@import "~bootstrap/scss/bootstrap";
 
 html, body {
     height: 100%;
@@ -39,21 +30,26 @@ body {
     }
 
     & > footer {
-      flex-shrink: 0;
-      background-color: lighten($body-bg, 10%);
+      //flex-shrink: 0;
+      color: lighten($body-bg, 10%);
+      background-color: lighten($body-font-color, 10%);
       padding: 2em 1em;
-    }
-}
 
-body > .content.container {
-    flex: 1 0 auto;
+      & a {
+        color: $body-bg !important;
+      }
+    }
+
+    & > .content.container {
+      flex: 1 0 auto;
+    }
 }
 
 ///
 ///
 
 hr {
-  border-bottom-color: $secondary;
+  border-bottom-color: $secondary-color;
   border-bottom-width: 2px;
   border-bottom-style: solid;
 }
@@ -65,20 +61,53 @@ label {
 ///
 ///
 
+.alert {
+  @extend .toast;
+}
+
 .alert-error {
-    @extend .alert-danger;
+  @extend .toast-error;
 }
 
 .line {
-    display: inline-block;
+  display: inline-block;
 }
 
 .justify-content-evenly {
   justify-content: space-evenly;
 }
 
+.text-bigger {
+  font-size: $font-size * 1.618;
+}
+
+.text-much_bigger {
+  font-size: $font-size * 1.618 * 1.618;
+}
+
+.text-gigantic {
+  font-size: $font-size * 1.618 * 1.618 * 1.618;
+}
+
+.btn.btn-xlg {
+  font-size: 1.1rem;
+  height: 3rem;
+  padding: .35rem .6rem;
+}
+
+.btn.btn-action.btn-xlg {
+  width: 3rem;
+}
+
 ///
 ///
+
+$hidden-checkbox-offset: 30px;
+
+.form-radio-grade-check > label:first-child {
+  font-size: $font-size-lg * 1.618;
+  cursor: default;
+}
 
 .form-radio-grade {
 
@@ -86,32 +115,44 @@ label {
   flex-wrap: wrap;
   align-items: stretch;
 
-  .form-check {
+  margin-bottom: 2rem;
+
+  .choice-widget-element {
+  //.form-radio-grade-check {
 
     flex-grow: 1;
-    margin-bottom: 1em;
 
     input[type=radio] {
+
+      display: inline;
+      position: absolute;
 
       // Keep display for keyboard accessibility, use opacity instead
       //display: none;
       opacity: 0;
 
-      & + label.form-check-label {
+      //background-color: #f39;
+
+      & + label {
         display: inline-block;
         padding: $spacer/3 $spacer/4;
-        border: 1px solid $secondary;
+        padding-bottom: 0;
+        padding-top: $hidden-checkbox-offset;
+        border: 1px solid $secondary-color;
         width: 100%;
         height: 100%;
         //line-height: 100%;
         //vertical-align: middle;
         text-align: center;
+        overflow-wrap: break-word;
         user-select: none;
+
+        margin-bottom: 2em;
       }
       &:checked + label {
-        border: 1px solid $primary;
-        background-color: darken($primary, 5%);
-        //color: black;
+        border: 1px solid $primary-color;
+        background-color: darken($primary-color, 0%);
+        color: $secondary-color;
       }
       &:focus + label {
         border: 1px dotted white;

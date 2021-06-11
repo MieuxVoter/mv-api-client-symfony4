@@ -30,9 +30,9 @@ class BallotType extends AbstractType
                     'multiple' => false,
                     'expanded' => true,
                     'data' => ($options['grades'][0])->getUuid(),
-//                    'row_attr' => [
-//                        'class' => 'form-radio-grade',
-//                    ],
+                    'row_attr' => [
+                        'class' => 'form-radio-grade-check',
+                    ],
                     'attr' => [
                         'class' => 'form-radio-grade',
                     ],
@@ -45,6 +45,9 @@ class BallotType extends AbstractType
 
         $builder->add('save',SubmitType::class, [
             'label' => 'button.submit_ballot',
+            'attr' => [
+                'class' => 'btn btn-xlg btn-primary float-right',
+            ],
         ]);
     }
 

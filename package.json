@@ -1,12 +1,12 @@
 {
   "devDependencies": {
     "@symfony/webpack-encore": "^0.31.0",
-    "bootstrap": "^4.5.3",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.0",
     "webpack-notifier": "^1.6.0"
   },
   "dependencies": {
-    "encore": "^0.0.30-beta"
+    "encore": "^0.0.30-beta",
+    "spectre.css": "^0.5.9"
   }
 }

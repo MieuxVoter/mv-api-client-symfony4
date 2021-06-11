@@ -8,14 +8,28 @@
 
 {% if polls %}
 
-    <div class="list-group">
+    <section>
 {% for poll in polls %}
-        {# also supports "active" and "disabled" #}
-        <a href="{{ path('read_poll_html', {'pollId':poll.uuid}) }}" class="list-group-item list-group-item-action">
-            {{ poll.subject }}
+
+        <a href="{{ path('read_poll_html', {'pollId':poll.uuid}) }}" class="tile">
+            <div class="tile-icon text-bold text-much_bigger">
+                ⚖
+            </div>
+            <div class="tile-content">
+                <p class="tile-title">
+                    {{ poll.subject }}
+                </p>
+                <p class="tile-subtitle">
+                    ? proposals, ? judges, will close on ?  (todo)
+                </p>
+            </div>
+{#            <div class="tile-action">#}
+{#                <button class="btn btn-primary">Participate</button>#}
+{#            </div>#}
         </a>
+
 {% endfor %}
-    </div>
+    </section>
 
 {% else %}
     <p>

@@ -1,5 +1,9 @@
-$spinner-size: 128px;
-$period: 0.9s;
+
+@import "_variables";
+
+$spinner-color: $body-font-color !default;
+$spinner-size: 128px !default;
+$spinner-period: 0.9s !default;
 
 
 .spinner-container {
@@ -17,26 +21,29 @@ $period: 0.9s;
     top: calc(50% - #{$spinner-size / 2});
     left: calc(50% - #{$spinner-size / 2});
 
-    //background: #f39;
+    color: $spinner-color;
     text-shadow: rgba(226, 226, 0, 0.42) 0 0 35px;
 
-    -webkit-animation:spin $period ease-out infinite;
-    -moz-animation:spin $period ease-out infinite;
-    animation:spin $period ease-out infinite;
+    -webkit-animation:spin $spinner-period ease-out infinite;
+    -moz-animation:spin $spinner-period ease-out infinite;
+    animation:spin $spinner-period ease-out infinite;
   }
 
   .spinner1 {
-    color: darken($body-color, 10%);
+    color: darken($spinner-color, 10%);
   }
   .spinner2 {
-    color: darken($body-color, 5%);
-    animation-delay: $period / 3;
+    color: darken($spinner-color, 5%);
+    animation-delay: $spinner-period / 3;
   }
   .spinner3 {
-    animation-delay: 2 * $period / 3;
+    animation-delay: 2 * $spinner-period / 3;
   }
 }
 
+@-o-keyframes spin {
+  100% { -o-transform: rotate(-360deg); }
+}
 @-moz-keyframes spin {
   100% { -moz-transform: rotate(-360deg); }
 }
