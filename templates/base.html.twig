@@ -75,7 +75,7 @@
 {% endblock %}
 
 {% block main_container_wrapper %}
-    <div class="content container grid-lg">
+    <div class="content main container grid-lg {% block main_container_class %}{% endblock %}">
 {% block main_container %}{% endblock %}
     </div>
 {% endblock %}{# main_container_wrapper #}

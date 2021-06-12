@@ -5,6 +5,8 @@
 {# Disable global flash messaages, we're adding our own #}
 {% block flash_messages %}{% endblock %}
 
+{% block main_container_class %}breathe-top{% endblock %}
+
 {% block main_container %}
 
 {% set urlToResults = url('read_result_html', {'resultId': poll.uuid}) %}
@@ -12,46 +14,31 @@
 
 
 {% include "partials/flash_messages.html.twig" only %}
-
-    <h3>
+    <h2>
+        <span class="unicon unicon-success">✔</span>
         {{ 'page.ballot.aftermath.success' | trans }}
-    </h3>
-
-    <div class="row">
-        <div class="flex-row">
-            <a href="{{ urlToResults }}" class="btn btn-primary">
-                {{ 'button.view_results' | trans }}
-            </a>
-        </div>
-        <div class="flex-row">
-            <label for="results_link" class="form-label">&nbsp;</label>
-        </div>
-        <div class="flex-row flex-grow-1">
-            <input type="text" class="form-control" id="results_link" value="{{ urlToResults }}" name="results_link">
-        </div>
-    </div>
+    </h2>
 
     <br>
 
-    <div class="row">
-        <div class="flex-row">
-            <a href="{{ urlToPoll }}" class="btn btn-primary">
+    <nav>
+
+        <div class="input-group with-aligned-buttons">
+            <a href="{{ urlToResults }}" class="btn btn-primary btn-lg input-group-btn">
+                {{ 'button.view_results' | trans }}
+            </a>
+            <input type="text" class="input-lg form-input form-control ml-2 monospace" id="results_link" value="{{ urlToResults }}" name="results_link">
+        </div>
+
+        <br>
+
+        <div class="input-group with-aligned-buttons">
+            <a href="{{ urlToPoll }}" class="btn btn-lg btn-primary input-group-btn">
                 {{ 'button.back_to_poll' | trans }}
             </a>
+            <input type="text" class="input-lg form-input form-control ml-2 monospace" id="poll_link" value="{{ urlToPoll }}" name="poll_link">
         </div>
-        <div class="flex-row">
-            <label for="poll_link" class="form-label">&nbsp;</label>
-        </div>
-        <div class="flex-row flex-grow-1">
-            <input type="text" class="form-control" id="poll_link" value="{{ urlToPoll }}" name="poll_link">
-        </div>
-    </div>
 
-
-{#        #}
-
-{#        <br>#}
-
-
+    </nav>
 
 {% endblock %}

@@ -7,6 +7,7 @@ $spacer: 2.618rem;
 // We may import it as well for code completion convenience,
 // but we did not mod it and therefore do not need it.
 @import "_variables";
+@import "unicon";
 
 // the ~ allows referencing things in node_modules
 // We're using Spectre.css : https://picturepan2.github.io/spectre/
@@ -43,6 +44,11 @@ body {
     & > .content.container {
       flex: 1 0 auto;
     }
+
+}
+
+.main.container.breathe-top {
+  padding-top: 2rem;
 }
 
 ///
@@ -77,6 +83,10 @@ label {
   justify-content: space-evenly;
 }
 
+.with-aligned-buttons a.btn {
+  min-width: 15%;
+}
+
 .text-bigger {
   font-size: $font-size * 1.618;
 }
@@ -87,6 +97,10 @@ label {
 
 .text-gigantic {
   font-size: $font-size * 1.618 * 1.618 * 1.618;
+}
+
+.monospace {
+  font-family: monospace;
 }
 
 .btn.btn-xlg {
