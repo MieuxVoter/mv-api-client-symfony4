@@ -27,6 +27,7 @@ A client for MieuxVoter's OpenApi specifications focused on accessibility.
 - [ ] At least *some* Resilience
 - [ ] Follow another user
 - [ ] Suggest opinion from followed users
+- [ ] Handle 404 errors
 
 ## Work in Progress
 
@@ -50,8 +51,6 @@ This project exposes the need for API keys in addition to the JWT.
 
 
 ## Build assets (CSS)
-
-
 
     yarn install
     npx encore

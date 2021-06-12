@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Factory\ApiFactory;
+use Miprem\Poll;
+use Miprem\Renderer\OpenGraphRenderer;
+use Miprem\Renderer\SvgRenderer;
+use Miprem\Style;
+use Miprem\SvgConfig;
 use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 
 /**
@@ -46,10 +48,52 @@ class ReadResultController extends AbstractController
             $grades['/grades/'.$grade->getUuid()] = $grade;
         }
 
+        /**
+         * @var array<array<int>>
+         */
+        $tally = [];
+        foreach ($result->getLeaderboard() as $proposalResultRead) {
+            $proposalTally = [];
+            foreach ($proposalResultRead->getGradesResults() as $gradeResult) {
+                $proposalTally[] = $gradeResult->getTally();
+            }
+            $tally[] = array_reverse($proposalTally);
+        }
+
+        $mipremPoll = Poll::fromArray([
+//            'default_grades' => [
+//                ['label' => 'Reject'],
+//                ['label' => 'Insufficient'],
+//                ['label' => 'Poor'],
+//                ['label' => 'Fair'],
+//                ['label' => 'Good'],
+//                ['label' => 'Very good'],
+//                ['label' => 'Excellent'],
+//            ],
+            'tally' => $tally,
+        ]);
+
+        $svg_config = new SvgConfig();
+        $svg_style = new Style(<<<SVG_CSS
+/*
+svg {
+  border: 3px dashed chartreuse;
+}
+*/
+SVG_CSS
+        );
+        $svgRenderer = new SvgRenderer($svg_config, $svg_style);
+        $meritProfileSvg = $svgRenderer->render($mipremPoll);
+
+        $ogRenderer = new OpenGraphRenderer(1200, 630);
+        $pollOpenGraph = $ogRenderer->render($mipremPoll);
+
         return $this->render('poll/result.html.twig', [
             'poll' => $poll,
             'result' => $result,
             'grades' => $grades,
+            'meritProfileSvg' => $meritProfileSvg,
+            'pollOpenGraph' => $pollOpenGraph,
         ]);
     }
 }
