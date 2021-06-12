@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Factory\ApiFactory;
 use Miprem\Poll;
 use Miprem\Renderer\OpenGraphRenderer;
 use Miprem\Renderer\SvgRenderer;
@@ -48,9 +47,7 @@ class ReadResultController extends AbstractController
             $grades['/grades/'.$grade->getUuid()] = $grade;
         }
 
-        /**
-         * @var array<array<int>>
-         */
+        /** @var array<array<int>> $tally */
         $tally = [];
         foreach ($result->getLeaderboard() as $proposalResultRead) {
             $proposalTally = [];
