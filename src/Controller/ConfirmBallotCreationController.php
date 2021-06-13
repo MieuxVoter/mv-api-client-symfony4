@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     requirements={"pollId"="[a-zA-Z0-9-]+"},
  * )
  */
-class ConfirmBallotCreationController extends AbstractController
+final class ConfirmBallotCreationController extends AbstractController
 {
     use Has\ApiAccess;
 

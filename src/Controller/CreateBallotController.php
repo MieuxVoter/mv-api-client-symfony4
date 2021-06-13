@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
  *     requirements={"pollId"="[^.]+"},
  * )
  */
-class CreateBallotController extends AbstractController
+final class CreateBallotController extends AbstractController
 {
 
     use Has\ApiAccess;
