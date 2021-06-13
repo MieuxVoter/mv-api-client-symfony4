@@ -48,16 +48,16 @@
 {#    {% endif %}#}
 {#{%- endblock choice_widget -%}#}
 
-{#{%- block choice_widget_expanded -%}#}
-{#    <div {{ block('widget_container_attributes') }}>#}
-{#        {%- for child in form %}#}
-{#            <span class="choice-widget-element">#}
-{#                {{- form_widget(child) -}}#}
-{#                {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}#}
-{#            </span>#}
-{#        {% endfor -%}#}
-{#    </div>#}
-{#{%- endblock choice_widget_expanded -%}#}
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <span class="choice-widget-element">
+                {{- form_widget(child) -}}
+                {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+            </span>
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
 
 {#{%- block choice_widget_collapsed -%}#}
 {#    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}#}
