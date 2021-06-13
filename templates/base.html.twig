@@ -42,10 +42,10 @@
         <section class="navbar-section">
             <nav>
                 <a href="{{ path('home') }}"
-                    class="btn btn-outline-secondary"
+                    class="with-image"
                     aria-label="{{ 'action.home.label' | trans }}"
                     title="{{ 'action.home.title' | trans }}">
-                    &#127968;
+                    <img src="/mv-logo.png" alt="&#127968;" height="42">
                 </a>
             </nav>
         </section>
@@ -75,7 +75,7 @@
 {% endblock %}
 
 {% block main_container_wrapper %}
-    <div class="content main container grid-lg {% block main_container_class %}{% endblock %}">
+    <div class="content main container grid-lg breathe-top {% block main_container_class %}{% endblock %}">
 {% block main_container %}{% endblock %}
     </div>
 {% endblock %}{# main_container_wrapper #}

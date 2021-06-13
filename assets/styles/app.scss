@@ -36,19 +36,57 @@ body {
       background-color: lighten($body-font-color, 10%);
       padding: 2em 1em;
 
-      & a {
-        color: $body-bg !important;
-      }
+      //& a {
+      //  color: $body-bg !important;
+      //}
     }
 
-    & > .content.container {
+    & > .main.container {
       flex: 1 0 auto;
     }
 
 }
 
+a.with-image {
+  display: inline-block;
+}
+
+a {
+  // Border radius will also affect the outline on firefox.
+  border-radius: 8px;
+}
+
+header a,
+footer a {
+  color: $body-bg;
+  font-weight: bold;
+}
+header a:visited,
+footer a:visited {
+  color: darken($body-bg, 3%);
+}
+
+.main.container a:visited::after {
+  content: "👁";
+}
+
+
+header a:focus,
+footer a:focus {
+  outline: $secondary-color 3px solid;
+}
+
+.main.container a:focus {
+  outline: $primary-color 3px solid;
+}
+
+
+
 .main.container.breathe-top {
   padding-top: 2rem;
+}
+.main.container.tight-top {
+  padding-top: 0 !important;
 }
 
 ///
