@@ -1199,16 +1199,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.9.2",
+            "version": "2.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "75b4b88c5b7cebc24ed7251a20c2a5aa027300e1"
+                "reference": "82e77cf5089a1303733f75f0f0ed01be3ab9ec22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/75b4b88c5b7cebc24ed7251a20c2a5aa027300e1",
-                "reference": "75b4b88c5b7cebc24ed7251a20c2a5aa027300e1",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/82e77cf5089a1303733f75f0f0ed01be3ab9ec22",
+                "reference": "82e77cf5089a1303733f75f0f0ed01be3ab9ec22",
                 "shasum": ""
             },
             "require": {
@@ -1285,9 +1285,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.9.2"
+                "source": "https://github.com/doctrine/orm/tree/2.9.3"
             },
-            "time": "2021-05-31T09:53:14+00:00"
+            "time": "2021-06-13T10:29:22+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2680,11 +2680,11 @@
         },
         {
             "name": "roipoussiere/miprem-php",
-            "version": "0.1",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://framagit.org/roipoussiere/miprem-php.git",
-                "reference": "752a5b7c4493b739f9ae776f2d89f7b1737655e6"
+                "reference": "c02a4fae393b984db101558bab5f978cf4fd0e6f"
             },
             "require": {
                 "ext-imagick": "*",
@@ -2710,7 +2710,7 @@
                 }
             ],
             "description": "A merit profile renderer for majority judgment.",
-            "time": "2021-06-11T17:32:29+00:00"
+            "time": "2021-06-14T18:38:58+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",

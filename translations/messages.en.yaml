@@ -11,7 +11,7 @@ page:
       banner: Create a Majority Judgment poll in seconds
       placeholder: What's the subject of your poll?
       submit:
-        label: Create Poll
+        label: Start
   poll:
     read:
       invitation_only: |

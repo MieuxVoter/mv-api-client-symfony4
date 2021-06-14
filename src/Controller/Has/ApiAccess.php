@@ -5,11 +5,16 @@ namespace App\Controller\Has;
 
 
 use App\Adapter\ApiExceptionAdapter;
+use App\Entity\User;
 use App\Factory\ApiFactory;
 use MjOpenApi\ApiException;
+use MjOpenApi\Model\Credentials;
+use MjOpenApi\Model\UserCreate;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 
 trait ApiAccess
@@ -93,5 +98,60 @@ trait ApiAccess
         return $this->render('error/api_exception.html.twig', [
             'apiResponse' => $apiResponse,
         ]);
+    }
+
+    public function quickRegister(Request $request, GuardAuthenticatorHandler $guard)
+    {
+        $userApi = $this->getApiFactory()->getUserApi();
+
+        $passwordPlain = uniqid();
+
+        $userCreate = new UserCreate();
+        $userCreate->setPassword($passwordPlain);
+
+        $userRead = null;
+        try {
+            $userRead = $userApi->postUserCollection($userCreate);
+        } catch (ApiException $e) {
+            return new Response("Quick registration failed: " . $e->getMessage());
+        }
+
+        // The registration seemed to work.  Let's login, if we can.
+
+        $tokenApi = $this->getApiFactory()->getTokenApi();
+
+        $credentials = new Credentials();
+        $credentials->setUsernameOrEmail($userRead->getUsername());
+        $credentials->setPassword($passwordPlain);
+
+        $token = null;
+        try {
+            $token = $tokenApi->postCredentialsItem($credentials);
+        } catch (ApiException $e) {
+            // Registration was a success, but login was not.
+            return $this->renderApiException($e, $request);
+        }
+
+        $user = new User();
+        $user->setUsername($userRead->getUsername());
+        $user->setApiToken($token->getToken());
+
+        $this->userSession->login(
+            $userRead->getUuid(),
+            $userRead->getUsername(),
+            $token->getToken()
+        );
+        $this->getApiFactory()->setApiToken($token->getToken());
+
+        // Authenticate with Symfony
+        $t = new UsernamePasswordToken($user, null, 'mvapi_users', $user->getRoles());
+        $guard->authenticateWithToken($t, $request, 'mvapi_users');
+
+        // Wipe the memory…
+        $password = uniqid();
+        $passwordPlain = uniqid();
+        $token = null;
+
+        return true;
     }
 }

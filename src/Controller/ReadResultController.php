@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     requirements={"id"="[^.]+"},
  * )
  */
-class ReadResultController extends AbstractController
+final class ReadResultController extends AbstractController
 {
     use Has\ApiAccess;
 
@@ -68,9 +68,16 @@ class ReadResultController extends AbstractController
 //                ['label' => 'Excellent'],
 //            ],
             'tally' => $tally,
+            'subject' => [
+                'label' => $poll->getSubject(),
+            ],
         ]);
 
-        $svg_config = new SvgConfig();
+        $svg_config = SvgConfig::default()
+            ->setHeaderHeight(0)
+            ->setPadding(0)
+            ->setSidebarWidth(0)
+        ;
         $svg_style = new Style(<<<SVG_CSS
 /*
 svg {
