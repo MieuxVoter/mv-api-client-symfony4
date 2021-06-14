@@ -341,10 +341,10 @@
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
     <div class="form-group">
-        <div class="col-3 col-sm-12">
+        <div class="col-3 col-md-12">
             {{- form_label(form) -}}
         </div>
-        <div class="col-9 col-sm-12">
+        <div class="col-9 col-md-12">
             {{- form_widget(form, widget_attr) -}}
         </div>
         {{- form_errors(form) -}}

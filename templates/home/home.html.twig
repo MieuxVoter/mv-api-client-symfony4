@@ -22,7 +22,30 @@
     </li>
 </ul>
 
+<p class="text-center banner">
+    {{ 'page.home.form.banner' | trans }}
+</p>
 
-{% include "partials/spinner.html.twig" only %}
+<form action="{{ path('create_poll_html') }}" method="GET" class="form-horizontal">
+    <div class="form-group">
+        <div class="flex pr-2 flex-grow">
+            <input
+                    type="text"
+                    placeholder="{{ 'page.home.form.placeholder' | trans }}"
+                    name="poll[subject]"
+                    class="form-input input-lg"
+            >
+        </div>
+        <div class="flex">
+            <input
+                    type="submit"
+                    class="input-lg"
+                    value="{{ 'page.home.form.submit.label' | trans }}"
+            >
+        </div>
+    </div>
+</form>
+
+{#{% include "partials/spinner.html.twig" only %}#}
 
 {% endblock %}

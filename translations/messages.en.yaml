@@ -7,6 +7,11 @@ page:
     title: Majority Judgment Demo Application
     title1: Majority Judgment
     title2: Demo Application
+    form:
+      banner: Create a Majority Judgment poll in seconds
+      placeholder: What's the subject of your poll?
+      submit:
+        label: Create Poll
   poll:
     read:
       invitation_only: |
