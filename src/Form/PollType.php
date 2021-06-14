@@ -126,6 +126,9 @@ class PollType extends AbstractType
 
         $builder->add('moreProposals',SubmitType::class, [
             'label' => 'button.more_proposals',
+            'attr' => [
+                'class' => 'btn btn-add',
+            ],
         ]);
 
         $builder->add('save',SubmitType::class, [

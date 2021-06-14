@@ -12,6 +12,7 @@ page:
       placeholder: What's the subject of your poll?
       submit:
         label: Start
+      after: Free, Libre, and powered by your donations
   poll:
     read:
       invitation_only: |

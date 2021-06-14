@@ -4,25 +4,27 @@
 
 {% block main_container %}
 
-<h1>
-    <span class="line">{{ 'page.home.title1' | trans }}</span>
-    <span class="line">{{ 'page.home.title2' | trans }}</span>
-</h1>
+{#<h1>#}
+{#    <span class="line">{{ 'page.home.title1' | trans }}</span>#}
+{#    <span class="line">{{ 'page.home.title2' | trans }}</span>#}
+{#</h1>#}
 
-<ul>
-    <li>
-        <a href="{{ path('list_polls_html') }}">
-            {{ 'link.browse_public_polls' | trans }}
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('create_poll_html') }}">
-            {{ 'link.create_new_poll' | trans }}
-        </a>
-    </li>
-</ul>
+{#<ul>#}
+{#    <li>#}
+{#        <a href="{{ path('list_polls_html') }}">#}
+{#            {{ 'link.browse_public_polls' | trans }}#}
+{#        </a>#}
+{#    </li>#}
+{#    <li>#}
+{#        <a href="{{ path('create_poll_html') }}">#}
+{#            {{ 'link.create_new_poll' | trans }}#}
+{#        </a>#}
+{#    </li>#}
+{#</ul>#}
 
 <p class="text-center banner">
+    <img src="mv-logo.svg" alt="MieuxVoter" width="128" height="128" style="filter: blur(1px);">
+    <br>
     {{ 'page.home.form.banner' | trans }}
 </p>
 
@@ -40,12 +42,16 @@
         <div class="flex">
             <input
                     type="submit"
-                    class="input-lg"
+                    class="input-lg btn-lg btn btn-primary"
                     value="🚀 {{ 'page.home.form.submit.label' | trans }}"
             >
         </div>
     </div>
 </form>
+
+<p class="text-center">
+    {{ 'page.home.form.after' | trans }}
+</p>
 
 {#{% include "partials/spinner.html.twig" only %}#}
 
