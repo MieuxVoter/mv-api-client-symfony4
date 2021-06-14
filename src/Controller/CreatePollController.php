@@ -15,10 +15,13 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 
 /** @noinspection PhpUnused */
 /**
+ * Submitting a new poll when not logged will automatically create a new temporary user.
+ *
  * @Route("/new-poll", name="create_poll")
  * @Route("/new-poll.html", name="create_poll_html")
  *
@@ -30,13 +33,17 @@ final class CreatePollController extends AbstractController
 
     use Has\ApiAccess;
     use Has\Translator;
+    use Has\UserSession;
 
     /**
      * @param Request $request
+     * @param GuardAuthenticatorHandler $guard
      * @return Response
      */
-    public function __invoke(Request $request): Response
-    {
+    public function __invoke(
+        Request $request,
+        GuardAuthenticatorHandler $guard
+    ): Response {
         $pollApi = $this->getApiFactory()->getPollApi();
 
         $sentPoll = $request->get('poll');
@@ -79,6 +86,14 @@ final class CreatePollController extends AbstractController
 
 
         if ($shouldSend) {
+
+            if ( ! $this->getUserSession()->isLogged()) {
+                $registered = $this->quickRegister($request, $guard);
+                if (true !== $registered) {
+                    return $registered;
+                }
+            }
+
             // $form->getData() holds the submitted values
             //$poll = $form->getData();
             // but, the original `$poll` variable has also been updated

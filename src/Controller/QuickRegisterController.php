@@ -46,7 +46,6 @@ final class QuickRegisterController extends AbstractController
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
         SessionInterface $session,
-        UserSession $userSession,
         GuardAuthenticatorHandler $guard,
         MessageBusInterface $bus
     ): Response {
@@ -55,64 +54,14 @@ final class QuickRegisterController extends AbstractController
             $session->set('register_redirect', $redirect);
         }
 
-        if ($userSession->isLogged()) {
+        if ($this->getUserSession()->isLogged()) {
             return $this->respondRedirection($session);
         }
 
-        $userApi = $this->getApiFactory()->getUserApi();
-
-        $passwordPlain = uniqid();
-
-        $userCreate = new UserCreate();
-        $userCreate->setPassword($passwordPlain);
-
-        $userRead = null;
-        try {
-            $userRead = $userApi->postUserCollection($userCreate);
-        } catch (ApiException $e) {
-            return new Response("Quick registration failed: " . $e->getMessage());
+        $registered = $this->quickRegister($request, $guard);
+        if (true !== $registered) {
+            return $registered;
         }
-
-        // The registration seemed to work.
-        // Let's login, if we can, after a fashion
-
-        sleep(1);
-
-        $username = $userRead->getUsername();
-
-        $tokenApi = $this->getApiFactory()->getTokenApi();
-
-        $credentials = new Credentials();
-        $credentials->setUsernameOrEmail($username);
-        $credentials->setPassword($passwordPlain);
-
-        $token = null;
-        try {
-            $token = $tokenApi->postCredentialsItem($credentials);
-        } catch (ApiException $e) {
-            // Registration was a success, but login was not.
-            return $this->renderApiException($e, $request);
-        }
-
-        $user = new User();
-        $user->setUsername($username);
-        $user->setApiToken($token->getToken());
-
-        $this->userSession->login(
-            $userRead->getUuid(),
-            $username,
-            $token->getToken()
-        );
-        $this->getApiFactory()->setApiToken($token->getToken());
-
-        // Authenticate with Symfony
-        $t = new UsernamePasswordToken($user, null, 'mvapi_users', $user->getRoles());
-        $guard->authenticateWithToken($t, $request, 'mvapi_users');
-        
-        // Wipe the memory…
-        $password = uniqid();
-        $passwordPlain = uniqid();
-        $token = null;
 
         $flashBag->add('success', 'flash.user.registered');
 
