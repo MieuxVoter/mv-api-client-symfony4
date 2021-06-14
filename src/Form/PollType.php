@@ -80,20 +80,20 @@ class PollType extends AbstractType
                 'attr' => [
                     'title' => 'form.poll.scope.title',
                 ],
-                'choice_attr' => function($val, $key, $index) use ($isLoggedIn) {
-                    $attr = [];
-
-                    $disabled = false;
-                    if ((! $isLoggedIn) && (Poll::SCOPE_PRIVATE === $val)) {
-                        $disabled = true; // private is only for logged-in users, for now
-                        $attr = array_merge($attr, ['title' => 'form.poll.scope.private_requires_login']);
-                    }
-                    if ($disabled) {
-                        $attr = array_merge($attr, ['disabled' => 'disabled']);
-                    }
-
-                    return $attr;
-                },
+//                'choice_attr' => function($val, $key, $index) use ($isLoggedIn) {
+//                    $attr = [];
+//
+//                    $disabled = false;
+//                    if ((! $isLoggedIn) && (Poll::SCOPE_PRIVATE === $val)) {
+//                        $disabled = true; // private is only for logged-in users, for now
+//                        $attr = array_merge($attr, ['title' => 'form.poll.scope.private_requires_login']);
+//                    }
+//                    if ($disabled) {
+//                        $attr = array_merge($attr, ['disabled' => 'disabled']);
+//                    }
+//
+//                    return $attr;
+//                },
             ]);
 
         $builder
