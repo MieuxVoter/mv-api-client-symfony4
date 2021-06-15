@@ -44,16 +44,21 @@ final class CreatePollController extends AbstractController
         Request $request,
         GuardAuthenticatorHandler $guard
     ): Response {
+
+        $amountOfProposalsToAddWhenRequested = 5; // fetch from ENV?
+
         $pollApi = $this->getApiFactory()->getPollApi();
 
-        $sentPoll = $request->get('poll');
+        $queryPoll = $request->query->get('poll'); // autofill, low-priority
+        $sentPoll = $request->request->get('poll');
 
         $amountOfProposals = PollType::DEFAULT_AMOUNT_OF_PROPOSALS;
 
         $poll = new Poll();
+        if (null !== $queryPoll && \is_array($queryPoll)) {
+            $poll->setSubject($queryPoll['subject'] ?? '');
+        }
         if (null !== $sentPoll && \is_array($sentPoll)) {
-            $poll->setScope($sentPoll['scope'] ?? 'unlisted');
-            $poll->setSubject($sentPoll['subject'] ?? '');
             $amountOfProposals = $this->sanitizeAmountOfProposals($sentPoll[PollType::OPTION_AMOUNT_OF_PROPOSALS] ?? $amountOfProposals);
         }
         $poll->setAmountOfProposals($amountOfProposals);
@@ -69,12 +74,16 @@ final class CreatePollController extends AbstractController
 
         $shouldSend = $form->isSubmitted() && $form->isValid();
 
+        // The user requested more proposals, don't send the form
         if ($form->getClickedButton() === $form->get('moreProposals')){
-            // add more proposals
             $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] = $this->sanitizeAmountOfProposals(
-                $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] + 5
+                $options[PollType::OPTION_AMOUNT_OF_PROPOSALS]
+                +
+                $amountOfProposalsToAddWhenRequested
             );
+
             $poll->setAmountOfProposals($options[PollType::OPTION_AMOUNT_OF_PROPOSALS]);
+
             // REBUILD THE WHOLE FORM NOOo
             /** @var Form $form */
             $form = $this->createForm(PollType::class, $poll, $options);
