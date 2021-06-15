@@ -43,11 +43,18 @@
             <nav>
                 <a
                         href="{{ path('home') }}"
-                        class="with-image"
+                        class="with-image tooltip tooltip-right"
                         aria-label="{{ 'action.home.label' | trans }}"
                         title="{{ 'action.home.title' | trans }}"
+                        data-tooltip="{{ 'action.home.title' | trans }}"
                 >
-                    <img src="mv-logo.svg" alt="{{ 'action.home.label' | trans }}" width="42" height="42" style="filter: invert(1);">
+                    <img
+                            src="/mv-logo.svg"
+                            alt="{{ 'action.home.label' | trans }}"
+                            width="40"
+                            height="40"
+                            style="filter: invert(1); vertical-align: middle;"
+                    >
                 </a>
             </nav>
         </section>
