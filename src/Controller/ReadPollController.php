@@ -34,6 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ReadPollController extends AbstractController
 {
     use Has\ApiAccess;
+    use Has\ColorPalette;
 
     public function __invoke(string $pollId, Request $request) : Response
     {
@@ -51,6 +52,7 @@ final class ReadPollController extends AbstractController
 
         return $this->render('poll/read.html.twig', [
             'poll' => $pollRead,
+            'palette' => $this->getColorPalette(count($pollRead->getGrades())),
         ]);
     }
 }

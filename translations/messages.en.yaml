@@ -15,6 +15,8 @@ page:
       after: Free, Libre, and powered by your donations
   poll:
     read:
+      grades: Grades
+      proposals: Proposals
       invitation_only: |
         That poll is restricted to invitations only.
 #        Enter your invitation token below to participate.
@@ -87,7 +89,8 @@ action:
     label: Login to Accept the Invitation
   generate_invitations:
     label: Generate Invitations
-
+  participate:
+    label: Participate
 
 
 # deprecated -- use `action` above instead

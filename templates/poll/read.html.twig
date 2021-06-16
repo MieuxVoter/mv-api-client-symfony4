@@ -4,19 +4,73 @@
 
 {% block main_container %}
 
+{% set canParticipate = false %}
+{% if poll.scope == 'private' %}
+{% set canParticipate = false %}
+{% elseif poll.scope == 'public' %}
+{% set canParticipate = true %}
+{% elseif poll.scope == 'unlisted' %}
+{% set canParticipate = true %}
+{% endif %}
+
 <div class="flex-row">
     <h1>
         {% include 'partials/scope_emote.html.twig' with {'poll': poll} %}
         {{ poll.subject }}
     </h1>
 
-    <ul>
-{% for proposal in poll.proposals %}
-            <li>
-                {{ proposal.title }}
-            </li>
+    <div class="columns">
+
+        <div class="column col-4 col-sm-12 mb-2">
+
+            <h3>&nbsp;</h3>{# use margins instead of this hack #}
+
+{% if canParticipate %}
+            <a
+                    href="{{ path('create_ballot_html', {'pollId': poll.uuid}) }}"
+                    class="btn btn-primary btn-lg"
+            >
+                {{ 'action.participate.label' | trans }}
+            </a>
+{% else %}
+            You cannot participate.
+{% endif %}
+
+        </div>
+
+        <div class="column col-4 col-sm-12 mb-2">
+            <h3>
+                {{ 'page.poll.read.grades' | trans }}
+            </h3>
+            <ol>
+{% for gradeIndex, grade in poll.grades %}
+                <li
+                        class="label label-rounded monospace"
+                        style="border: 7px solid {{ palette[gradeIndex] }};"
+                >
+                    {{ grade.name }}
+                </li>
 {% endfor %}
-    </ul>
+            </ol>
+        </div>
+
+        <div class="column col-4 col-sm-12 mb-2">
+            <h3>
+                {{ 'page.poll.read.proposals' | trans }}
+            </h3>
+            <ul>
+{% for proposal in poll.proposals %}
+                <li>
+                    {{ proposal.title }}
+                </li>
+{% endfor %}
+            </ul>
+        </div>
+
+
+    </div>
+
+
 
 
 {% if poll.scope == 'private' %}
@@ -31,22 +85,24 @@
 {% endif %}
 
 {% else %}
-    <a href="{{ path('create_ballot_html', {'pollId': poll.uuid}) }}" class="btn btn-primary">
-        Judge:
-        {% for grade in poll.grades %}
-            {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}
-        {% endfor %}
-    </a>
+{#    <a href="{{ path('create_ballot_html', {'pollId': poll.uuid}) }}" class="btn btn-primary">#}
+{#        Judge:#}
+{#        {% for grade in poll.grades %}#}
+{#            {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}#}
+{#        {% endfor %}#}
+{#    </a>#}
 {% endif %}
 
+    {# Debug stuff, useful during development-#}
+{% if app.request.server.get('APP_ENV') != 'prod' %}
     <hr>
-
     <details>
         <summary>&#128421;</summary>
         <pre>
 {{ poll }}
         </pre>
     </details>
+{% endif %}
 
 </div>
-{% endblock %}
+{% endblock main_container %}
