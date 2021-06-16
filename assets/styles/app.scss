@@ -95,6 +95,7 @@ a.with-image {
 header a:focus,
 footer a:focus {
   outline: $secondary-color 3px solid;
+  outline-offset: 3px;
 }
 
 .main.container a:focus {
@@ -117,6 +118,14 @@ label {
 input.input-error {
   //border-color: red; // OMG WTF IS HAPPENING WHEN WE ENABLE THIS
   box-shadow: red 4px 0 0 0;
+}
+
+input[type='radio']:focus {
+  outline: none;
+}
+input[type='radio']:focus + label {
+  outline: 5px solid $primary-color;
+  outline-offset: 5px;
 }
 
 //   _____                      _         _____ _
