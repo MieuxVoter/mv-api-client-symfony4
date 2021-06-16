@@ -1,0 +1,82 @@
+
+{% set amountOfJudgments = proposalResult.tally %}
+
+{# If we could manage to include this only once…  Fabpot said no. #}
+{# I don't want to move these styles to the SCSS, at least not for now. #}
+<style>
+    .single-merit-profile {
+        position: relative;
+    }
+    .single-merit-profile .grade {
+        display: inline-block;
+        height: 3rem;
+        position: relative;
+        overflow: visible;
+    }
+    .single-merit-profile .grade .grade-gap {
+        position: absolute;
+        z-index: 50;
+        background-color: #fff;
+        width: 4px;
+        height: 100%;
+        top: 0;
+        right: -2px;
+    }
+    .single-merit-profile .median-ruler {
+        position: absolute;
+        left: calc(50% - 1px);
+        top: -0.5rem;
+        height: 4rem;
+        width: 0;
+
+        opacity: 0.38;
+        border-left: 2px dashed black;
+        z-index: 60;
+    }
+</style>
+
+{% apply spaceless %}
+<div class="single-merit-profile">
+
+{# Pre-compute the index of the last grade with some judgments #}
+{# in order to skip the trailing gap. #}
+{% set lastGradeWithJudgmentsIndex = 0 %}
+{% for gradeIndex, gradeResult in proposalResult.gradesResults %}
+{% if gradeResult.tally > 0 %}
+    {% set lastGradeWithJudgmentsIndex = gradeIndex %}
+{% endif %}
+{% endfor %}
+
+{% for gradeIndex, gradeResult in proposalResult.gradesResults %}
+
+    {% set gradeClass = "grade-"~gradeIndex~"-"~proposalResult.proposal.uuid %}
+
+{% if gradeResult.tally > 0 %}
+    <div class="grade {{ gradeClass }}">
+{#        {{ gradeResult.tally }}#}
+{% if gradeIndex != lastGradeWithJudgmentsIndex %}
+        <div class="grade-gap"></div>
+{% endif %}
+    </div>
+
+    <style>
+        .single-merit-profile .grade.{{ gradeClass }} {
+            width: {{ 100 * gradeResult.tally / amountOfJudgments }}%;
+            background-color: {{ palette[gradeIndex] }};
+            z-index: {{ 50 - gradeIndex }};
+            background-image: url('/img/grade_background_pattern_0{{ gradeIndex }}.png');
+            /*background-blend-mode: saturation;*/
+            background-repeat: repeat;
+            /*background-origin: padding-box;*/
+            /*background-size: 28px;*/
+            /*background-blend-mode: multiply;*/
+        }
+    </style>
+{% endif %}
+
+{% endfor %}
+
+    <div class="median-ruler"></div>
+
+</div>
+{% endapply %}

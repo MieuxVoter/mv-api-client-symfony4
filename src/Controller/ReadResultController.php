@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\GradePalettePainter;
 use Miprem\Poll;
 use Miprem\Renderer\OpenGraphRenderer;
 use Miprem\Renderer\SvgRenderer;
@@ -10,6 +11,7 @@ use Miprem\SvgConfig;
 use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -27,8 +29,11 @@ final class ReadResultController extends AbstractController
 {
     use Has\ApiAccess;
 
-    public function __invoke(string $resultId, Request $request)
-    {
+    public function __invoke(
+        string $resultId,
+        Request $request,
+        GradePalettePainter $palette
+    ) : Response {
         $pollId = $resultId; // TBD: Result id? (could be kept secret?)
         $pollApi = $this->getApiFactory()->getPollApi();
         $resultApi = $this->getApiFactory()->getResultApi();
@@ -96,6 +101,7 @@ SVG_CSS
             'poll' => $poll,
             'result' => $result,
             'grades' => $grades,
+            'palette' => $palette->makePalette(count($grades)),
             'meritProfileSvg' => $meritProfileSvg,
             'pollOpenGraph' => $pollOpenGraph,
         ]);

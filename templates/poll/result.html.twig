@@ -4,14 +4,53 @@
 
 {% block main_container %}
 
-    <h2>{{ 'page.result.title' | trans({'subject': poll.subject}) }}</h2>
+    {# XSS: it's OK to use raw here, since trans escapes vars for us #}
+    <h2>{{ 'page.result.title' | trans({'subject': (poll.subject)}) | raw }}</h2>
 
     <div class="container">
 
-
     {{ meritProfileSvg | raw }}
 
-{% for proposalResult in result.leaderboard %}
+{% for i, proposalResult in result.leaderboard %}
+        <details class="proposal-result">
+            <summary>
+                <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
+                    <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
+                    {%- if 1 == proposalResult.rank -%}
+                        &#129351;
+                    {%- elseif 2 == proposalResult.rank -%}
+                        &#129352;
+                    {%- elseif 3 == proposalResult.rank -%}
+                        &#129353;
+                    {%- else -%}
+                        &#127941;
+                    {%- endif -%}
+                    </span>
+                    {{ proposalResult.proposal.title }}
+                </h3>
+
+                {% include 'partials/single_merit_profile.htm.twig' with {
+                    proposalResult: proposalResult,
+                    grades: grades,
+                    palette: palette,
+                } only %}
+
+            </summary>
+            <div>
+
+                <p>
+                    Rank: {{ proposalResult.rank }}
+                    <br>
+{% for gradeResult in proposalResult.gradesResults %}
+                    {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}
+                    {{- loop.last ? '' : ',' }}
+{% endfor %}
+                </p>
+            </div>
+        </details>
+{% endfor %}
+
+{% for i, proposalResult in result.leaderboard %}
         <div class="row">
             <div class="flex-row mr-2">
                 <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
