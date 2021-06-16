@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
@@ -54,7 +56,7 @@ class PollType extends AbstractType
             $presets[$presetLabel] = $preset;
         }
 
-        $isLoggedIn = (null !== $this->security->getUser());
+//        $isLoggedIn = (null !== $this->security->getUser()); // perhaps not the correct API
 
         $builder
             ->add(self::OPTION_AMOUNT_OF_PROPOSALS, HiddenType::class, [
@@ -62,15 +64,7 @@ class PollType extends AbstractType
             ]);
 
         $builder
-            ->add('subject', TextType::class, [
-                'required' => false, // let the the API handle it, so we can use the "more" buttons
-                'empty_data' => '',
-                'label' => 'form.poll.subject.label',
-                'attr' => [
-                    'placeholder' => 'form.poll.subject.placeholder',
-                    'title' => 'form.poll.subject.title',
-                ],
-            ]);
+            ->add('subject', TextType::class, $this->buildSubjectOptions());
 
         $builder
             ->add('scope', ChoiceType::class, [
@@ -109,18 +103,7 @@ class PollType extends AbstractType
             $builder->add(
                 sprintf("proposal_%02d_title", $i),
                 TextType::class,
-                [
-                    'required' => $required,
-                    'property_path' => "proposals[$i]",
-                    'label' => 'form.poll.proposal.label',
-                    'label_translation_parameters' => [
-                        'id' => \num2alpha($i),
-                    ],
-                    'attr' => [
-                        'title' => 'form.poll.proposal.title.'.($required?'required':'optional'),
-                        'placeholder' => 'form.poll.proposal.placeholder.'.($required?'required':'optional'),
-                    ],
-                ]
+                $this->buildProposalOptions($i, $required)
             );
         }
 
@@ -137,8 +120,73 @@ class PollType extends AbstractType
                 'class' => 'btn btn-primary float-right',
             ],
         ]);
+
+        // Autofocus shenanigans, we have to hook an event to get the $poll with actual data
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+            /** @var Poll $poll */
+            $poll = $event->getData();
+            $form = $event->getForm();
+
+            $autofocusWasSet = false;
+
+            if (empty($poll->getSubject())) {
+                $form->add('subject', TextType::class, $this->buildSubjectOptions(true));
+                $autofocusWasSet = true;
+            }
+
+            $proposals = $poll->getProposals();
+            for ($i = 0; $i < $options[self::OPTION_AMOUNT_OF_PROPOSALS]; $i++) {
+                if ($autofocusWasSet) break;
+                $doit = false;
+                if ($i >= count($proposals)) {
+                    $doit = true;
+                } else {
+                    if (empty($proposals[$i])) {
+                        $doit = true;
+                    }
+                }
+                if ($doit) {
+                    $required = ($i < 2);  // 2 = minimum amount of proposals required
+                    $form->add(
+                        sprintf("proposal_%02d_title", $i),
+                        TextType::class,
+                        $this->buildProposalOptions($i, $required, true)
+                    );
+                    $autofocusWasSet = true;
+                }
+            }
+        });
     }
 
+
+    protected function buildSubjectOptions($autofocus = false)
+    {
+        return [
+            'required' => false, // let the the API handle it, so we can use the "more proposals" button
+            'empty_data' => '',
+            'label' => 'form.poll.subject.label',
+            'attr' => [
+                'title' => 'form.poll.subject.title',
+                'placeholder' => 'form.poll.subject.placeholder',
+            ] + (($autofocus) ? ['autofocus' => 'autofocus'] : []),
+        ];
+    }
+
+    protected function buildProposalOptions($i, $required = false, $autofacus = false)
+    {
+        return [
+            'required' => $required,
+            'property_path' => "proposals[$i]",
+            'label' => 'form.poll.proposal.label',
+            'label_translation_parameters' => [
+                'id' => \num2alpha($i),
+            ],
+            'attr' => [
+                'title' => 'form.poll.proposal.title.'.($required?'required':'optional'),
+                'placeholder' => 'form.poll.proposal.placeholder.'.($required?'required':'optional'),
+            ] + (($autofacus) ? ['autofocus' => 'autofocus'] : []),
+        ];
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {

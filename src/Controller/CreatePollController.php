@@ -57,6 +57,7 @@ final class CreatePollController extends AbstractController
         $poll = new Poll();
         if (null !== $queryPoll && \is_array($queryPoll)) {
             $poll->setSubject($queryPoll['subject'] ?? '');
+
         }
         if (null !== $sentPoll && \is_array($sentPoll)) {
             $amountOfProposals = $this->sanitizeAmountOfProposals($sentPoll[PollType::OPTION_AMOUNT_OF_PROPOSALS] ?? $amountOfProposals);
@@ -72,6 +73,11 @@ final class CreatePollController extends AbstractController
         $form = $this->createForm(PollType::class, $poll, $options);
         $form->handleRequest($request);
 
+        // Do it a second time with the correct data in $poll
+        // This is not pretty, but it works.  Fix if you can !
+        $form = $this->createForm(PollType::class, $poll, $options);
+        $form->handleRequest($request);
+
         $shouldSend = $form->isSubmitted() && $form->isValid();
 
         // The user requested more proposals, don't send the form
@@ -84,15 +90,12 @@ final class CreatePollController extends AbstractController
 
             $poll->setAmountOfProposals($options[PollType::OPTION_AMOUNT_OF_PROPOSALS]);
 
-            // REBUILD THE WHOLE FORM NOOo
-            /** @var Form $form */
+            // Rebuild the whole form because we can't change options after the initial build
             $form = $this->createForm(PollType::class, $poll, $options);
-            //////////////////////////////
 
             $form->clearErrors();
             $shouldSend = false;
         }
-
 
         if ($shouldSend) {
 
@@ -171,7 +174,6 @@ final class CreatePollController extends AbstractController
                 ]);
             }
         }
-
 
         return $this->render('poll/create.html.twig', [
             'form' => $form->createView(),
