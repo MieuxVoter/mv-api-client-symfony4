@@ -13,7 +13,7 @@ A client for MieuxVoter's OpenApi specifications focused on _accessibility_.
 
 - [x] Majority Judgment Polls
 - [x] Consumable Invitation Links
-- [x] Designed for keyboard usage
+- [x] Designed for blazing fast keyboard usage
 
 ## Overview
 
@@ -51,6 +51,40 @@ There's no javascript in the website, but we do use _Encore_ for asset compilati
 
 This project exposes the need for API keys in addition to the JWT.
 
+
+## Installation instructions
+
+Clone this project, and run [composer](https://getcomposer.org/):
+
+```shell script
+git clone https://github.com/MieuxVoter/mv-api-client-symfony4.git
+cd mv-api-client-symfony4
+composer install
+```
+
+It may ask for php extra dependencies if you don't have them.
+
+> todo: provide the php package list for debian at least
+
+## Run locally
+
+```shell script
+symfony serve
+```
+
+if you have the [symfony do-it-all](https://symfony.com/download), or :
+
+```shell script
+bin/console server:run
+```
+
+> The latter is deprecated, so it will be removed at some point
+
+### CLI Toolkit
+
+```shell script
+bin/console
+```
 
 ## Build assets (CSS)
 
