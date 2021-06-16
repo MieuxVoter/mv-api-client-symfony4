@@ -2,7 +2,7 @@
 
 {% form_theme form 'form/theme/grades-chooser.html.twig' %}
 
-{% block title %}{{ poll.subject }} &mdash; {{ 'page.poll.participate.title' | trans }}{% endblock %}
+{% block title %}{{ poll.subject }} &mdash; {{ 'page.ballot.create.title' | trans }}{% endblock %}
 
 {# Disable global flash messaages, we're adding our own #}
 {% block flash_messages %}{% endblock %}
@@ -11,6 +11,10 @@
 
 {#<h1>{{ 'page.poll.participate.title' | trans }}</h1>#}
 <h1>{{ poll.subject }}</h1>
+
+<p>
+    {{ 'page.ballot.create.disclaimer_above' | trans }}
+</p>
 
 {% include "partials/flash_messages.html.twig" only %}
 

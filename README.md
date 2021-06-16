@@ -1,5 +1,7 @@
 
-A client for MieuxVoter's OpenApi specifications focused on accessibility.
+![MieuxVoter](./public/mv-logo.png)
+
+A client for MieuxVoter's OpenApi specifications focused on _accessibility_.
 
 - experimental
 - compatibility with CLI/vocal browsers (that means _no javascript_)
@@ -9,25 +11,25 @@ A client for MieuxVoter's OpenApi specifications focused on accessibility.
 
 ## Features
 
-- [x] Symfony 4
-- [x] Spectre CSS
-- [x] No Javascript
-- [x] Browse Public Polls
-- [x] Login
-- [x] Register
-- [x] Register in One Click 
-- [x] Create a Majority Judgment Poll
-- [x] Generate & Download Invitation Links
-- [x] Participate to a Public Poll
-- [x] Participate to a Private Poll
+- [x] Majority Judgment Polls
+- [x] Consumable Invitation Links
+- [x] Designed for keyboard usage
+
+## Overview
+
+- Symfony 4
+- Spectre & SCSS
+- No Javascript
+- No Database (forwarding calls to OpenAPI)
+
+## Roadmap
+
 - [ ] Send Invitation Links by Email
-- [ ] View Results of a Poll
 - [ ] OpenGraph
-- [ ] Miprem
-- [ ] At least *some* Resilience
 - [ ] Follow another user
 - [ ] Suggest opinion from followed users
 - [ ] Handle 404 errors
+
 
 ## Work in Progress
 

@@ -26,6 +26,10 @@ page:
       title: Public Polls
       none: There are no public polls for the moment.
   ballot:
+    create:
+      title: Urn
+      disclaimer_above: |
+        Select the grade you wish to give to each poposal.
     aftermath:
       title: Ballots were submitted.
       success: Your participation was recorded successfully.
