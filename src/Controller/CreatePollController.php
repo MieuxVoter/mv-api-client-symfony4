@@ -45,7 +45,7 @@ final class CreatePollController extends AbstractController
         GuardAuthenticatorHandler $guard
     ): Response {
 
-        $amountOfProposalsToAddWhenRequested = 5; // fetch from ENV?
+        $amountOfProposalsToAddWhenRequested = PollType::AMOUNT_OF_PROPOSALS_TO_ADD;
 
         $pollApi = $this->getApiFactory()->getPollApi();
 
@@ -90,7 +90,7 @@ final class CreatePollController extends AbstractController
 
             $poll->setAmountOfProposals($options[PollType::OPTION_AMOUNT_OF_PROPOSALS]);
 
-            // Rebuild the whole form because we can't change options after the initial build
+            // Rebuild the whole form because we can't change options after its initial build
             $form = $this->createForm(PollType::class, $poll, $options);
 
             $form->clearErrors();

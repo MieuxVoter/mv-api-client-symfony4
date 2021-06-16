@@ -23,8 +23,10 @@ class PollType extends AbstractType
 
     const MINIMUM_AMOUNT_OF_PROPOSALS = 2;
     const MAXIMUM_AMOUNT_OF_PROPOSALS = 250;
-    const DEFAULT_AMOUNT_OF_PROPOSALS = 5;
+    const DEFAULT_AMOUNT_OF_PROPOSALS = 3;
     const DEFAULT_AMOUNT_OF_GRADES = 7;
+
+    const AMOUNT_OF_PROPOSALS_TO_ADD = 1;
 
     ///
     ///
