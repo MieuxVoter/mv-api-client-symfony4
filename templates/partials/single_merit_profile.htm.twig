@@ -51,6 +51,16 @@
 
     {% set gradeClass = "grade-"~gradeIndex~"-"~proposalResult.proposal.uuid %}
 
+    <style>
+        .single-merit-profile .grade.{{ gradeClass }} {
+            width: {{ 100 * gradeResult.tally / amountOfJudgments }}%;
+            background-color: {{ palette[gradeIndex] }};
+            z-index: {{ 50 - gradeIndex }};
+            background-image: url('/img/grade_background_pattern_0{{ gradeIndex }}.png');
+            background-repeat: repeat;
+        }
+    </style>
+
 {% if gradeResult.tally > 0 %}
     <div class="grade {{ gradeClass }}">
 {#        {{ gradeResult.tally }}#}
@@ -59,19 +69,6 @@
 {% endif %}
     </div>
 
-    <style>
-        .single-merit-profile .grade.{{ gradeClass }} {
-            width: {{ 100 * gradeResult.tally / amountOfJudgments }}%;
-            background-color: {{ palette[gradeIndex] }};
-            z-index: {{ 50 - gradeIndex }};
-            background-image: url('/img/grade_background_pattern_0{{ gradeIndex }}.png');
-            /*background-blend-mode: saturation;*/
-            background-repeat: repeat;
-            /*background-origin: padding-box;*/
-            /*background-size: 28px;*/
-            /*background-blend-mode: multiply;*/
-        }
-    </style>
 {% endif %}
 
 {% endfor %}

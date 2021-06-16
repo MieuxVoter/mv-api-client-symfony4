@@ -179,6 +179,25 @@ input.input-error {
 ///
 ///
 
+.proposal-result {
+  border-left: 3px solid black;
+  margin-bottom: 1rem;
+  padding: 1rem 1rem 1rem 1rem;
+
+  & > summary {
+    display: block;
+    cursor: pointer;
+    &:focus h3::after {
+      content: "\2190";
+    }
+  }
+
+
+}
+
+///
+///
+
 $hidden-checkbox-offset: 30px;
 
 .form-radio-grade-check > label:first-child {
