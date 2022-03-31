@@ -40,7 +40,13 @@ class ApiFactory
     public function __construct()
     {
         $this->config = Configuration::getDefaultConfiguration();
-        $this->config->setHost("http://localhost:8000");
+        $host = getenv("OAS_URL");
+        if ($host === false) {
+            trigger_error("OAS_URL environment variable is not set.");
+        }
+        $this->config->setHost($host);
+        //$this->config->setHost("http://localhost:8000");
+        //$this->config->setHost("https://oas.mieuxvoter.fr");
     }
 
     /**
