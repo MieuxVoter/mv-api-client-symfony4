@@ -13,6 +13,7 @@
 {% set canParticipate = true %}
 {% endif %}
 
+
 <div class="flex-row">
     <h1>
         {% include 'partials/scope_emote.html.twig' with {'poll': poll} %}
@@ -25,16 +26,20 @@
 
             <h3>&nbsp;</h3>{# use margins instead of this hack #}
 
-{% if canParticipate %}
+            {% if canParticipate -%}
             <a
                     href="{{ path('create_ballot_html', {'pollId': poll.uuid}) }}"
                     class="btn btn-primary btn-lg"
             >
                 {{ 'action.participate.label' | trans }}
             </a>
-{% else %}
-            You cannot participate.
-{% endif %}
+            {% else %}
+            <p>
+                You cannot participate.
+                You need an invitation.
+                {{ 'page.poll.read.cannot_participate' | trans }}
+            </p>
+            {%- endif %}
 
         </div>
 
@@ -71,15 +76,19 @@
     </div>
 
 
-
-
 {% if poll.scope == 'private' %}
+
+    <hr>
+
     <p>
         {{ 'page.poll.read.invitation_only' | trans }}
     </p>
 
 {% if poll.canGenerateInvitations %}
-    <a href="{{ path('generate_invitations_csv', {'pollId': poll.uuid}) }}" class="btn btn-primary">
+    <a
+            href="{{ path('generate_invitations_csv', {'pollId': poll.uuid}) }}"
+            class="btn btn-primary"
+    >
         {{ 'action.generate_invitations.label' | trans }}
     </a>
 {% endif %}

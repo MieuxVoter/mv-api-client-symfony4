@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'page.result.title' | trans({'subject': poll.subject}) }}{% endblock %}
 
+{% block opengraph %}
+{{ pollOpenGraph | raw }}
+{% endblock %}
+
 {% block main_container %}
 
     {# XSS: it's OK to use raw here, since trans escapes vars for us #}

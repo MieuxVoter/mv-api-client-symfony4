@@ -6,9 +6,34 @@ security:
     providers:
         mvapi_users: { id: App\Security\UserProvider }
     firewalls:
+#        wtf:
+#            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+#            guard:
+#                authenticators:
+#                    - App\Security\ApiGuardAuthenticator
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+#        home:
+#            pattern: ^/(home[.]html)?$
+#            anonymous: true
+#        login:
+#            pattern: ^/login([.]html)?$
+#            anonymous: true
+#            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+#            guard:
+#                authenticators:
+#                    - App\Security\ApiGuardAuthenticator
+#        logout:
+#            pattern: ^/logout([.]html)?$
+#            anonymous: true
+#        registration:
+#            pattern: ^/(quick-)?register[.]html$
+#            anonymous: true
+#            security: false
+#        polls_index:
+#            pattern: ^/polls([.]html)?$
+#            anonymous: true
         main:
             anonymous: true
             provider: mvapi_users
@@ -23,7 +48,7 @@ security:
             # Disabling this to try out sessions instead of accounts.
             # This way we don't have to have a database on this client.
 #            form_login:
-#                login_path: /login.html
+#                login_path: /gate.html
 #                check_path: /login.html
 #                default_target_path: /profile.html
 #                username_parameter: username
@@ -36,4 +61,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+        - { path: '^/profile', roles: ROLE_USER }
+        - { path: '^/login([.]html)?$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/(home([.]html)?)?$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
