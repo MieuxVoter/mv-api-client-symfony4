@@ -1,0 +1,27 @@
+# Run with:
+#   docker-compose up
+
+version: '3.8'
+services:
+    # We do not need a database, for now,
+    # since we are but a client for the OpenAPI.
+    # We might need one later, but perhaps a redis will suffice.
+    #mysql:
+        #image: mysql:8.0
+        #restart: on-failure
+        #environment:
+        #MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        #MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        restart: on-failure
+        #user: ${LOCAL_USER}
+
+    nginx:
+        image: nginx:1.19.0-alpine
+        restart: on-failure
+        depends_on:
+            - php 
