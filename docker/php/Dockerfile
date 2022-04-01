@@ -2,16 +2,27 @@
 
 FROM php:7.4-fpm
 
-RUN docker-php-ext-install pdo_mysql
-
-RUN pecl install apcu
-
 RUN apt-get update && \
     apt-get install -y \
-    libzip-dev
+    ssh \
+    git \
+    libyaml-dev \
+    libzip-dev \
+    libmagickwand-dev \
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install zip
+RUN pecl install apcu
+RUN pecl install imagick
+RUN pecl install yaml
+
+# Use "enable" for the extensions installed via pecl
 RUN docker-php-ext-enable apcu
+RUN docker-php-ext-enable imagick
+RUN docker-php-ext-enable yaml
+
+# Use "install" for the others
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install zip
 
 WORKDIR /usr/src/app
 
