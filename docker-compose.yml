@@ -1,7 +1,7 @@
 # Run with:
 #   docker-compose up
 
-version: '3.8'
+version: '3.4'
 services:
     # We do not need a database, for now,
     # since we are but a client for the OpenAPI.

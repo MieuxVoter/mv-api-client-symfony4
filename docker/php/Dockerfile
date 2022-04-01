@@ -28,8 +28,12 @@ WORKDIR /usr/src/app
 
 COPY --chown=1000:1000 . /usr/src/app
 
+RUN setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX /usr/src/app/cache /usr/src/app/logs
+RUN setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX /usr/src/app/cache /usr/src/app/logs
+
 RUN PATH=$PATH:/usr/src/app/vendor/bin:bin
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN composer install --no-scripts --prefer-dist --no-interaction
+
