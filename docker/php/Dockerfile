@@ -4,7 +4,7 @@ FROM php:7.4-fpm
 
 RUN apt-get update && \
     apt-get install -y \
-#    acl \
+    acl \
     ssh \
     git \
     libyaml-dev \
@@ -32,8 +32,8 @@ COPY --chown=1000:1000 . /usr/src/app
 RUN mkdir /usr/src/app/var
 RUN chown 1000:1000 /usr/src/app/var
 
-#RUN setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX /usr/src/app/var
-#RUN setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX /usr/src/app/var
+RUN setfacl -R -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX /usr/src/app/var
+RUN setfacl -dR -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX /usr/src/app/var
 
 #RUN setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX /usr/src/app/cache /usr/src/app/logs
 #RUN setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX /usr/src/app/cache /usr/src/app/logs
