@@ -40,8 +40,14 @@ class ApiFactory
     public function __construct()
     {
         $this->config = Configuration::getDefaultConfiguration();
-        $host = getenv("OAS_URL");
-        if ($host === false) {
+        $host = null;
+        // Careful, getenv might return false here since the value is defined by .env
+        //$host = getenv("OAS_URL");
+        // Instead, get the value from $_ENV
+        if (isset($_ENV['OAS_URL'])) {
+            $host = $_ENV['OAS_URL'];
+        }
+        if ( ! $host) {
             trigger_error("OAS_URL environment variable is not set.");
         }
         $this->config->setHost($host);
