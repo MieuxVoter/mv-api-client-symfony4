@@ -26,7 +26,9 @@ services:
         restart: on-failure
         volumes:
             - 'public_assets:/usr/src/app/public'
-#          - './docker/public:/usr/src/app/public'
+        environment:
+            # Set to "dev" to enable the debug goodies
+            APP_ENV: prod
         #user: ${LOCAL_USER}
 
     nginx:
@@ -37,7 +39,6 @@ services:
             - "9001:80"
         volumes:
             - 'public_assets:/public:ro'
-#            - './docker/public:/public:ro'
             - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro'
         depends_on:
             - php
