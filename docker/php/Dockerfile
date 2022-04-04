@@ -15,7 +15,8 @@ RUN yarn install
 COPY assets assets/
 COPY webpack.config.js ./
 
-RUN yarn build
+RUN npx encore production
+#RUN yarn build
 
 
 # Docker configuration for this symfony4 project, with kind of special deps (imagick)
