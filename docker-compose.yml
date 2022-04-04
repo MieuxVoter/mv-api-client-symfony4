@@ -28,7 +28,7 @@ services:
             - 'public_assets:/usr/src/app/public'
         environment:
             # Set to "dev" to enable the debug goodies
-            APP_ENV: prod
+            APP_ENV: ${APP_ENV:-prod}
         #user: ${LOCAL_USER}
 
     nginx:
