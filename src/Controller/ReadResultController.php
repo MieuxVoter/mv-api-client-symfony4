@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Service\GradePalettePainter;
-use Miprem\Poll;
+use Miprem\Model\Poll;
 use Miprem\Renderer\OpenGraphRenderer;
 use Miprem\Renderer\SvgRenderer;
-use Miprem\Style;
-use Miprem\SvgConfig;
+use Miprem\Model\SvgConfig;
 use MjOpenApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +32,8 @@ final class ReadResultController extends AbstractController
         string $resultId,
         Request $request,
         GradePalettePainter $palette
-    ) : Response {
+    ): Response
+    {
         $pollId = $resultId; // TBD: Result id? (could be kept secret?)
         $pollApi = $this->getApiFactory()->getPollApi();
         $resultApi = $this->getApiFactory()->getResultApi();
@@ -49,7 +49,7 @@ final class ReadResultController extends AbstractController
 
         $grades = [];
         foreach ($poll->getGrades() as $grade) {
-            $grades['/grades/'.$grade->getUuid()] = $grade;
+            $grades['/grades/' . $grade->getUuid()] = $grade;
         }
 
         /** @var array<array<int>> $tally */
@@ -78,20 +78,19 @@ final class ReadResultController extends AbstractController
             ],
         ]);
 
-        $svg_config = SvgConfig::default()
+        $svg_config = SvgConfig::sample()
             ->setHeaderHeight(0)
             ->setPadding(0)
-            ->setSidebarWidth(0)
-        ;
-        $svg_style = new Style(<<<SVG_CSS
-/*
-svg {
-  border: 3px dashed chartreuse;
-}
-*/
-SVG_CSS
-        );
-        $svgRenderer = new SvgRenderer($svg_config, $svg_style);
+            ->setSidebarWidth(0);
+//        $svg_style = new Style(<<<SVG_CSS
+///*
+//svg {
+//  border: 3px dashed chartreuse;
+//}
+//*/
+//SVG_CSS
+//        );
+        $svgRenderer = new SvgRenderer($svg_config);
         $meritProfileSvg = $svgRenderer->render($mipremPoll);
 
         $ogRenderer = new OpenGraphRenderer(1200, 630);
