@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Grading;
 use App\Entity\Poll;
 use App\Form\PollType;
 use MjOpenApi\ApiException;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use function is_array;
 
 
 /** @noinspection PhpUnused */
@@ -55,11 +57,11 @@ final class CreatePollController extends AbstractController
         $amountOfProposals = PollType::DEFAULT_AMOUNT_OF_PROPOSALS;
 
         $poll = new Poll();
-        if (null !== $queryPoll && \is_array($queryPoll)) {
+        if (null !== $queryPoll && is_array($queryPoll)) {
             $poll->setSubject($queryPoll['subject'] ?? '');
 
         }
-        if (null !== $sentPoll && \is_array($sentPoll)) {
+        if (null !== $sentPoll && is_array($sentPoll)) {
             $amountOfProposals = $this->sanitizeAmountOfProposals($sentPoll[PollType::OPTION_AMOUNT_OF_PROPOSALS] ?? $amountOfProposals);
         }
         $poll->setAmountOfProposals($amountOfProposals);
@@ -81,7 +83,7 @@ final class CreatePollController extends AbstractController
         $shouldSend = $form->isSubmitted() && $form->isValid();
 
         // The user requested more proposals, don't send the form
-        if ($form->getClickedButton() === $form->get('moreProposals')){
+        if ($form->getClickedButton() === $form->get('moreProposals')) {
             $options[PollType::OPTION_AMOUNT_OF_PROPOSALS] = $this->sanitizeAmountOfProposals(
                 $options[PollType::OPTION_AMOUNT_OF_PROPOSALS]
                 +
@@ -119,7 +121,7 @@ final class CreatePollController extends AbstractController
                 if (empty($proposalTitle)) {
                     continue;
                 }
-                
+
                 $proposalCreate = new ProposalCreate();
                 //$proposalCreate->setPoll($pollCreate);  // DO NOT ENABLE THIS, IT WILL BLOW UP
                 $proposalCreate->setTitle($proposalTitle);
@@ -128,22 +130,21 @@ final class CreatePollController extends AbstractController
             }
             $pollCreate->setProposals($proposalCreates);
 
-            $gradingPreset = $poll->getGradingPreset();
-            if ('custom' === $gradingPreset) {
+            $gradingPresetName = $poll->getGradingPreset();
+            if ('custom' === $gradingPresetName) {
                 // TODO : support custom, user-defined grades
             } else {
-                $amountOfGrades = 6;
+                $gradingPreset = $this->findGradingFromPresetName($gradingPresetName);
 
                 $gradeCreates = [];
-                for ($i=0 ; $i<$amountOfGrades ; $i++) {
+                foreach ($gradingPreset->getNames() as $i => $gradeName) {
                     $gradeCreate = new GradeCreate();
                     $gradeCreate->setLevel($i);
-                    $gradeCreate->setName($this->trans(
-                        "${gradingPreset}.grades.${i}", [], 'grades'
-                    ));
+                    $gradeCreate->setName($gradeName);
 
                     $gradeCreates[] = $gradeCreate;
                 }
+
                 $pollCreate->setGrades($gradeCreates);
             }
 
@@ -188,4 +189,43 @@ final class CreatePollController extends AbstractController
             (int) $amount
         );
     }
+
+
+    private function findGradingFromPresetName(string $presetName): Grading
+    {
+        // Here we could go look into a (file-based?) database of grading presets
+        // For now we'll just hardcode them here ; sorry about that.
+        return $this->makeGradingFromPresetName($presetName);
+    }
+
+
+    private function makeGradingFromPresetName(string $presetName): Grading
+    {
+        // This could also go into its own service.
+
+        $sensible_default_amount = 6; // what's a sensible default to return here ?
+        $matches = array();
+        $amount_matched = preg_match(
+            "!(?<amount>[0-9]+)$!", // later on match color palette in here as well?
+            $presetName,
+            $matches
+        );
+        if ($amount_matched === false || $amount_matched === 0) {
+            $amountOfGrades = $sensible_default_amount;
+        } else {
+            $amountOfGrades = $matches['amount'];
+        }
+
+        $gradesNames = [];
+        for ($i = 0; $i < $amountOfGrades; $i++) {
+            $gradesNames[] = $this->trans(
+                "${presetName}.grades.${i}", [], 'grades'
+            );
+        }
+
+        $grading = new Grading($gradesNames);
+
+        return $grading;
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Form\PollType;
 use Symfony\Component\Validator\Constraints as Assert;
+use function in_array;
 
 
 class Poll
@@ -12,6 +13,7 @@ class Poll
      * The order matters ; they will be displayed in that order.
      * These must have definitions in the translations' `grades` domain.
      * Only latin letters, numbers and underscores.  NO DOTS.
+     * The amount suffix is important aw well, we use it to know how many grades there are.
      */
     const GRADING_PRESETS = [
         'quality_2',
