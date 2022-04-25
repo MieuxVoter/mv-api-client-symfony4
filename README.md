@@ -13,6 +13,7 @@ A client for MieuxVoter's OpenApi specifications focused on _accessibility_.
 
 - [x] Majority Judgment Polls
 - [x] Consumable Invitation Links
+- [x] Inclusive Design (hopefully)
 - [x] Designed for blazing fast keyboard usage
 
 ## Overview
@@ -26,6 +27,7 @@ A client for MieuxVoter's OpenApi specifications focused on _accessibility_.
 
 - [ ] Send Invitation Links by Email
 - [ ] OpenGraph
+- [ ] Proxy pass IP
 - [ ] Follow another user
 - [ ] Suggest opinion from followed users
 - [ ] Handle 404 errors
