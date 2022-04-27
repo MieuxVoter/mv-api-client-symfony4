@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+/** @noinspection PhpUnused */
 /**
  * For now the result id is the poll id.
  * But results may be 'hidden' and have their own id.

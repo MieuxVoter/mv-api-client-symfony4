@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Factory;
 
-
 use App\Entity\User;
 use App\Security\UserSession;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use MjOpenApi\Api\BallotApi;
 use MjOpenApi\Api\InvitationApi;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\Security;
 
 
 /**
- * Helper Service to configure communication with MV OpenAPI.
+ * Helper Service to configure communication with MV OpenAPI OASv3.
  *
  * Class ApiFactory
  * @package App\Factory
@@ -64,6 +65,7 @@ class ApiFactory
         $this->security = $security;
     }
 
+    /** @noinspection PhpUnused */
     /**
      * @required → Called by the Dependency Injection Container
      * @param UserSession $session
@@ -88,14 +90,14 @@ class ApiFactory
 //        $this->config->setAccessToken($token);
     }
 
-    protected function getClient() : ClientInterface
+    protected function getClient(): ClientInterface
     {
         $user = $this->security->getUser();
         if ($user instanceof User) {
             $this->setApiToken($user->getApiToken());
         }
 
-        return new \GuzzleHttp\Client();
+        return new Client();
     }
 
     /**
@@ -106,37 +108,37 @@ class ApiFactory
         return $this->config;
     }
 
-    public function getUserApi() : UserApi
+    public function getUserApi(): UserApi
     {
         $apiInstance = new UserApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
-    public function getTokenApi() : TokenApi
+    public function getTokenApi(): TokenApi
     {
         $apiInstance = new TokenApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
-    public function getPollApi() : PollApi
+    public function getPollApi(): PollApi
     {
         $apiInstance = new PollApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
-    public function getBallotApi() : BallotApi
+    public function getBallotApi(): BallotApi
     {
         $apiInstance = new BallotApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
-    public function getResultApi() : ResultApi
+    public function getResultApi(): ResultApi
     {
         $apiInstance = new ResultApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
-    public function getInvitationApi() : InvitationApi
+    public function getInvitationApi(): InvitationApi
     {
         $apiInstance = new InvitationApi($this->getClient(), $this->getConfig());
         return $apiInstance;
