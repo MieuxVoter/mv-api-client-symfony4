@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Grading;
 use App\Entity\Poll;
 use App\Form\PollType;
 use MjOpenApi\ApiException;
@@ -34,6 +33,7 @@ final class CreatePollController extends AbstractController
 {
 
     use Has\ApiAccess;
+    use Has\Gradings;
     use Has\Translator;
     use Has\UserSession;
 
@@ -188,44 +188,6 @@ final class CreatePollController extends AbstractController
             PollType::MAXIMUM_AMOUNT_OF_PROPOSALS,
             (int) $amount
         );
-    }
-
-
-    private function findGradingFromPresetName(string $presetName): Grading
-    {
-        // Here we could go look into a (file-based?) database of grading presets
-        // For now we'll just hardcode them here ; sorry about that.
-        return $this->makeGradingFromPresetName($presetName);
-    }
-
-
-    private function makeGradingFromPresetName(string $presetName): Grading
-    {
-        // This could also go into its own service.
-
-        $sensible_default_amount = 6; // what's a sensible default to return here ?
-        $matches = array();
-        $amount_matched = preg_match(
-            "!(?<amount>[0-9]+)$!", // later on match color palette in here as well?
-            $presetName,
-            $matches
-        );
-        if ($amount_matched === false || $amount_matched === 0) {
-            $amountOfGrades = $sensible_default_amount;
-        } else {
-            $amountOfGrades = $matches['amount'];
-        }
-
-        $gradesNames = [];
-        for ($i = 0; $i < $amountOfGrades; $i++) {
-            $gradesNames[] = $this->trans(
-                "${presetName}.grades.${i}", [], 'grades'
-            );
-        }
-
-        $grading = new Grading($gradesNames);
-
-        return $grading;
     }
 
 }
