@@ -48,7 +48,7 @@ class ApiFactory
         if (isset($_ENV['OAS_URL'])) {
             $host = $_ENV['OAS_URL'];
         }
-        if ( ! $host) {
+        if (!$host) {
             trigger_error("OAS_URL environment variable is not set.");
         }
         $this->config->setHost($host);
@@ -59,6 +59,13 @@ class ApiFactory
     /**
      * @required → Called by the Dependency Injection Container
      * @param Security $security
+     *
+     * Ongoing Experiment to see when this annotation will actually work in here in IDEs
+     * - KO: PhpStorm 2019.2
+     * - KO: 5+ Notepads
+     * - KO: …
+     * - OK: ?
+     * @noinspection PhpUnused
      */
     public function setSecurity(Security $security): void
     {
