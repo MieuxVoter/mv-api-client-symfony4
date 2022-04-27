@@ -4,9 +4,10 @@
 namespace App\Service;
 
 
-use Miprem\Renderer\SvgRenderer;
-use Miprem\Style;
-use Miprem\SvgConfig;
+//use Miprem\Renderer\SvgRenderer;
+//use Miprem\Style;
+//use Miprem\SvgConfig;
+
 
 class GradePalettePainter
 {
