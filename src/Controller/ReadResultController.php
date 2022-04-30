@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Service\GradePalettePainter;
-use Miprem\Model\Poll;
+use Miprem\Model\Poll as RenderedPoll;
 use Miprem\Renderer\OpenGraphRenderer;
 use Miprem\Renderer\SvgRenderer;
 use Miprem\Model\SvgConfig;
 use MjOpenApi\ApiException;
+use MjOpenApi\Model\GradeRead;
+use MjOpenApi\Model\ProposalResultRead;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ReadResultController extends AbstractController
 {
     use Has\ApiAccess;
+    use Has\Gradings;
 
     public function __invoke(
         string $resultId,
@@ -53,33 +56,32 @@ final class ReadResultController extends AbstractController
             $grades['/grades/' . $grade->getUuid()] = $grade;
         }
 
-        /** @var array<array<int>> $tally */
-        $tally = [];
+        /** @var array<array<int>> $pollTally */
+        $pollTally = [];
         foreach ($result->getLeaderboard() as $proposalResultRead) {
             $proposalTally = [];
             foreach ($proposalResultRead->getGradesResults() as $gradeResult) {
                 $proposalTally[] = $gradeResult->getTally();
             }
-            $tally[] = array_reverse($proposalTally);
+            // Wait… what?  Why do we need to reverse here?  Is it Miprem's API?
+            //$pollTally[] = $proposalTally;
+            $pollTally[] = array_reverse($proposalTally);
         }
 
-        $mipremPoll = Poll::fromArray([
-//            'default_grades' => [
-//                ['label' => 'Reject'],
-//                ['label' => 'Insufficient'],
-//                ['label' => 'Poor'],
-//                ['label' => 'Fair'],
-//                ['label' => 'Good'],
-//                ['label' => 'Very good'],
-//                ['label' => 'Excellent'],
-//            ],
-            'tally' => $tally,
+        $renderedPoll = RenderedPoll::fromArray([
+            'grades' => array_map(function (GradeRead $grade) {
+                return ['label' => $grade->getName()];
+            }, $poll->getGrades()),
+            'proposals' => array_map(function (ProposalResultRead $proposal) {
+                return ['label' => $proposal->getProposal()->getTitle()];
+            }, $result->getLeaderboard()),
+            'tally' => $pollTally,
             'subject' => [
                 'label' => $poll->getSubject(),
             ],
         ]);
 
-        $svg_config = SvgConfig::sample()
+        $svgConfig = SvgConfig::sample()
             ->setHeaderHeight(0)
             ->setPadding(0)
             ->setSidebarWidth(0);
@@ -91,11 +93,11 @@ final class ReadResultController extends AbstractController
 //*/
 //SVG_CSS
 //        );
-        $svgRenderer = new SvgRenderer($svg_config);
-        $meritProfileSvg = $svgRenderer->render($mipremPoll);
+        $svgRenderer = new SvgRenderer($svgConfig);
+        $meritProfileSvg = $svgRenderer->render($renderedPoll);
 
         $ogRenderer = new OpenGraphRenderer(1200, 630);
-        $pollOpenGraph = $ogRenderer->render($mipremPoll);
+        $pollOpenGraph = $ogRenderer->render($renderedPoll);
 
         return $this->render('poll/result.html.twig', [
             'poll' => $poll,
