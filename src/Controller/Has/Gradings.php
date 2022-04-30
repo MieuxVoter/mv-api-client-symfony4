@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Has;
 
 use App\Entity\Grading;
-use App\Service\GradingsFactory;
+use App\Factory\GradingsFactory;
 
 
 /**
