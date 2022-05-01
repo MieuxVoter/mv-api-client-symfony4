@@ -69,9 +69,9 @@ final class ReadResultController extends AbstractController
         }
 
         $renderedPoll = RenderedPoll::fromArray([
-            'grades' => array_map(function (GradeRead $grade) {
+            'grades' => array_reverse(array_map(function (GradeRead $grade) {
                 return ['label' => $grade->getName()];
-            }, $poll->getGrades()),
+            }, $poll->getGrades())),
             'proposals' => array_map(function (ProposalResultRead $proposal) {
                 return ['label' => $proposal->getProposal()->getTitle()];
             }, $result->getLeaderboard()),
