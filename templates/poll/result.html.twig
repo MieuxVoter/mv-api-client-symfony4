@@ -15,7 +15,7 @@
 
     {{ meritProfileSvg | raw }}
 
-{% for i, proposalResult in result.leaderboard %}
+{% for proposalIndex, proposalResult in result.leaderboard %}
         <details class="proposal-result">
             <summary>
                 <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
@@ -54,34 +54,34 @@
         </details>
 {% endfor %}
 
-{% for i, proposalResult in result.leaderboard %}
-        <div class="row">
-            <div class="flex-row mr-2">
-                <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
-                    <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
-                    {%- if 1 == proposalResult.rank -%}
-                        &#129351;
-                    {%- elseif 2 == proposalResult.rank -%}
-                        &#129352;
-                    {%- elseif 3 == proposalResult.rank -%}
-                        &#129353;
-                    {%- else -%}
-                        &#127941;
-                    {%- endif -%}
-                    </span>
-                    {{ proposalResult.proposal.title }}
-                </h3>
-            </div>
-            <div class="flex-grow">
-                <span>
-{% for gradeResult in proposalResult.gradesResults %}
-                    {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}
-                    {{- loop.last ? '' : ',' }}
-{% endfor %}
-                </span>
-            </div>
-        </div>
-{% endfor %}
+{#{% for i, proposalResult in result.leaderboard %}#}
+{#        <div class="row">#}
+{#            <div class="flex-row mr-2">#}
+{#                <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">#}
+{#                    <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">#}
+{#                    {%- if 1 == proposalResult.rank -%}#}
+{#                        &#129351;#}
+{#                    {%- elseif 2 == proposalResult.rank -%}#}
+{#                        &#129352;#}
+{#                    {%- elseif 3 == proposalResult.rank -%}#}
+{#                        &#129353;#}
+{#                    {%- else -%}#}
+{#                        &#127941;#}
+{#                    {%- endif -%}#}
+{#                    </span>#}
+{#                    {{ proposalResult.proposal.title }}#}
+{#                </h3>#}
+{#            </div>#}
+{#            <div class="flex-grow">#}
+{#                <span>#}
+{#{% for gradeResult in proposalResult.gradesResults %}#}
+{#                    {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}#}
+{#                    {{- loop.last ? '' : ',' }}#}
+{#{% endfor %}#}
+{#                </span>#}
+{#            </div>#}
+{#        </div>#}
+{#{% endfor %}#}
 
         <section class="row row-cols-1">
             <h2>
