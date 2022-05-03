@@ -27,8 +27,11 @@ services:
         volumes:
             - 'public_assets:/usr/src/app/public'
         environment:
+            BANANA: teapot
             # Set to "dev" to enable the debug goodies
-            APP_ENV: ${APP_ENV:-prod}
+            #APP_ENV: dev
+            # Don't use this, since docker-compose ignores .env.local
+            #APP_ENV: ${APP_ENV:-prod}
         #user: ${LOCAL_USER}
 
     nginx:
