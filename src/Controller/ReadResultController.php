@@ -83,7 +83,7 @@ final class ReadResultController extends AbstractController
 
         $svgConfig = SvgConfig::sample()
             ->setHeaderHeight(0)
-            ->setPadding(0)
+            ->setPadding(10)
             ->setSidebarWidth(0);
 //        $svg_style = new Style(<<<SVG_CSS
 ///*

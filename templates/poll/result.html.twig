@@ -1,5 +1,21 @@
 {% extends 'base.html.twig' %}
 
+{#
+
+This page has yet to be designed. (and then made)
+
+Ideas
+-----
+
+- Graphs : Merit Profile
+- Graphs : Opinion "Profile" (a better word, anyone?)
+- More Graphs
+- Interact with Graphs : filters
+-
+
+
+#}
+
 {% block title %}{{ 'page.result.title' | trans({'subject': poll.subject}) }}{% endblock %}
 
 {% block opengraph %}
@@ -13,13 +29,12 @@
 
     <div class="container">
 
-    {{ meritProfileSvg | raw }}
-
 {% for proposalIndex, proposalResult in result.leaderboard %}
         <details class="proposal-result">
             <summary>
                 <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
                     <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">
+                    {# TBD: pertinence of emotes in tts (need someone using them) #}
                     {%- if 1 == proposalResult.rank -%}
                         &#129351;
                     {%- elseif 2 == proposalResult.rank -%}
@@ -33,11 +48,11 @@
                     {{ proposalResult.proposal.title }}
                 </h3>
 
-{#                {% include 'partials/single_merit_profile.htm.twig' with {#}
-{#                    proposalResult: proposalResult,#}
-{#                    grades: grades,#}
-{#                    palette: palette,#}
-{#                } only %}#}
+                {% include 'partials/single_merit_profile.htm.twig' with {
+                    proposalResult: proposalResult,
+                    grades: grades,
+                    palette: palette,
+                } only %}
 
             </summary>
             <div>
@@ -46,6 +61,7 @@
                     Rank: {{ proposalResult.rank }}
                     <br>
 {% for gradeResult in proposalResult.gradesResults %}
+                    {# there gotta be HTML5 tags for this to keep it semantic #}
                     {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}
                     {{- loop.last ? '' : ',' }}
 {% endfor %}
@@ -53,6 +69,7 @@
             </div>
         </details>
 {% endfor %}
+
 
 {#{% for i, proposalResult in result.leaderboard %}#}
 {#        <div class="row">#}
@@ -90,11 +107,17 @@
             <p>
                 A total of ? judgments were cast by ? participants.  (todo)
             </p>
+{#    A total of {{ result.tally }} judgments were cast by {{ result.participants }} participants.#}
+        </section>
+
+        <section class="row row-cols-1">
+            <h2>
+                {{ 'page.result.analysis.title' | trans }}
+            </h2>
+            {# raw: Trusting Miprem (did a review) #}
+            {{ meritProfileSvg | raw }}
         </section>
 
     </div>
-{#<p>#}
-{#    A total of {{ result.tally }} judgments were cast by {{ result.participants }} participants.#}
-{#</p>#}
 
 {% endblock %}

@@ -38,6 +38,8 @@ page:
     rank: Rank {{ rank }}
     summary:
       title: Summary
+    analysis:
+      title: Analysis
   invitation:
     title: "Invitation for \"{{ invitation.poll.subject }}\""
     title_invalid: Invalid Invitation
