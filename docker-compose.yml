@@ -30,7 +30,8 @@ services:
             BANANA: teapot
             # Set to "dev" to enable the debug goodies
             #APP_ENV: dev
-            # Don't use this, since docker-compose ignores .env.local
+            # Don't use this, since docker-compose loads .env and ignores .env.local
+            # This has happened to me too many times >.<
             #APP_ENV: ${APP_ENV:-prod}
         #user: ${LOCAL_USER}
 

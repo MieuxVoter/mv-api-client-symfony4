@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+/** @noinspection PhpUnused */
 /**
  * @Route(
  *     path="/polls/{pollId}/aftermath.html",
@@ -36,7 +36,8 @@ final class ConfirmBallotCreationController extends AbstractController
             if (Response::HTTP_NOT_FOUND == $e->getCode()) {
                 throw new NotFoundHttpException("No poll found.");
             }
-            throw $e;
+            return $this->renderApiException($e, $request);
+//            throw $e;
         }
         ///////////////////
 
