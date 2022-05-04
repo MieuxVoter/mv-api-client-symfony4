@@ -8,11 +8,11 @@
         {{ 'page.error.api_exception.title' | trans }}
     </h1>
 
-    {# todo: only if env is not prod #}
+{% if isDev %}
     <div class="alert alert-danger">
         {{ apiResponse | raw }}
     </div>
-    {# ///////////////////////////// #}
+{% endif %}
 
 {% include "partials/spinner.html.twig" only %}
 

@@ -77,6 +77,7 @@ trait ApiAccess
      * We need a way to get multiple Services, this can't be in this Trait.
      * Perhaps it's okay to load the services we need, on second thought.
      *
+     *
      * @param ApiException $exception
      * @return Response
      */
@@ -95,10 +96,9 @@ trait ApiAccess
 
         $apiResponse = $this->getApiExceptionAdapter()->toHtml($exception);
 
-        // todo: fetch the env, react accordingly
-
         return $this->render('error/api_exception.html.twig', [
             'apiResponse' => $apiResponse,
+            'isDev' => $request->server->get('APP_ENV') == 'dev',
         ]);
     }
 
