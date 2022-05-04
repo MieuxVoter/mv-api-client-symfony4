@@ -85,7 +85,9 @@ trait ApiAccess
         $data = $this->getApiExceptionData($exception);
 
         if (isset($data['code']) && (Response::HTTP_UNAUTHORIZED == $data['code'])) {
+            // We should discriminate JWT token expiration from other 401 (upstream)
             $this->userSession->logout();
+            session_destroy(); // bit harsh, but forces logout
             $this->getFlashBag()->add('warning', $this->trans("flash.error.requires_authentication"));
             // todo: redirect to /gate.html
             return new RedirectResponse("/login.html?redirect=".urlencode($request->getRequestUri()));
