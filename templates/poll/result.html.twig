@@ -62,15 +62,14 @@ Ideas
                     <br>
                     Majority Grade: {{ grades['/grades/'~proposalResult.median_grade.uuid].name }}
                     <br>
+{# Can perhaps use loop.first with filter instead #}
+{#{% for gradeResult in proposalResult.gradesResults if gradeResult.tally > 0 %}#}
 {% set firstInGradesLoop = true %}
 {% for gradeResult in proposalResult.gradesResults %}
-{% if gradeResult.tally > 0 -%}
-{% if not firstInGradesLoop %}
-                    {{- ', ' -}}
-{% else -%}
-{%- set firstInGradesLoop = false -%}
-{%- endif -%}
+{%- if gradeResult.tally > 0 -%}
+                    {{ firstInGradesLoop ? '' : ', ' -}}
                     {{ gradeResult.tally }} {{ grades[gradeResult.grade].name }}
+{%- if firstInGradesLoop %}{% set firstInGradesLoop = false %}{% endif -%}
 {%- endif -%}
 {% endfor %}
 

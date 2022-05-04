@@ -126,9 +126,9 @@ trait ApiAccess
         $credentials->setUsernameOrEmail($userRead->getUsername());
         $credentials->setPassword($passwordPlain);
 
-        $token = null;
+        $apiToken = null;
         try {
-            $token = $tokenApi->postCredentialsItem($credentials);
+            $apiToken = $tokenApi->postCredentialsItem($credentials);
         } catch (ApiException $e) {
             // Registration was a success, but login was not.
             return $this->renderApiException($e, $request);
@@ -136,23 +136,26 @@ trait ApiAccess
 
         $user = new User();
         $user->setUsername($userRead->getUsername());
-        $user->setApiToken($token->getToken());
+        $user->setApiToken($apiToken->getToken());
 
         $this->userSession->login(
             $userRead->getUuid(),
             $userRead->getUsername(),
-            $token->getToken()
+            $apiToken->getToken()
         );
-        $this->getApiFactory()->setApiToken($token->getToken());
+        $this->getApiFactory()->setApiToken($apiToken->getToken());
 
         // Authenticate with Symfony
-        $t = new UsernamePasswordToken($user, null, 'mvapi_users', $user->getRoles());
-        $guard->authenticateWithToken($t, $request, 'mvapi_users');
+        $sfToken = new UsernamePasswordToken($user, null, 'mvapi_users', $user->getRoles());
+        $guard->authenticateWithToken($sfToken, $request, 'mvapi_users');
 
         // Wipe the memory…
-        $password = uniqid();
         $passwordPlain = uniqid();
-        $token = null;
+        $apiToken = md5($passwordPlain);
+        unset($passwordPlain);
+        unset($apiToken);
+        unset($sfToken);
+        // /!\ … nope (but better than nothing).  Use a proper mem0, there's one in php exts.
 
         return true;
     }
