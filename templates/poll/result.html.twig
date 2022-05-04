@@ -60,11 +60,20 @@ Ideas
                 <p>
                     Rank: {{ proposalResult.rank }}
                     <br>
+                    Majority Grade: {{ grades['/grades/'~proposalResult.median_grade.uuid].name }}
+                    <br>
+{% set firstInGradesLoop = true %}
 {% for gradeResult in proposalResult.gradesResults %}
-                    {# there gotta be HTML5 tags for this to keep it semantic #}
-                    {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}
-                    {{- loop.last ? '' : ',' }}
+{% if gradeResult.tally > 0 -%}
+{% if not firstInGradesLoop %}
+                    {{- ', ' -}}
+{% else -%}
+{%- set firstInGradesLoop = false -%}
+{%- endif -%}
+                    {{ gradeResult.tally }} {{ grades[gradeResult.grade].name }}
+{%- endif -%}
 {% endfor %}
+
                 </p>
             </div>
         </details>
