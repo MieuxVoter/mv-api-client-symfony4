@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Adapter\ApiExceptionAdapter;
@@ -28,7 +30,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
  */
 final class CreateBallotController extends AbstractController
 {
-
     use Has\ApiAccess;
 
     public function __invoke(

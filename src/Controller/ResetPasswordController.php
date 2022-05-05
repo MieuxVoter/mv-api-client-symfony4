@@ -18,6 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 /**
+ *
+ *
+ *
+ *
+ * FOR LATER USAGE
+ *
+ *
+ *
+ *
  * @Route("/reset-password/{token}", name="reset_password")
  */
 final class ResetPasswordController
