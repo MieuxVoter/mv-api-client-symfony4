@@ -63,6 +63,13 @@ page:
     register_title: No Account?
     register_disclaimer: |
       Read the Terms of Service, and if you consent, then:
+  claim:
+    title: Claim {{ user.username }} before it expires
+    rationale: |
+      By setting a password or email (todo) to that username,
+      you will be able to log in later after your session expires.
+
+      Claiming a username allows you save your preferences and to follow and delegate to other users (todo upstream).
   error:
     api_exception:
       title: Ooops!  An error occurred with the API.
@@ -87,6 +94,8 @@ action:
     title: By signing up you accept our Terms of Service
   login:
     label: Login
+  claim:
+    label: Save
   forgot_password:
     label: Forgotten password?
   participate_to_private_poll:

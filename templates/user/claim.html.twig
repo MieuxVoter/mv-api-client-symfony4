@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{# See ClaimUserController #}
+
+{% block title %}{{ 'page.claim.title' | trans({'user': app.user}) }}{% endblock %}
+
+{% block main_container %}
+
+{#    <h1>{{ 'page.claim.title' | trans }}</h1>#}
+
+    <h1>{{ 'page.claim.title' | trans({'user': app.user}) }}</h1>
+
+    <p>{{ 'page.claim.rationale' | trans }}</p>
+
+    <section>
+
+{{ form(password_form) }}
+
+{# Detailed way, we'll need that later #}
+{#{{ form_start(password_form) }}#}
+{#        {{ form_errors(password_form) }}#}
+
+{#        {{ form_row(password_form.username) }}#}
+{#        {{ form_row(password_form.email) }}#}
+{#        {{ form_row(password_form.password) }}#}
+{#        {{ form_row(password_form.password_confirm) }}#}
+{#        {{ form_row(password_form.cookie_consent) }}#}
+{#        {{ form_row(password_form.eula_agreement) }}#}
+
+{#        {{ form_row(password_form.save) }}#}
+{#{{ form_end(password_form) }}#}
+
+    </section>
+{% endblock %}
