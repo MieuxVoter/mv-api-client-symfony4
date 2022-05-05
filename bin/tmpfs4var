@@ -5,7 +5,7 @@
 #
 # Unmount when done with:
 #     umount ./var
-# Content of ./var will be lost!
+# Content of ./var will be lost! -- SQLITE database is in there
 
 USER_ID=$(id -u `whoami`)
 GROUP_ID=$(id -g `whoami`)
