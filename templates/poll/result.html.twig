@@ -79,43 +79,13 @@ Ideas
 {% endfor %}
 
 
-{#{% for i, proposalResult in result.leaderboard %}#}
-{#        <div class="row">#}
-{#            <div class="flex-row mr-2">#}
-{#                <h3 title="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">#}
-{#                    <span aria-label="{{ 'page.result.rank' | trans({'rank': proposalResult.rank}) }}">#}
-{#                    {%- if 1 == proposalResult.rank -%}#}
-{#                        &#129351;#}
-{#                    {%- elseif 2 == proposalResult.rank -%}#}
-{#                        &#129352;#}
-{#                    {%- elseif 3 == proposalResult.rank -%}#}
-{#                        &#129353;#}
-{#                    {%- else -%}#}
-{#                        &#127941;#}
-{#                    {%- endif -%}#}
-{#                    </span>#}
-{#                    {{ proposalResult.proposal.title }}#}
-{#                </h3>#}
-{#            </div>#}
-{#            <div class="flex-grow">#}
-{#                <span>#}
-{#{% for gradeResult in proposalResult.gradesResults %}#}
-{#                    {{ grades[gradeResult.grade].name }} : {{ gradeResult.tally }}#}
-{#                    {{- loop.last ? '' : ',' }}#}
-{#{% endfor %}#}
-{#                </span>#}
-{#            </div>#}
-{#        </div>#}
-{#{% endfor %}#}
-
         <section class="row row-cols-1">
-            <h2>
-                {{ 'page.result.summary.title' | trans }}
-            </h2>
+            <h2>{{ 'page.result.summary.title' | trans }}</h2>
             <p>
-                A total of ? judgments were cast by ? participants.  (todo)
+                A total of __ judgments were cast by __ participants.  (todo upstream)
+                {# … waiting for upstream to provide the analysis data #}
+{#    A total of {{ result.analysis.amountOfJudgments }} judgments were cast by {{ result.amountOfParticipants }} participants.#}
             </p>
-{#    A total of {{ result.tally }} judgments were cast by {{ result.participants }} participants.#}
         </section>
 
         <section class="row row-cols-1">
@@ -124,6 +94,20 @@ Ideas
             </h2>
             {# raw: Trusting Miprem (did a review) #}
             {{ meritProfileSvg | raw }}
+        </section>
+
+        <hr>
+
+        <section class="row row-cols-1">
+{#            <h2>#}
+{#                {{ 'page.result.navigation.title' | trans }}#}
+{#            </h2>#}
+            <p>
+                {% set urlToPoll = url('read_poll_html', {'pollId': poll.uuid}) %}
+                <a href="{{ urlToPoll }}" class="btn btn-lg btn-primary input-group-btn">
+                    {{ 'button.back_to_poll' | trans }}
+                </a>
+            </p>
         </section>
 
     </div>
