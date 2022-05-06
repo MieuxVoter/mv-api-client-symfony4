@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\ClaimUserType;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\UserEdit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +33,7 @@ class ClaimUserController extends AbstractController
     ): Response
     {
         $session_user = $this->getUserSession()->getUser();
+        /** @var User $user */
         $user = $this->getUser();
         if (empty($user)) {
             return RedirectResponse::create($router->generate("home_html"));
@@ -76,6 +77,10 @@ class ClaimUserController extends AbstractController
 //                throw $e;
             }
 
+            // I don't like this very much
+            $this->getUserSession()->setUserProperty(QuickRegisterController::SESSION_ONE_CLICK, false);
+            $user->markClaimed();
+
             dump($user_response);
 
             $password = uniqid(); // fixme: use a proper memzero
@@ -83,6 +88,7 @@ class ClaimUserController extends AbstractController
             unset($form_data);
 
             // Redirect to where we were before we started claiming our account
+            // Perhaps we should highlight the new webpages that are available, like the profile.
             return $this->redirectToCrumb();
         }
 

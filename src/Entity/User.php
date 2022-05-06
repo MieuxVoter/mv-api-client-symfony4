@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Controller\QuickRegisterController;
+use App\Security\UserSession;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
@@ -11,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class User
  * @package App\Entity
  */
-class User implements UserInterface
+final class User implements UserInterface
 {
 
     /** @var string $username */
@@ -20,13 +22,16 @@ class User implements UserInterface
     /** @var string|null $api_token */
     private $api_token;
 
+    /** @var bool $claimed */
+    private $claimed = false;
+
     ///
     ///
 
     /**
      * @return string|null
      */
-    public function getApiToken() : ?string
+    public function getApiToken(): ?string
     {
         return $this->api_token;
     }
@@ -89,7 +94,6 @@ class User implements UserInterface
         return null;
     }
 
-
     /**
      * Returns the username used to authenticate the user.
      *
@@ -120,12 +124,25 @@ class User implements UserInterface
 //        $this->api_token = null;
     }
 
+    /**
+     * Probably a bad pattern here.  UserProvider calls this.
+     * @param UserSession $userSession
+     */
+    public function updateFromUserSession(UserSession $userSession)
+    {
+        $sessionUserData = $userSession->getUser();
+        $this->claimed = ! ($sessionUserData[QuickRegisterController::SESSION_ONE_CLICK] ?? false);
+    }
 
     public function isClaimed(): bool
     {
-        return true; // todo: nope ; use a service, not the user, since it does not have access to DiC ?
+        return $this->claimed;
     }
 
+    public function markClaimed(): void
+    {
+        $this->claimed = true;
+    }
 
     /**
      * Get a clone of this User, without the API token set.
@@ -136,19 +153,18 @@ class User implements UserInterface
      *
      * @return $this
      */
-    public function getSafeClone() : self
+    public function getSafeClone(): self
     {
         $user = clone $this;
         $user->setApiToken(null);
         return $user;
     }
 
-
     /**
-     * @deprecated
      * @return $this
+     * @deprecated
      */
-    public function getWithoutToken() : self
+    public function getWithoutToken(): self
     {
         return $this->getSafeClone();
     }

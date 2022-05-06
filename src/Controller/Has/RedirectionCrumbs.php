@@ -6,7 +6,6 @@ namespace App\Controller\Has;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use App\Service\RedirectionCrumbs as Crumbs;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -56,6 +55,7 @@ trait RedirectionCrumbs
     }
 
     /**
+     * @required
      * @param RouterInterface $router
      */
     public function setRouter(RouterInterface $router): void
@@ -64,18 +64,32 @@ trait RedirectionCrumbs
     }
 
     /**
+     * Creates a RedirectResponse to the latest crumb, and eats that crumb.
      *
      * @param string $defaultRoute
      * @return Response
      */
-    public function redirectToCrumb($defaultRoute = 'home'): Response
+    public function redirectToCrumb($defaultRoute = null): Response
     {
         $crumb = $this->getCrumbs()->consumeCrumb();
         if (empty($crumb)) {
-            $crumb = $this->getRouter()->generate($defaultRoute);
+            if ( ! empty($defaultRoute)) {
+                $crumb = $this->getRouter()->generate($defaultRoute);
+            } else {
+                $crumb = $this->getDefaultCrumb();
+            }
         }
 
         return RedirectResponse::create($crumb);
     }
 
+    /**
+     * Something to override in order to configure the default route.
+     *
+     * @return string
+     */
+    public function getDefaultCrumb(): string
+    {
+        return $this->getRouter()->generate('home');
+    }
 }

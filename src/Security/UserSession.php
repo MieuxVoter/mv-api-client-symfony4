@@ -24,6 +24,22 @@ final class UserSession
         $this->session = $session;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value Any primitive that can go into a PHP session variable.
+     */
+    public function setUserProperty($key, $value): void
+    {
+        $user = $this->getUser();
+        if (empty($user)) {
+            return;  // or throw
+        }
+
+        $user[$key] = $value;
+
+        $this->session->set(self::SESSION_USER, $user);
+    }
+
     public function login(string $id, string $username, string $token)
     {
         $this->session->set(self::SESSION_USER, [

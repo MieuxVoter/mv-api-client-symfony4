@@ -4,9 +4,6 @@
 namespace App\Controller\Has;
 
 
-use Symfony\Contracts\Translation\TranslatorInterface;
-
-
 trait UserSession
 {
 

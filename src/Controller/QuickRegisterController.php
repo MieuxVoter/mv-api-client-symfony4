@@ -28,6 +28,8 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
  */
 final class QuickRegisterController extends AbstractController
 {
+    const SESSION_ONE_CLICK = 'is_one_click';
+
     use Has\ApiAccess;
     use Has\Translator;
     use Has\UserSession;
@@ -58,6 +60,9 @@ final class QuickRegisterController extends AbstractController
             return $registered;
         }
 
+        $this->getUserSession()->setUserProperty(self::SESSION_ONE_CLICK, true);
+//        $this->getUser()->
+
         $flashBag->add('success', 'flash.user.registered');
 
         return $this->respondRedirection($session);
@@ -65,6 +70,7 @@ final class QuickRegisterController extends AbstractController
 
     protected function respondRedirection(SessionInterface $session): Response
     {
+        // We could use our (new) Crumbs service here, but this works.
         $redirect = $session->get('register_redirect', $this->generateUrl('home_html'));
         $session->remove("login_redirect");
         $session->remove("register_redirect");

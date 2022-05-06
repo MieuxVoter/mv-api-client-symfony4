@@ -16,11 +16,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * We don't actively use this for now, but we will.
+ * We do use this to inject data from our custom user session into the User.
  *
  * Class UserProvider
  * @package App\Security
  */
-class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
+final class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     /** @var ApiFactory */
     protected $apiFactory;
@@ -66,7 +67,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 
         // We'll see if we need this in the end.
 
-        throw new \Exception('TODO: fill in loadUserByUsername() inside '.__FILE__);
+        throw new \Exception('implement loadUserByUsername() inside '.__FILE__);
     }
 
 
@@ -93,6 +94,8 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
+        $user->updateFromUserSession($this->userSession);
+
         return $user;
     }
 
@@ -112,6 +115,6 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
         // When encoded passwords are in use, this method should:
         // 1. persist the new password in the user storage
         // 2. update the $user object with $user->setPassword($newEncodedPassword);
-        throw new \Exception('TODO: fill in upgradePassword() inside '.__FILE__);
+        throw new \Exception('implement upgradePassword() inside '.__FILE__);
     }
 }
