@@ -101,7 +101,10 @@ class ApiFactory
     {
         $user = $this->security->getUser();
         if ($user instanceof User) {
-            $this->setApiToken($user->getApiToken());
+            $token = $user->getApiToken();
+            if ( ! empty($token)) {
+                $this->setApiToken($token);
+            }
         }
 
         return new Client();
