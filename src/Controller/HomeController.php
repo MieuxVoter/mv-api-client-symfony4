@@ -1,21 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Factory\ApiFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+/** @noinspection PhpUnused */
+
+/**
+ * @Route("/", name="home")
+ * @Route("/home.html", name="home_html")
+ */
 class HomeController extends AbstractController
 {
     use Has\ApiAccess;
 
-    /**
-     * @Route("/", name="home")
-     * @Route("/home.html", name="home_html")
-     */
-    public function index(): Response
+    public function __invoke(): Response
     {
         // TODO: check API status, perhaps?
 
