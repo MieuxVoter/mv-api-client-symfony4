@@ -59,11 +59,32 @@
                 </a>
             </nav>
         </section>
+        {# QUICK-ACCESS USER PROFILE WIDGET #}
+        {# The fact that this section is in the header is annoying for TTS browsers. #}
+        {# Perhaps this should be moved to the bottom, and only displayed visually at the top via CSS. #}
+        {# If we do that, it's the whole header navbar that should move to the bottom perhaps.  #}
+        {# Tricky subject ; am still undecided.  Help?  #}
+        {# We want the navbar to be at the bottom in semantics, but at the top in visual browsers. #}
+        {# It's annoying having to cycle through it, yet we can configure the initial focus per page #}
+        {# lynx does not understand our way of setting the focus, though. #}
         <section class="navbar-section">
             <nav>
 {% if app.user %}
                 <span>
-                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': app.user.withoutToken }) }}
+                    {{ 'nav.auth.logged_in_as.label' | trans({ 'user': app.user.safeClone }) }}
+
+                    {# Claim the current user, if it was registered in one-click. #}
+                    {# It's the second step in a two-steps registration, sort of. #}
+                    {% if not app.user.isClaimed %}
+                    <a
+                            href="{{ path('claim_user_html', {'redirect': app.request.requesturi}) }}"
+{#                            class="btn btn-primary"#}
+                            title="{{ 'action.claim.title' | trans }}"
+                    >
+                        {{ 'action.claim.label' | trans }}
+                    </a>
+                    {% endif %}
+
                     <a
                             href="{{ path('logout') }}"
                     >

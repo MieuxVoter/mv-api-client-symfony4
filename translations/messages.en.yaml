@@ -95,7 +95,7 @@ action:
   login:
     label: Login
   claim:
-    label: Save
+    label: Claim
   forgot_password:
     label: Forgotten password?
   participate_to_private_poll:

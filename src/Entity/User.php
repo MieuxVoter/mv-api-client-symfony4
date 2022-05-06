@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -114,15 +116,40 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // FIXME: test this
+        // FIXME: test this (and mem0)
 //        $this->api_token = null;
     }
 
 
-    public function getWithoutToken() : self
+    public function isClaimed(): bool
+    {
+        return true; // todo: nope ; use a service, not the user, since it does not have access to DiC ?
+    }
+
+
+    /**
+     * Get a clone of this User, without the API token set.
+     * This is used in twig templates and translation strings,
+     * who are prone to injection vulnerabilities because of their nature,
+     * because we use them often to interpolate data coming from userland.
+     * Therefore, it's usually best to provide them with watered-down versions of our data.
+     *
+     * @return $this
+     */
+    public function getSafeClone() : self
     {
         $user = clone $this;
         $user->setApiToken(null);
         return $user;
+    }
+
+
+    /**
+     * @deprecated
+     * @return $this
+     */
+    public function getWithoutToken() : self
+    {
+        return $this->getSafeClone();
     }
 }
