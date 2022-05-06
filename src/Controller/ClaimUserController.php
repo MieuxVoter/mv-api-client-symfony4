@@ -53,8 +53,7 @@ class ClaimUserController extends AbstractController
 
         $should_send = $claim_form->isSubmitted() && $claim_form->isValid();
 
-        dump($claim_form->getData());
-        dump($session_user);
+        //dump($claim_form->getData());
 
         if ($should_send) {
             $user_api = $this->getApiFactory()->getUserApi();
@@ -77,13 +76,14 @@ class ClaimUserController extends AbstractController
 //                throw $e;
             }
 
-            // I don't like this very much
+            // I don't like this very much ; should be one-line, event based?
             $this->getUserSession()->setUserProperty(QuickRegisterController::SESSION_ONE_CLICK, false);
             $user->markClaimed();
+            /////////////////////////////////////////////////////////////////
 
-            dump($user_response);
+            //dump($user_response);
 
-            $password = uniqid(); // fixme: use a proper memzero
+            mem0($password);
             unset($password);
             unset($form_data);
 
@@ -93,7 +93,6 @@ class ClaimUserController extends AbstractController
         }
 
         return $this->render('user/claim.html.twig', [
-//            'controller_name' => 'ClaimUserController',
             'claim_form' => $claim_form->createView(),
         ]);
     }

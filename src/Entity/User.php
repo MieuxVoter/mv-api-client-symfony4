@@ -120,8 +120,8 @@ final class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // FIXME: test this (and mem0)
-//        $this->api_token = null;
+        mem0($this->api_token);
+        $this->api_token = null;
     }
 
     /**

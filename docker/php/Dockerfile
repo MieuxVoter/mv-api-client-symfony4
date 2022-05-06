@@ -31,9 +31,10 @@ RUN apt-get update && \
     acl \
     ssh \
     git \
+    libmagickwand-dev \
+    libsodium-dev \
     libyaml-dev \
     libzip-dev \
-    libmagickwand-dev \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 RUN pecl install apcu
@@ -47,6 +48,7 @@ RUN docker-php-ext-enable yaml
 
 # Use "install" for the others
 RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install sodium
 RUN docker-php-ext-install zip
 
 WORKDIR /usr/src/app

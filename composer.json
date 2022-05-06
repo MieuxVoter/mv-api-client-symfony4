@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-sodium": "*",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.1",
@@ -73,7 +74,8 @@
     },
     "autoload": {
         "files": [
-            "lib/num2alpha.php"
+             "lib/num2alpha.php"
+            ,"lib/functions.php"
         ],
         "psr-4": {
             "App\\": "src/"
