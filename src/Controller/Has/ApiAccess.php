@@ -7,9 +7,11 @@ namespace App\Controller\Has;
 use App\Adapter\ApiExceptionAdapter;
 use App\Entity\User;
 use App\Factory\ApiFactory;
+use Exception;
 use MjOpenApi\ApiException;
 use MjOpenApi\Model\Credentials;
 use MjOpenApi\Model\UserCreate;
+use phpDocumentor\Reflection\Types\Callable_;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -158,5 +160,24 @@ trait ApiAccess
         // /!\ … nope (but better than nothing).  Use a proper mem0, there's one in php exts.
 
         return true;
+    }
+
+    /**
+     * Allows hooking in JWT refresh if needed.
+     *
+     * @param $out
+     * @param Callable $onTry
+     * @param Callable $onFailure
+     * @throws Exception
+     */
+    public function tryApi(&$out, $onTry, $onFailure)
+    {
+        try {
+            $out = $onTry();
+        } catch (ApiException $e) {
+            $onFailure($e);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }

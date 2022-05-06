@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use MjOpenApi\ApiException;
+use MjOpenApi\Model\PollRead;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,19 +37,36 @@ final class ReadPollController extends AbstractController
     use Has\ApiAccess;
     use Has\ColorPalette;
 
-    public function __invoke(string $pollId, Request $request) : Response
+    public function __invoke(string $pollId, Request $request): Response
     {
         $pollApi = $this->getApiFactory()->getPollApi();
 
+        /** @var PollRead $pollRead */
         $pollRead = null;
-        try {
-            $pollRead = $pollApi->getPollItem($pollId);
-        } catch (ApiException $e) {
-            if (Response::HTTP_NOT_FOUND === $e->getCode()) {
-                throw new NotFoundHttpException("No poll found.");
+        $this->tryApi(
+            $pollRead
+            ,
+            function () use ($pollApi, $pollId) {
+                return $pollApi->getPollItem($pollId);
             }
-            return $this->renderApiException($e, $request);
-        }
+            ,
+            function (ApiException $e) use ($request) {
+                if (Response::HTTP_NOT_FOUND === $e->getCode()) {
+                    throw new NotFoundHttpException("No poll found.");
+                }
+                return $this->renderApiException($e, $request);
+            }
+        );
+
+//        $pollRead = null;
+//        try {
+//            $pollRead = $pollApi->getPollItem($pollId);
+//        } catch (ApiException $e) {
+//            if (Response::HTTP_NOT_FOUND === $e->getCode()) {
+//                throw new NotFoundHttpException("No poll found.");
+//            }
+//            return $this->renderApiException($e, $request);
+//        }
 
         return $this->render('poll/read.html.twig', [
             'poll' => $pollRead,
