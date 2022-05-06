@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security;
 
@@ -37,7 +38,7 @@ final class UserSession
         $this->session->set(self::SESSION_USER, null);
     }
 
-    public function getUser() : ?array
+    public function getUser() : ?array  # defined in login() above
     {
         return $this->session->get(self::SESSION_USER);
     }

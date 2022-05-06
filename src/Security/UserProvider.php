@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security;
 
@@ -13,6 +14,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 
+/**
+ * We don't actively use this for now, but we will.
+ *
+ * Class UserProvider
+ * @package App\Security
+ */
 class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     /** @var ApiFactory */
@@ -45,6 +52,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
      * @return UserInterface
      *
      * @throws UsernameNotFoundException if the user is not found
+     * @throws \Exception
      */
     public function loadUserByUsername($username)
     {
@@ -54,10 +62,9 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
         // method in your User class.
 
 //        $userApi = $this->apiFactory->getUserApi();
-////        $userApi->get
 //        $this->userSession->
 
-
+        // We'll see if we need this in the end.
 
         throw new \Exception('TODO: fill in loadUserByUsername() inside '.__FILE__);
     }
@@ -102,7 +109,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
-        // TODO: when encoded passwords are in use, this method should:
+        // When encoded passwords are in use, this method should:
         // 1. persist the new password in the user storage
         // 2. update the $user object with $user->setPassword($newEncodedPassword);
         throw new \Exception('TODO: fill in upgradePassword() inside '.__FILE__);
