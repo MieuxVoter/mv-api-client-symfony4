@@ -21,7 +21,7 @@ use Symfony\Component\Routing\RouterInterface;
  * @Route("/claim", name="claim_user")
  * @Route("/claim.html", name="claim_user_html")
  */
-class ClaimUserController extends AbstractController
+final class ClaimUserController extends AbstractController
 {
     use Has\ApiAccess;
     use Has\UserSession;
@@ -32,13 +32,13 @@ class ClaimUserController extends AbstractController
         RouterInterface $router
     ): Response
     {
-        $session_user = $this->getUserSession()->getUser();
         /** @var User $user */
         $user = $this->getUser();
-        if (empty($user)) {
+        if (empty($user) || $user->isClaimed()) {
             return RedirectResponse::create($router->generate("home_html"));
         }
         $username = $user->getUsername();
+        $session_user = $this->getUserSession()->getUser();
 
         $claim_form = $this->createForm(
             ClaimUserType::class, [
