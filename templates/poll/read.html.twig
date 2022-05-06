@@ -6,11 +6,11 @@
 
 {% set canParticipate = false %}
 {% if poll.scope == 'private' %}
-{% set canParticipate = false %}
+    {%- set canParticipate = false %}
 {% elseif poll.scope == 'public' %}
-{% set canParticipate = true %}
+    {%- set canParticipate = true %}
 {% elseif poll.scope == 'unlisted' %}
-{% set canParticipate = true %}
+    {%- set canParticipate = true %}
 {% endif %}
 
 
@@ -26,14 +26,16 @@
 
             <h3>&nbsp;</h3>{# use margins instead of this hack #}
 
-            {% if canParticipate -%}
             <a
                     href="{{ path('create_ballot_html', {'pollId': poll.uuid}) }}"
                     class="btn btn-primary btn-lg"
+                    {% if not canParticipate -%}
+                    disabled="disabled"
+                    {%- endif %}
             >
                 {{ 'action.participate.label' | trans }}
             </a>
-            {% else %}
+            {% if not canParticipate -%}
             <p>
                 You cannot participate.
                 You need an invitation.
