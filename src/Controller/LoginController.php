@@ -53,7 +53,8 @@ final class LoginController extends AbstractController
         $form->handleRequest($request);
 
         $redirect = $request->get('redirect');
-        if ($request->getMethod() == Request::METHOD_GET) {
+        // Not very useful to filter for GET since we NEVER go through here in POST (Guard intercepts)
+        if ($request->getMethod() === Request::METHOD_GET) {
             if ( ! empty($redirect)) {
                 $session->set("login_redirect", $redirect);
                 $session->set("register_redirect", $redirect);

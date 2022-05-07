@@ -44,12 +44,12 @@ final class ReadPollController extends AbstractController
         /** @var PollRead $pollRead */
         $pollRead = null;
         $this->tryApi(
-            $pollRead
-            ,
+            $pollRead,
+
             function () use ($pollApi, $pollId) {
                 return $pollApi->getPollItem($pollId);
-            }
-            ,
+            },
+
             function (ApiException $e) use ($request) {
                 if (Response::HTTP_NOT_FOUND === $e->getCode()) {
                     throw new NotFoundHttpException("No poll found.");

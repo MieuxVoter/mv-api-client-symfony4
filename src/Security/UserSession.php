@@ -40,7 +40,7 @@ final class UserSession
         $this->session->set(self::SESSION_USER, $user);
     }
 
-    public function login(string $id, string $username, string $token)
+    public function login(string $id, string $username, string $token): void
     {
         $this->session->set(self::SESSION_USER, [
             'id' => $id,
@@ -49,17 +49,17 @@ final class UserSession
         ]);
     }
 
-    public function logout()
+    public function logout(): void
     {
         $this->session->set(self::SESSION_USER, null);
     }
 
-    public function getUser() : ?array  # defined in login() above
+    public function getUser(): ?array  # defined in login() above
     {
         return $this->session->get(self::SESSION_USER);
     }
 
-    public function isLogged()
+    public function isLogged(): bool
     {
         $user = $this->session->get(self::SESSION_USER);
         return ( ! empty($user));
