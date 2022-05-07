@@ -83,7 +83,7 @@ final class ClaimUserController extends AbstractController
             //dump($user_response);
 
             mem0($password);
-            mem0($form_data);
+            //mem0($form_data); // no, strings only
             unset($password);
             unset($form_data);
 
