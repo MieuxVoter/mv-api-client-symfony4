@@ -8,13 +8,13 @@ use App\Entity\User;
 use App\Security\UserSession;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use MjOpenApi\Api\BallotApi;
-use MjOpenApi\Api\InvitationApi;
-use MjOpenApi\Api\PollApi;
-use MjOpenApi\Api\ResultApi;
-use MjOpenApi\Api\TokenApi;
-use MjOpenApi\Api\UserApi;
-use MjOpenApi\Configuration;
+use MvApi\Api\BallotApi;
+use MvApi\Api\InvitationApi;
+use MvApi\Api\PollApi;
+use MvApi\Api\ResultApi;
+use MvApi\Api\TokenApi;
+use MvApi\Api\UserApi;
+use MvApi\Configuration;
 use Symfony\Component\Security\Core\Security;
 
 

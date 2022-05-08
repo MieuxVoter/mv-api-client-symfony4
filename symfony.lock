@@ -99,9 +99,6 @@
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
-    "limaju/limaju-client-lib-php": {
-        "version": "dev-master"
-    },
     "matthewbaggett/clamp": {
         "version": "v1.1"
     },
@@ -113,6 +110,9 @@
             "version": "0.0",
             "ref": ""
         }
+    },
+    "mieuxvoter/mv-api-client-lib-php": {
+        "version": "dev-master"
     },
     "monolog/monolog": {
         "version": "1.25.5"

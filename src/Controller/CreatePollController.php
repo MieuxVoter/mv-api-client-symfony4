@@ -6,10 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Poll;
 use App\Form\PollType;
-use MjOpenApi\ApiException;
-use MjOpenApi\Model\GradeCreate;
-use MjOpenApi\Model\PollCreate;
-use MjOpenApi\Model\ProposalCreate;
+use MvApi\ApiException;
+use MvApi\Model\GradeCreate;
+use MvApi\Model\PollCreate;
+use MvApi\Model\ProposalCreate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;

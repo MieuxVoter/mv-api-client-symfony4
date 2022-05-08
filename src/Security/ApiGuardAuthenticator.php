@@ -6,8 +6,8 @@ namespace App\Security;
 
 use App\Controller\Has;
 use App\Entity\User;
-use MjOpenApi\ApiException;
-use MjOpenApi\Model\Credentials;
+use MvApi\ApiException;
+use MvApi\Model\Credentials;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

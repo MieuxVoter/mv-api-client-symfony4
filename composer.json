@@ -12,7 +12,7 @@
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
-        "limaju/limaju-client-lib-php": "*@dev",
+        "mieuxvoter/mv-api-client-lib-php": "*@dev",
         "matthewbaggett/clamp": "^1.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "roipoussiere/miprem-php": "^0.1",
@@ -58,7 +58,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://framagit.org/limaju/limaju-client-lib-php.git"
+            "url": "https://github.com/MieuxVoter/mv-api-client-lib-php.git"
         },
         {
             "type": "vcs",

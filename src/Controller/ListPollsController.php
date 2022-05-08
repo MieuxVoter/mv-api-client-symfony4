@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Factory\ApiFactory;
-use MjOpenApi\ApiException;
+use MvApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

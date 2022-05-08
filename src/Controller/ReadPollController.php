@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use MjOpenApi\ApiException;
-use MjOpenApi\Model\PollRead;
+use MvApi\ApiException;
+use MvApi\Model\PollRead;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

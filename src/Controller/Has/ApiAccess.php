@@ -8,10 +8,9 @@ use App\Adapter\ApiExceptionAdapter;
 use App\Entity\User;
 use App\Factory\ApiFactory;
 use Exception;
-use MjOpenApi\ApiException;
-use MjOpenApi\Model\Credentials;
-use MjOpenApi\Model\UserCreate;
-use phpDocumentor\Reflection\Types\Callable_;
+use MvApi\ApiException;
+use MvApi\Model\Credentials;
+use MvApi\Model\UserCreate;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -128,6 +127,7 @@ trait ApiAccess
         $credentials->setUsernameOrEmail($userRead->getUsername());
         $credentials->setPassword($passwordPlain);
 
+
         $apiToken = null;
         try {
             $apiToken = $tokenApi->postCredentialsItem($credentials);
@@ -146,6 +146,8 @@ trait ApiAccess
             $apiToken->getToken()
         );
         $this->getApiFactory()->setApiToken($apiToken->getToken());
+
+
 
         // Authenticate with Symfony
         $sfToken = new UsernamePasswordToken($user, null, 'mvapi_users', $user->getRoles());

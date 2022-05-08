@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ClaimUserType;
-use MjOpenApi\ApiException;
-use MjOpenApi\Model\UserEdit;
+use MvApi\ApiException;
+use MvApi\Model\UserEdit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

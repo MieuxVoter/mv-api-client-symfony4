@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Adapter\ApiExceptionAdapter;
-use MjOpenApi\ApiException;
+use MvApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

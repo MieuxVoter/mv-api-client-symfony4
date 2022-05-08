@@ -5,7 +5,7 @@ namespace App\Adapter;
 
 
 use App\Controller\Has\Translator;
-use MjOpenApi\ApiException;
+use MvApi\ApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
 use Symfony\Component\Form\FormInterface;

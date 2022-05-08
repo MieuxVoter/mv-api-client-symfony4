@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\LoginType;
-use MjOpenApi\ApiException;
-use MjOpenApi\Model\Credentials;
+use MvApi\ApiException;
+use MvApi\Model\Credentials;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
