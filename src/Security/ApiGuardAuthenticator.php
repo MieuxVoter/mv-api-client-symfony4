@@ -32,6 +32,7 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
 
     use TargetPathTrait;
 
+    // Using the traits of Controllers, here ; perhaps bump up those we use?
     use Has\ApiAccess;
     use Has\FlashBag;
     use Has\Translator;
@@ -53,9 +54,11 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      *     return new Response('Auth header required', 401);
      *
+     * @param Request $request
+     * @param AuthenticationException|null $authException
      * @return Response
      */
-    public function start(Request $request, AuthenticationException $authException = null) : Response
+    public function start(Request $request, AuthenticationException $authException = null): Response
     {
         return new RedirectResponse('/login.html');
     }
@@ -65,14 +68,19 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * If this returns false, the authenticator will be skipped.
      *
+     * @param Request $request
      * @return bool
      */
-    public function supports(Request $request) : bool
+    public function supports(Request $request): bool
     {
         return (
             ($request->isMethod('POST'))
             &&
-            ('login_html' === $request->attributes->get('_route'))
+            (
+                ('login_html' === $request->attributes->get('_route'))
+                ||
+                ('login' === $request->attributes->get('_route'))
+            )
         );
     }
 
@@ -93,15 +101,14 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      *      return ['api_key' => $request->headers->get('X-API-TOKEN')];
      *
+     * @param Request $request
      * @return mixed Any non-null value
-     *
-     * @throws \UnexpectedValueException If null is returned
      */
     public function getCredentials(Request $request)
     {
         return [
-             'username' => $request->request->get('username'),
-             'password' => $request->request->get('password'),
+            'username' => $request->request->get('username'),
+            'password' => $request->request->get('password'),
         ];
     }
 
@@ -115,11 +122,10 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @param mixed $credentials
      *
+     * @param UserProviderInterface $userProvider
      * @return UserInterface|null
-     * @throws AuthenticationException
-     *
      */
-    public function getUser($credentials, UserProviderInterface $userProvider) : ?UserInterface
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
         $apiCredentials = new Credentials();
         $apiCredentials->setUsernameOrEmail($credentials['username']);
@@ -149,11 +155,11 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @param mixed $credentials
      *
+     * @param UserInterface $user
      * @return bool
      *
-     * @throws AuthenticationException
      */
-    public function checkCredentials($credentials, UserInterface $user) : bool
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         // This method in only called if getUser() returns a User,
         // and in that case we already know the credentials are correct
@@ -170,9 +176,11 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      * If you return null, the request will continue, but the user will
      * not be authenticated. This is probably not what you want to do.
      *
+     * @param Request $request
+     * @param AuthenticationException $exception
      * @return Response|null
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception) : ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $this->getFlashBag()->add('error', $this->trans("form.login.error.authentication_failure"));
         return new RedirectResponse('/login.html');
@@ -188,11 +196,13 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      * If you return null, the current request will continue, and the user
      * will be authenticated. This makes sense, for example, with an API.
      *
+     * @param Request $request
+     * @param TokenInterface $token
      * @param string $providerKey The provider (i.e. firewall) key
      *
      * @return Response|null
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey) : ?Response
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
     {
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
         if ($targetPath) {
@@ -215,8 +225,8 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @return bool
      */
-    public function supportsRememberMe() : bool
+    public function supportsRememberMe(): bool
     {
-        return false;
+        return false; // our Provider needs work before we can support true
     }
 }
