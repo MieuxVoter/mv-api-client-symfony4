@@ -101,7 +101,9 @@ final class CreatePollController extends AbstractController
 
         if ($shouldSend) {
 
-            if ( ! $this->getUserSession()->isLogged()) {
+            $user = $this->getUser();
+//            if ( ! $this->getUserSession()->isLogged()) {
+            if ( ! $user) {
                 $registered = $this->quickRegister($request, $guard);
                 if (true !== $registered) {
                     return $registered;
