@@ -86,4 +86,35 @@ trait Translator
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
+    /**
+     * Useful to get an array out of a translation YAML file.
+     * Will try to grab as much as it can, up to the end of the array.
+     * If the passed key ($id) is not an array, an empty array is returned.
+     *
+     * No variable replacement in there for now.
+     * We'll add the other params later when needed.
+     *
+     * @param string $id
+     * @return string[]
+     */
+    public function transArray(string $id): array
+    {
+        $limit = 512; // move to signature after we've added the other params
+        $array = [];
+
+        $key_fmt = "${id}.%d";  // We can access array indices with this.
+        $keep_at_it = true;  // We stop the loop as soon as the key is not found.
+        $i = 0;
+        do {
+            $key = sprintf($key_fmt, $i);
+            $value = $this->trans($key);
+            if ($value == $key) {
+                $keep_at_it = false; // or break?
+            } else {
+                $array[] = $value;
+            }
+        } while (++$i && $i < $limit && $keep_at_it);
+
+        return $array;
+    }
 }
