@@ -97,6 +97,7 @@ action:
     title: Log in as an existing user, using your credentials.
   claim:
     label: Claim
+    title: Claim this username as your own by completing registration.
   forgot_password:
     label: Forgotten password?
   participate_to_private_poll:
