@@ -121,7 +121,7 @@ trait ApiAccess
 
         // The registration seemed to work.  Let's login, if we can.
 
-        $tokenApi = $this->getApiFactory()->getTokenApi();
+        $loginApi = $this->getApiFactory()->getLoginApi();
 
         $credentials = new Credentials();
         $credentials->setUsernameOrEmail($userRead->getUsername());
@@ -130,7 +130,9 @@ trait ApiAccess
 
         $apiToken = null;
         try {
-            $apiToken = $tokenApi->postCredentialsItem($credentials);
+            // Should be equivalent
+//            $apiToken = $loginApi->postCredentialsItemAsync($credentials)->wait();
+            $apiToken = $loginApi->postCredentialsItem($credentials);
         } catch (ApiException $e) {
             // Registration was a success, but login was not.
             return $this->renderApiException($e, $request);
@@ -140,13 +142,15 @@ trait ApiAccess
         $user->setUsername($userRead->getUsername());
         $user->setApiToken($apiToken->getToken());
 
+        // How we handle persistence of user data (it's bad)
         $this->userSession->login(
             $userRead->getUuid(),
             $userRead->getUsername(),
             $apiToken->getToken()
         );
+        // For good measure ; it's useless if we don't use the MvAPI below,
+        // since the ApiFactory does not persist its token between requests.
         $this->getApiFactory()->setApiToken($apiToken->getToken());
-
 
 
         // Authenticate with Symfony
@@ -154,12 +158,11 @@ trait ApiAccess
         $guard->authenticateWithToken($sfToken, $request, 'mvapi_users');
 
         // Wipe the memory…
-        $passwordPlain = uniqid();
-        $apiToken = md5($passwordPlain);
+        mem0($passwordPlain);
+        $apiToken = null;  // /!\ … nope.  Craft/Use a proper mem0 working on objects.
         unset($passwordPlain);
         unset($apiToken);
         unset($sfToken);
-        // /!\ … nope (but better than nothing).  Use a proper mem0, there's one in php exts.
 
         return true;
     }

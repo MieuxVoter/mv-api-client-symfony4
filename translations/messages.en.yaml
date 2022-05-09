@@ -94,6 +94,7 @@ action:
     title: By signing up you accept our Terms of Service
   login:
     label: Login
+    title: Log in as an existing user, using your credentials.
   claim:
     label: Claim
   forgot_password:

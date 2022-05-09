@@ -36,6 +36,7 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
     use Has\ApiAccess;
     use Has\FlashBag;
     use Has\Translator;
+    use Has\UserSession;
 
     /**
      * Returns a response that directs the user to authenticate.
@@ -133,14 +134,54 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
 
         $token = null;
         try {
-            $token = $this->getApiFactory()->getTokenApi()->postCredentialsItem($apiCredentials);
+            $token = $this
+                ->getApiFactory()
+                ->getLoginApi()
+                ->postCredentialsItem($apiCredentials);
+//                ->postCredentialsItemAsync($apiCredentials)
+//                ->wait();
         } catch (ApiException $e) {
+            // Here we should only return null when it's a 401,
+            // and record the exception when it's not.
+            //throw $e;
             return null;
         }
 
         $user = new User();
         $user->setUsername($credentials['username']);
         $user->setApiToken($token->getToken());
+
+        $this->getApiFactory()->setApiToken($token->getToken());
+
+        $myself = null;
+        try {
+            $myself = $this
+                ->getApiFactory()
+                ->getLoginApi()
+                ->getMyself();
+//                ->getMyselfAsync()
+//                ->wait();
+        } catch (ApiException $e) {
+            // FIXME
+            // We can probably return null, but perhaps a flash message is in order.
+            // And a log of the exception, as well.
+            throw $e;
+            return null;
+        }
+
+//        dump($myself);
+        if (null === $myself) {
+            return null;
+        }
+
+//        dump($user);
+//        dump($token);
+
+        $this->getUserSession()->login(
+            $myself->getUuid(),
+            $myself->getUsername(),
+            $token->getToken()
+        );
 
         return $user;
     }

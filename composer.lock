@@ -1931,12 +1931,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/MieuxVoter/mv-api-client-lib-php.git",
-                "reference": "fcf9d82dd6b5796b7ff6674cd902691db74143c3"
+                "reference": "eb698f9e20dee216bf5a6b663b22fea995442b6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MieuxVoter/mv-api-client-lib-php/zipball/fcf9d82dd6b5796b7ff6674cd902691db74143c3",
-                "reference": "fcf9d82dd6b5796b7ff6674cd902691db74143c3",
+                "url": "https://api.github.com/repos/MieuxVoter/mv-api-client-lib-php/zipball/eb698f9e20dee216bf5a6b663b22fea995442b6e",
+                "reference": "eb698f9e20dee216bf5a6b663b22fea995442b6e",
                 "shasum": ""
             },
             "require": {
@@ -1989,7 +1989,7 @@
                 "source": "https://github.com/MieuxVoter/mv-api-client-lib-php/tree/master",
                 "issues": "https://github.com/MieuxVoter/mv-api-client-lib-php/issues"
             },
-            "time": "2022-05-08T10:36:45+00:00"
+            "time": "2022-05-08T17:03:30+00:00"
         },
         {
             "name": "monolog/monolog",

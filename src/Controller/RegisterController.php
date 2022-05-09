@@ -93,7 +93,7 @@ final class RegisterController extends AbstractController
 
             sleep(1);
 
-            $tokenApi = $this->getApiFactory()->getTokenApi();
+            $loginApi = $this->getApiFactory()->getLoginApi();
 
             $credentials = new Credentials();
             $credentials->setUsernameOrEmail($username);
@@ -101,7 +101,7 @@ final class RegisterController extends AbstractController
 
             $token = null;
             try {
-                $token = $tokenApi->postCredentialsItem($credentials);
+                $token = $loginApi->postCredentialsItemAsync($credentials)->wait();
             } catch (ApiException $e) {
                 // Registration was a success, but login was not.
                 // Poll Subject: What should we do here?

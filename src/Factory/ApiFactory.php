@@ -12,7 +12,7 @@ use MvApi\Api\BallotApi;
 use MvApi\Api\InvitationApi;
 use MvApi\Api\PollApi;
 use MvApi\Api\ResultApi;
-use MvApi\Api\TokenApi;
+use MvApi\Api\LoginApi;
 use MvApi\Api\UserApi;
 use MvApi\Configuration;
 use Symfony\Component\Security\Core\Security;
@@ -101,7 +101,12 @@ class ApiFactory
     {
         $user = $this->security->getUser();
         if ($user instanceof User) {
-            $token = $user->getApiToken();
+            // I'm not sure why the security user does not have our token.
+//            $token = $user->getApiToken();
+            // We need to figure out how to configure sf to save custom user fields in session,
+            // to remove the need for the UserSession service.
+            // I especially dislike its associative array API.
+            $token = $this->getSession()->getUser()['token'];
             if ( ! empty($token)) {
                 $this->setApiToken($token);
             }
@@ -124,9 +129,9 @@ class ApiFactory
         return $apiInstance;
     }
 
-    public function getTokenApi(): TokenApi
+    public function getLoginApi(): LoginApi
     {
-        $apiInstance = new TokenApi($this->getClient(), $this->getConfig());
+        $apiInstance = new LoginApi($this->getClient(), $this->getConfig());
         return $apiInstance;
     }
 
