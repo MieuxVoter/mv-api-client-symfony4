@@ -8,6 +8,7 @@ use Miprem\Renderer\OpenGraphRenderer;
 use Miprem\Renderer\SvgRenderer;
 use Miprem\Model\SvgConfig;
 use MvApi\ApiException;
+use MvApi\Model\GradeJsonldRead;
 use MvApi\Model\GradeRead;
 use MvApi\Model\ProposalResultRead;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,7 +70,7 @@ final class ReadResultController extends AbstractController
         }
 
         $renderedPoll = RenderedPoll::fromArray([
-            'grades' => array_reverse(array_map(function (GradeRead $grade) {
+            'grades' => array_reverse(array_map(function (GradeJsonldRead $grade) {
                 return ['label' => $grade->getName()];
             }, $poll->getGrades())),
             'proposals' => array_map(function (ProposalResultRead $proposal) {
