@@ -121,5 +121,20 @@ Lots of tools in here, and we can add our own as well.
 
 ## Build assets (CSS)
 
+`node-sass` does not play well with node > 14 for now.
+We use `nvm` to set the `node` version:
+
+    nvm install 14
+    nvm alias default 14
+
+Then you can:
+
     yarn install
-    npx encore
+
+And then run the watcher:
+
+    npx encore dev --watch
+
+To generate static files for prod:
+
+    npx encore production

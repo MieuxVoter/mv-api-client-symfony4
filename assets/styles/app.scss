@@ -98,8 +98,10 @@ footer a:focus {
   outline-offset: 3px;
 }
 
+.main.container input[type=submit]:focus,
+.main.container button[type=submit]:focus,
 .main.container a:focus {
-  outline: $primary-color 3px solid;
+  outline: $secondary-color 3px solid;
 }
 
 ///
