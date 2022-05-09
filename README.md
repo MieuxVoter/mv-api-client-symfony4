@@ -138,3 +138,19 @@ And then run the watcher:
 To generate static files for prod:
 
     npx encore production
+
+
+# Deploy
+
+Create `.env.local` or `.env.prod.local` with your secrets.
+You can copy `.env` as a boilerplate:
+
+    cp .env .env.local
+    vi .env.local
+
+> (!) database conf is not yet in ENV (todo)
+
+Once it's done, you're all set for docker compose:
+
+    docker-compose up
+
