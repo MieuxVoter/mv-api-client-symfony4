@@ -28,6 +28,7 @@ final class AcceptInvitationController extends AbstractController
 
         try {
             $invitation = $invitationApi->getInvitationItem($invitationId);
+//            $invitation = $invitationApi->getInvitationItemAsync($invitationId)->wait();
         } catch (ApiException $e) {
             return $this->renderApiException($e, $request);
         }

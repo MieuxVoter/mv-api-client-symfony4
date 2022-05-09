@@ -125,6 +125,7 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      *
      * @param UserProviderInterface $userProvider
      * @return UserInterface|null
+     * @throws ApiException
      */
     public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
@@ -144,6 +145,9 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
             // Here we should only return null when it's a 401,
             // and record the exception when it's not.
             //throw $e;
+            return null;
+        }
+        if (null === $token) {
             return null;
         }
 
@@ -168,8 +172,6 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
             throw $e;
             return null;
         }
-
-//        dump($myself);
         if (null === $myself) {
             return null;
         }
@@ -177,6 +179,7 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
 //        dump($user);
 //        dump($token);
 
+        // Persistance of the API token and User UUID
         $this->getUserSession()->login(
             $myself->getUuid(),
             $myself->getUsername(),
@@ -245,6 +248,15 @@ class ApiGuardAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
     {
+        //dump($token); // where is that api_token?  it's  empty here:
+//        Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken {#366 ▼
+//        -providerKey: "main"
+//        -user: App\Entity\User {#330 ▼
+//            -username: "troubled-morning-carpet-257"
+//            -api_token: null                                   /!. 404
+//            -claimed: false
+//        }
+
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
         if ($targetPath) {
             return new RedirectResponse($targetPath);
