@@ -37,7 +37,7 @@ A client for MieuxVoter's OpenApi specifications focused on _accessibility_.
     - [ ] Fellowships (suggestions)
     - [ ] Delegations (default grades)
 - [ ] User Experience
-    - [ ] OAS Token Automatic Renewal
+    - [ ] OAS Token Automatic Renewal _(we don't store the password !?)_
     - [ ] Graceful `40X`/`50X` errors
 
 > Some will take years.  Fell free to work on anything, be it in this list or not.
@@ -147,8 +147,6 @@ You can copy `.env` as a boilerplate:
 
     cp .env .env.local
     vi .env.local
-
-> (!) database conf is not yet in ENV (todo)
 
 Once it's done, you're all set for docker compose:
 
