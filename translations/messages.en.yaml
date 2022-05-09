@@ -12,7 +12,12 @@ page:
       placeholder: What's the subject of your poll?
       submit:
         label: Start
-      after: Free, Libre, and powered by your donations
+      after: Free, Libre, and powered by You
+    suggestions:
+      - What's next on the menu?
+      - What now?
+      - Who are we?
+      - What do we want?
   poll:
     read:
       grades: Grades

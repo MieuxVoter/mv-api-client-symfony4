@@ -50,6 +50,18 @@
 </form>
 
 <p class="text-center">
+{# Poll subjects suggestions, directly from messages.yaml #}
+{# Should these be in a nav ? #}
+{# Should these be in a list ? #}
+{% for s in suggestions %}
+{#{% for s in suggestions | shuffle %}#}{# still no shuffle filter… #}
+    {{ not loop.first ? '&mdash;' : '' }}
+    <a href="{{ path('create_poll_html') }}?poll[subject]={{ s | url_encode }}">
+        {{ s }}
+    </a>
+{% endfor %}
+    <br>
+    <br>
     {{ 'page.home.form.after' | trans }}
 </p>
 

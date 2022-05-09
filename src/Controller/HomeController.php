@@ -18,11 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     use Has\ApiAccess;
+    use Has\Translator;
 
     public function __invoke(): Response
     {
-        // TODO: check API status, perhaps?
+        // TODO: check API status, perhaps?   With some caching?
+//        $online = $this->getApiStatus()->isOnline();
+//        $someStat = $this->getApiStatus()->getSomeStat();
 
-        return $this->render('home/home.html.twig', []);
+        return $this->render('home/home.html.twig', [
+            // perhaps transArray should be added as a Twig filter so we can remove this
+            'suggestions' => $this->transArray('page.home.suggestions'),
+        ]);
     }
 }
