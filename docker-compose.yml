@@ -5,7 +5,10 @@ version: '3.4'
 
 volumes:
   public_assets:
+    name: public_assets
     external: true
+  goaccess_report:
+    name: goaccess_report
 
 services:
     # We do not need a database, for now,
@@ -25,7 +28,7 @@ services:
             dockerfile: docker/php/Dockerfile
         restart: on-failure
         volumes:
-            - 'public_assets:/usr/src/app/public'
+            - public_assets:/usr/src/app/public
         environment:
             BANANA: teapot
             # Set to "dev" to enable the debug goodies
@@ -42,7 +45,44 @@ services:
         ports:
             - "9001:80"
         volumes:
-            - 'public_assets:/public:ro'
-            - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro'
+            - public_assets:/public:ro
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ${PWD}/volumes/log_nginx:/var/log/nginx
+#            - ${PWD}/config/nginx/conf.d:/etc/nginx/conf.d
+#            - ${PWD}/config/nginx/access.conf:/etc/nginx/access.conf
+            - goaccess_report:/goaccess
         depends_on:
             - php
+
+    # One-shot container, for now.
+    # Generates HTML report and exits.
+    goaccess:
+        container_name: cli_mieuxvoter_fr_goaccess
+        #restart: unless-stopped
+        image: allinurl/goaccess:latest
+        # latest=1.5.7 ATM
+        volumes:
+            # Mmmmh ; not fond of this ; it's for the docker logs call below
+            # It is a trick to allow real-time updating.
+#            - /var/run/docker.sock:/var/run/docker.sock
+            ################################################################
+            - ./volumes/log_nginx:/var/log/nginx:ro
+            - ./docker/goaccess:/goaccess:ro
+            - goaccess_report:/srv/report
+        entrypoint: /bin/sh /goaccess/goaccess_entrypoint.sh
+        command:
+            - "--config-file=/goaccess/goaccess.conf"
+            - "--no-global-config"
+#            - "--real-time-html"
+            - "--log-file=/var/log/nginx/access.log"
+            - "--log-file=/var/log/nginx/error.log"
+            - "--debug-file=/srv/report/debug.log"
+            - "--output=/srv/report/index.html"
+#        command: sh -c "apk add --update --no-cache docker && docker service logs -f --raw cli_mieuxvoter_fr_nginx 2>&1| goaccess --config-file=/goaccess/goaccess.conf --no-global-config --real-time-html --log-format=COMBINED -"
+#        ports:
+#            - published: 7890
+#              target: 7890
+#              protocol: tcp
+#              mode: host
+#        expose:
+#            - 7890
