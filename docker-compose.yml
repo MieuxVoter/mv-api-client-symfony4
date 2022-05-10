@@ -63,6 +63,7 @@ services:
     # One-shot container, for now.
     # Generates HTML report and exits.
     #   docker-compose up goaccess
+    # Or run `bin/goaccess` in a CRON task every hour or so?
     goaccess:
         container_name: cli_mieuxvoter_fr_goaccess
         # latest=1.5.7 ATM
@@ -72,10 +73,6 @@ services:
           context: .
           dockerfile: docker/goaccess/Dockerfile
         volumes:
-            # Mmmmh ; not fond of this ; it's for the docker logs call below
-            # It is a trick to allow real-time updating.
-#            - /var/run/docker.sock:/var/run/docker.sock
-            ################################################################
             - ./volumes/log_nginx:/var/log/nginx:ro
             - ./docker/goaccess:/goaccess:ro
             - goaccess_report:/srv/report
@@ -85,12 +82,11 @@ services:
             - "--no-global-config"
             - "--debug-file=/srv/report/debug.log"
             - "--output=/srv/report/index.html"
-            # Expensive.   We only want to generate from time to time.
+            # Expensive.   We only want to generate from time to time.  See CRON.
 #            - "--real-time-html"
-            # We read from stdin and zcat now, see the entrypoint
+            # We read from stdin and zcat now to get logrotated files, see the entrypoint
 #            - "--log-file=/var/log/nginx/access.log"
 #            - "--log-file=/var/log/nginx/error.log"
-#        command: sh -c "apk add --update --no-cache docker && docker service logs -f --raw cli_mieuxvoter_fr_nginx 2>&1| goaccess --config-file=/goaccess/goaccess.conf --no-global-config --real-time-html --log-format=COMBINED -"
 #        ports:
 #            - published: 7890
 #              target: 7890

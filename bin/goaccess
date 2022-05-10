@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
+# Generate analytics into a static, standalone HTML page.
 # This relies heavily on the docker-compose config.
-# It's a thin wrapper for the CRON job.
+# It is a thin wrapper for the CRON job.
 
 # Go to project dir
 SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
