@@ -1,13 +1,12 @@
 #!/bin/sh
 
 # I know it's not friendly to log anything here,
-# but we have weird logs:
-#   [SETTING UP STORAGE /var/log/nginx/error.log] {0} @ {0/s}
+# but we have these weird, "alone" logs:
+#   [SETTING UP STORAGE -] {0} @ {0/s}
 #   Cleaning up resources...
 # and I don't know where they are coming from.
-# The STORAGE one is extra confusing because we also configured
-# goaccess to read both from access.log AND error.log
-# We also do not use persistence (storage?) for now.
+# The STORAGE one is a bit confusing (it's talking about input logs).
+# Things are less confusing if we print info about GoAccess.  So we do.
 /bin/goaccess --version
 
 # We're in a busybox:musl so
