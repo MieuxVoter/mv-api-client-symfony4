@@ -36,7 +36,10 @@ final class GenerateInvitationsController extends AbstractController
         }
 
         $response = $this->render('poll/invitations.csv.twig', [
-            'invitations' => $invitations,
+//            'invitations' => $invitations,
+            // Generated client lib now requires ->getHydramember()
+            // I don't like this ; let's try and fix this upstream…
+            'invitations' => $invitations->getHydramember(),
         ]);
 
         $response->headers->set('Content-Type', 'text/csv');
