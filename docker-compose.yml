@@ -1,5 +1,6 @@
 # Run with:
 #   docker-compose up
+# The goaccess container will generate the webpage and then exit.  It is expected.
 
 # docker-compose on MV server is a bit behind
 # 3.9 does not work there (for now)
@@ -56,19 +57,21 @@ services:
             # GoAccess HTML report and debug log
             - goaccess_report:/goaccess:ro
             # Nope ; we need to cook our own .htpasswd from ENV
+            # It's OK to copy for now because the sections protected by the htpasswd
+            # are not really damaging, since IPs were anonymized.
             - ./docker/nginx/.htpasswd:/nginx/.htpasswd:ro
         depends_on:
             - php
 
     # One-shot container, for now.
-    # Generates HTML report and exits.
+    # Generates HTML report in the volume goaccess_report and exits.
     #   docker-compose up goaccess
     # Or run `bin/goaccess` in a CRON task every hour or so?
     goaccess:
         container_name: cli_mieuxvoter_fr_goaccess
         # latest=1.5.7 ATM
         #image: allinurl/goaccess:latest
-        # We use our own Dockerfile, mostly to get `zcat`.
+        # Instead we use our own Dockerfile, mostly to get `zcat`.
         build:
           context: .
           dockerfile: docker/goaccess/Dockerfile
@@ -80,6 +83,13 @@ services:
         command:
             - "--config-file=/goaccess/goaccess.conf"
             - "--no-global-config"
+            - "--anonymize-ip"
+            - "--anonymize-level=2"
+            # I can't choose whether to ignore crawlers or not.
+            # This choice may also be done in the config file.
+            # Perhaps we should mod our entrypoint to provide both in separate outputs?
+            # Or make a copy of this service?   Whatever.
+#            - "--ignore-crawlers"
             - "--debug-file=/srv/report/debug.log"
             - "--output=/srv/report/index.html"
             # Expensive.   We only want to generate from time to time.  See CRON.
@@ -87,6 +97,7 @@ services:
             # We read from stdin and zcat now to get logrotated files, see the entrypoint
 #            - "--log-file=/var/log/nginx/access.log"
 #            - "--log-file=/var/log/nginx/error.log"
+#        # Config sample with default values
 #        ports:
 #            - published: 7890
 #              target: 7890
