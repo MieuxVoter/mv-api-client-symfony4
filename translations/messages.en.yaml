@@ -25,6 +25,9 @@ page:
       invitation_only: |
         That poll is restricted to invitations only.
 #        Enter your invitation token below to participate.
+      cannot_participate: |
+        You cannot participate.
+        You need an invitation.
     create:
       title: Create a new Poll
     index:

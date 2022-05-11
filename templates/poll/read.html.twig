@@ -36,11 +36,7 @@
                 {{ 'action.participate.label' | trans }}
             </a>
             {% if not canParticipate -%}
-            <p>
-                You cannot participate.
-                You need an invitation.
-                {{ 'page.poll.read.cannot_participate' | trans }}
-            </p>
+            <p>{{ 'page.poll.read.cannot_participate' | trans }}</p>
             {%- endif %}
 
         </div>
@@ -102,17 +98,6 @@
 {#            {{ grade.name }}{{ not loop.last ? ',' : ' ?' }}#}
 {#        {% endfor %}#}
 {#    </a>#}
-{% endif %}
-
-    {# Debug stuff, useful during development-#}
-{% if app.request.server.get('APP_ENV') != 'prod' %}
-    <hr>
-    <details>
-        <summary>&#128421;</summary>
-        <pre>
-{{ poll }}
-        </pre>
-    </details>
 {% endif %}
 
 </div>

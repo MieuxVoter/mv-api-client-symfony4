@@ -15,14 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route(
  *     path="/polls/{pollId}/invitations.csv",
  *     name="generate_invitations_csv",
- *     requirements={"pollId"="[^./]+"},
+ *     requirements={
+ *       "pollId"="[^./]+",
+ *     },
  * )
  */
 final class GenerateInvitationsController extends AbstractController
 {
     use Has\ApiAccess;
 
-    public function __invoke(string $pollId, Request $request) : Response
+    public function __invoke(string $pollId, Request $request): Response
     {
         $invitationsApi = $this->getApiFactory()->getInvitationApi();
 

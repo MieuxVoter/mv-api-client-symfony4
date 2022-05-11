@@ -36,6 +36,7 @@ final class OasApiCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, Throwable $exception = null): void
     {
+        // TODO: this is not right -> only serializable data should go in here
         $this->data['transactions'] = $this->getApiLogger()->getTransactions();
     }
 
