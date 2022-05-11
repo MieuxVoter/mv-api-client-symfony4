@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\Entity\User;
+use App\Has\ApiLogger;
 use App\Security\UserSession;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\HandlerStack;
 use MvApi\Api\BallotApi;
 use MvApi\Api\InvitationApi;
 use MvApi\Api\PollApi;
@@ -24,8 +26,10 @@ use Symfony\Component\Security\Core\Security;
  * Class ApiFactory
  * @package App\Factory
  */
-class ApiFactory
+final class ApiFactory
 {
+    use ApiLogger;
+
     /** @var UserSession */
     protected $session;
 
@@ -90,11 +94,17 @@ class ApiFactory
         return $this->session;
     }
 
+    /**
+     * Since we might have multiple API tokens, one for user auth and one for client auth,
+     * perhaps this needs to be renamed to indicate it means the user auth API token.
+     *
+     * @param string $apiToken
+     */
     public function setApiToken(string $apiToken)
     {
         $this->config->setApiKey('Authorization', $apiToken);
         $this->config->setApiKeyPrefix('Authorization', 'Bearer');
-//        $this->config->setAccessToken($token);
+//        $this->config->setApiAccessToken($token); // later, for client auth API token (optional, for IP forwarding privileges)
     }
 
     protected function getClient(): ClientInterface
@@ -112,7 +122,12 @@ class ApiFactory
             }
         }
 
-        return new Client();
+        $handler = HandlerStack::create();
+        $handler->push($this->getApiLogger()->cookClientMiddleware());
+        $config = [
+            'handler' => $handler,
+        ];
+        return new Client($config);
     }
 
     /**
