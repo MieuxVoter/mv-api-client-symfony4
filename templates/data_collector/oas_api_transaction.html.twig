@@ -1,0 +1,29 @@
+<div class="sf-toolbar-info-piece oas-transaction">
+    <h6>
+        <span class="sf-toolbar-status {{ not transaction.isSuccess ? 'sf-toolbar-status-red' : 'sf-toolbar-status-green'}}">
+            &backcong; {{ transaction.response.statusCode }}
+        </span>
+        at
+        {{ transaction.madeAt | date('Y-m-d H:i:s') }}
+    </h6>
+
+    {#<pre class="response">#}
+    {#{{ transaction.responseBodyPrettyJson }}#}
+    {#{{ transaction.request.uri }}#}
+    {#{{ transaction.request.headers | json_encode }}#}
+    {#{{ transaction.response.body }}#}
+    {#{{ transaction.response.body.tell }}#}
+    {#{{ transaction.response.body | json_encode }}#}
+    {#</pre>#}
+
+    <label>
+{# A textarea makes copy/pasting easier, I find.  Also, wrapping. #}
+<textarea rows="16" class="dump" readonly>
+{#- space removal -#}
+{{ transaction.request.method }} {{ transaction.request.uri }}
+
+{{ transaction.responseBodyPrettyJson }}
+{#- space removal -#}
+</textarea>
+    </label>
+</div>

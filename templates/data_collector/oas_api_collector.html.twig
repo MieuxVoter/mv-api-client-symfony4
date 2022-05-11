@@ -1,118 +1,61 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
+{# Extends the debug bar with OAS transactions we made during the run. #}
+{# Colors from sf-toolbar-status-red and such are not propagated to the toolbar icon. #}
+{# Perhaps because this is sf4 and not sf5 ? #}
+
 {% block toolbar %}
+
+    {# Oddly, we need it here AND in the header block #}
+    {% include 'data_collector/oas_api_style.html.twig' %}
+
+    {# Shown in the bottom debug bar. #}
     {% set icon %}
-        <span class="sf-toolbar-value"><i class="fad fa-vector-square"></i> OAS</span>
+        <span class="sf-toolbar-value">
+            OAS
+            {% if (collector.transactions | length) > 1 -%}
+            {# Nowadays there a class "count" for this in sf I believe. #}
+            <sup>{{ collector.transactions | length }}</sup>
+            {%- endif %}
+        </span>
     {% endset %}
 
-<style>
-    .api-transaction code {
-        /*line-height: 0.1em;*/
-        /*text-anchor: middle;*/
-        /*text-align: center;*/
-        /*vertical-align: central !important;*/
-        /*font-size: 2em;*/
 
-    }
-    .api-transaction textarea {
-        /*line-height: 2.618em;*/
-        /*text-anchor: middle;*/
-        /*text-align: center;*/
-        /*vertical-align: central !important;*/
-        /*font-size: 2em;*/
-        font-family: monospace;
-        width: 100%;
-    }
-    .api-transaction textarea.response {
-        width: 100%;
-        /*overflow-x: scroll;*/
-        tab-size: 2;
-        min-width: 400px;
-    }
-</style>
-
+    {# Shown on hover of the icon above. #}
     {% set text %}
 
-{% for transaction in collector.transactions %}
-<article class="api-transaction">
-<h5>
-    <span class="bg-{{ transaction.isSuccess ? 'success' : 'error' }}">
-        &backcong; {{ transaction.id }}
-    </span>
-    at
-    {{ transaction.madeAt | date('Y-m-d H:i:s') }}
-</h5>
-{#<p class="">#}
-{#    <code class="bg-{{ transaction.isSuccess ? 'success' : 'error' }}">{{ transaction.request.method }}</code>#}
-{#    <code class="bg-{{ transaction.isSuccess ? 'success' : 'error' }}">{{ transaction.request.uri }}</code>#}
-{#</p>#}
-{#<p>#}
-{#    <input class="" value="{{ transaction.request.uri }}" />#}
-{#</p>#}
-{#<pre class="response">#}
-{#{{ transaction.responseBodyPrettyJson }}#}
+    {% for transaction in collector.transactions %}
+        {% include 'data_collector/oas_api_transaction.html.twig' %}
+        {% if not loop.last %}<hr>{% endif %}
+    {% endfor %}
 
-{#{{ transaction.request.uri }}#}
-{#{{ transaction.request.headers | json_encode }}#}
-{#{{ transaction.response.body }}#}
-{#{{ transaction.response.body.tell }}#}
-{#{{ transaction.response.body | json_encode }}#}
-{#</pre>#}
-
-<label>
-<textarea rows="20" class="response" readonly>
-{#- space removal -#}
-{{ transaction.request.method }} {{ transaction.request.uri }}
-
-{{ transaction.responseBodyPrettyJson }}
-{#- space removal -#}
-</textarea>
-</label>
-</article>
-{% if not loop.last %}
-<hr>
-{% endif %}
-{% endfor %}
-
-{#        <div class="sf-toolbar-info-piece">#}
-{#            <b>Title length ({{ constant('App\\Twig\\Extension\\SeoExtension::MIN_TITLE_LENGTH') }} > {{ constant('App\\Twig\\Extension\\SeoExtension::MAX_TITLE_LENGTH') }})</b>#}
-{#            {% set status = collector.title['status'] is defined ? collector.title['status'] : 'red' %}#}
-{#            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">#}
-{#                {% if collector.title is not empty %}#}
-{#                    {{ collector.title['size'] }}#}
-{#                {% else %}#}
-{#                    <span>Title is empty.</span>#}
-{#                {% endif %}#}
-{#            </span>#}
-{#        </div>#}
-
-{#        {% if collector.title is not empty %}#}
-{#            <div class="sf-toolbar-info-piece">#}
-{#                <b>Title</b>#}
-{#                <span>{{ collector.title['value']|nl2br|raw }}</span>#}
-{#            </div>#}
-{#        {% endif %}#}
-
-{#        <div class="sf-toolbar-info-piece">#}
-{#            <b>Description length ({{ constant('App\\Twig\\Extension\\SeoExtension::MIN_DESCRITION_LENGTH') }} > {{ constant('App\\Twig\\Extension\\SeoExtension::MAX_DESCRITION_LENGTH') }})</b>#}
-{#            {% set status = collector.description['status'] is defined ? collector.description['status'] : 'red' %}#}
-{#            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">#}
-{#                {% if collector.description is not empty %}#}
-{#                    {{ collector.description['size'] }}#}
-{#                {% else %}#}
-{#                    <span>Description is empty.</span>#}
-{#                {% endif %}#}
-{#            </span>#}
-{#        </div>#}
-
-{#        {% if collector.description is not empty %}#}
-{#            <div class="sf-toolbar-info-piece">#}
-{#                <b>Description</b>#}
-{#                <span>{{ collector.description['value']|nl2br|raw }}</span>#}
-{#            </div>#}
-{#        {% endif %}#}
     {% endset %}
 
+    {% if collector.transactions %}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+    {% endif %}
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
+{% endblock %}
+
+{# Here we can link to or define our own CSS and JS contents. #}
+{% block head %}
+    {{ parent() }}
+    {% include 'data_collector/oas_api_style.html.twig' %}
+{% endblock %}
+
+{# Left-hand menu of the fullscreen profiler. #}
+{% block menu %}
+    <span class="label">
+{#        <span class="icon"><img src="..." alt=""/></span>#}
+        <strong title="OpenApi Logs">OAS</strong>
+    </span>
+{% endblock %}
+
+{# Right-hand panel of the fullscreen profiler. #}
+{% block panel %}
+    <h2>OpenAPI Transactions</h2>
+    {% for transaction in collector.transactions %}
+        {% include 'data_collector/oas_api_transaction.html.twig' %}
+        {% if not loop.last %}<hr>{% endif %}
+    {% endfor %}
 {% endblock %}

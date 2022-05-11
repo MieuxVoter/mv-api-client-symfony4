@@ -45,7 +45,8 @@ services:
             -
                 name:     data_collector
                 template: 'data_collector/oas_api_collector.html.twig'
-                id:       App\DataCollector\OasApiCollector
+                id:       oas_collector
+#                id:       App\DataCollector\OasApiCollector
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

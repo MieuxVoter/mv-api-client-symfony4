@@ -53,7 +53,8 @@ final class OasApiCollector extends DataCollector
      */
     public function getName(): string
     {
-        return self::class;
+        return "oas_collector";
+//        return self::class;
     }
 
     public function getTransactions(): array
