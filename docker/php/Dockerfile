@@ -32,14 +32,21 @@ FROM php:7.4-fpm
 
 RUN apt-get update && \
     apt-get install -y \
+    # Composer prefers using system zip tools than php zip
+    unzip \
+    # Our ugly way of dealing with permissions in ./var
     acl \
+    # We need git and ssh for composer
     ssh \
     git \
+    # PHP exts
     libmagickwand-dev \
     libsodium-dev \
     libyaml-dev \
     libzip-dev \
+    # Some relevant flags
     --no-install-recommends && \
+    # Image cleanup
     rm -rf /var/lib/apt/lists/*
 
 RUN pecl install apcu
@@ -52,9 +59,6 @@ RUN docker-php-ext-enable \
     imagick \
     yaml \
     ;
-#RUN docker-php-ext-enable apcu
-#RUN docker-php-ext-enable imagick
-#RUN docker-php-ext-enable yaml
 
 # Use "install" for the others
 RUN docker-php-ext-install \
@@ -62,23 +66,22 @@ RUN docker-php-ext-install \
     sodium \
     zip \
     ;
-#RUN docker-php-ext-install pdo_mysql
-#RUN docker-php-ext-install sodium
-#RUN docker-php-ext-install zip
 
 WORKDIR /usr/src/app
 
 # We assume this is a fresh, unused clone you're running docker-compose from
 COPY --chown=1000:1000 . .
-COPY --from=symfony_assets_builder /srv/app/public/build public/build
+
+#RUN rm -R ./public/build
+COPY --from=symfony_assets_builder /srv/app/public/build ./public/build
 
 # Handle the permissions of writing to cache and logs
 # There's a better way out there than using acl ; but this works.
 RUN usermod -u 1000 www-data
 RUN mkdir var
-RUN chown -R 1000:1000 var
-RUN setfacl -R -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX var
-RUN setfacl -dR -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX var
+RUN chown -R 1000:1000 ./var
+RUN setfacl  -R -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX ./var
+RUN setfacl -dR -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX ./var
 
 # This probably is not strictly mandatory
 RUN PATH=$PATH:/usr/src/app/vendor/bin:/usr/src/app/bin
@@ -92,9 +95,15 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Conundrum?
 RUN composer install --no-scripts --prefer-dist --no-interaction
 
-# Warm up the cache (on both envs, unless we can use an ARG here as well?)
+# After composer install (which requires writing cache in odd places)
+USER www-data
+
+# Clean & Warm up the cache (on both envs, unless we can use an ARG here as well?)
 #RUN rm -Rf /usr/src/app/var/cache
 RUN bin/console cache:clear --env=dev
 RUN bin/console cache:clear --env=prod
 RUN bin/console cache:warmup --env=dev
 RUN bin/console cache:warmup --env=prod
+
+# Finally go back to root right before the entrypoint
+USER root
