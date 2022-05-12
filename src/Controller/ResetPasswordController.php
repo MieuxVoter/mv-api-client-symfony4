@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+final class ResetPasswordController {} // dummy, to do
+
 //use App\Entity\User;
 //use App\Form\ResetPasswordType;
 //use MsgPhp\User\Command\ResetUserPassword;
@@ -17,19 +19,19 @@ namespace App\Controller;
 //use Symfony\Component\Routing\Annotation\Route;
 //use Twig\Environment;
 
-/**
- *
- *
- *
- *
- * FOR LATER USAGE
- *
- *
- *
- *
- * @Route("/reset-password/{token}", name="reset_password")
- */
-final class ResetPasswordController {} // dummy
+///**
+// *
+// *
+// *
+// *
+// * FOR LATER USAGE
+// *
+// *
+// *
+// *
+// * @Route("/reset-password/{token}", name="reset_password")
+// */
+//final class ResetPasswordController
 //{
 //    /**
 //     * @ParamConverter("user", converter="doctrine.orm", options={"mapping": {"token": "passwordResetToken"}})

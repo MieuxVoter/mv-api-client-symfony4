@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Adapter\ApiExceptionAdapter;
 use App\Entity\Ballot;
-use App\Factory\ApiFactory;
 use App\Form\BallotType;
-use App\Form\PollType;
 use MvApi\ApiException;
 use MvApi\Model\BallotCreate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 
 /**
@@ -35,7 +29,7 @@ final class CreateBallotController extends AbstractController
     public function __invoke(
         string $pollId,
         Request $request
-    )
+    ): Response
     {
         $apiInstance = $this->getApiFactory()->getPollApi();
         $pollRead = null;
