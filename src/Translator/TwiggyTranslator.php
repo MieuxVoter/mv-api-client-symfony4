@@ -26,9 +26,10 @@ use Twig\Environment as TwigEnvironment;
             - "@twig"
  *
  *
- * Class TwiggyTranslator
+ * @method string getLocale()
  * @license WTFPL
  * @package App\Translator
+ *
  */
 class TwiggyTranslator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
 {
