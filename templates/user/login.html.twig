@@ -18,14 +18,16 @@
                 <input type="submit" class="btn btn-primary" value="{{ 'action.login.label' | trans }}" />
             </div>
 
-            <p>
-                <a href="{{ path('forgot_password') }}">
-                    {{ 'action.forgot_password.label' | trans }}
-                </a>
-            </p>
+{# Restore this later once we have email set up #}
+{#            <p>#}
+{#                <a href="{{ path('forgot_password') }}">#}
+{#                    {{ 'action.forgot_password.label' | trans }}#}
+{#                </a>#}
+{#            </p>#}
         {{ form_end(form) }}
 
-        <hr class="clearfix">
+        <div class="clearfix"></div>
+        <hr>
 
         <div class="text-center">
 
