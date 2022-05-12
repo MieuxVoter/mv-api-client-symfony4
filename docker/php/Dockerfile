@@ -69,15 +69,16 @@ RUN docker-php-ext-install \
 WORKDIR /usr/src/app
 
 # We assume this is a fresh, unused clone you're running docker-compose from
-COPY --chown=1000:1000 . /usr/src/app
+COPY --chown=1000:1000 . .
+COPY --from=symfony_assets_builder /srv/app/public/build public/build
 
 # Handle the permissions of writing to cache and logs
 # There's a better way out there than using acl ; but this works.
 RUN usermod -u 1000 www-data
-RUN mkdir /usr/src/app/var
-RUN chown -R 1000:1000 /usr/src/app/var
-RUN setfacl -R -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX /usr/src/app/var
-RUN setfacl -dR -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX /usr/src/app/var
+RUN mkdir var
+RUN chown -R 1000:1000 var
+RUN setfacl -R -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX var
+RUN setfacl -dR -m u:www-data:rwX -m u:1000:rwX -m u:`whoami`:rwX var
 
 # This probably is not strictly mandatory
 RUN PATH=$PATH:/usr/src/app/vendor/bin:/usr/src/app/bin
@@ -85,6 +86,15 @@ RUN PATH=$PATH:/usr/src/app/vendor/bin:/usr/src/app/bin
 # Grab composer 2 from its own image ; should be safe to bump to 3
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Now it would be nice if we could cache these deps BEFORE the COPY
+# so we don't re-download everything every time we build.
+# We need the composer.json file to do that, and it's provided by the COPY.
+# Conundrum?
 RUN composer install --no-scripts --prefer-dist --no-interaction
 
-COPY --from=symfony_assets_builder /srv/app/public/build public/build
+# Warm up the cache (on both envs, unless we can use an ARG here as well?)
+#RUN rm -Rf /usr/src/app/var/cache
+RUN bin/console cache:clear --env=dev
+RUN bin/console cache:clear --env=prod
+RUN bin/console cache:warmup --env=dev
+RUN bin/console cache:warmup --env=prod
