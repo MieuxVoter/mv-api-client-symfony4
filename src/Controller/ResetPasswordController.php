@@ -29,7 +29,7 @@ namespace App\Controller;
  *
  * @Route("/reset-password/{token}", name="reset_password")
  */
-//final class ResetPasswordController
+final class ResetPasswordController {} // dummy
 //{
 //    /**
 //     * @ParamConverter("user", converter="doctrine.orm", options={"mapping": {"token": "passwordResetToken"}})

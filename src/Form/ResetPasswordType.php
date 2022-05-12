@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+final class ResetPasswordType {} // to do
+
 //use MsgPhp\User\Infrastructure\Form\Type\HashedPasswordType;
 //use Symfony\Component\Form\AbstractType;
 //use Symfony\Component\Form\FormBuilderInterface;

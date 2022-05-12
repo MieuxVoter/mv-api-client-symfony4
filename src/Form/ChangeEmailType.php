@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+final class ChangeEmailType {}
+
 //use MsgPhp\User\Infrastructure\Validator\UniqueUsername;
 //use Symfony\Component\Form\AbstractType;
 //use Symfony\Component\Form\Extension\Core\Type\EmailType;

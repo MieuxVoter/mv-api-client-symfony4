@@ -71,6 +71,7 @@ final class CreateBallotController extends AbstractController
             foreach ($proposals as $proposal) {
 
                 $ballotCreate = new BallotCreate();
+                /** @noinspection PhpParamsInspection setGrade must accept strings upstream in the generated lib */
                 $ballotCreate->setGrade(
                     sprintf("/grades/%s", $judgments[$proposal->getUuid()])
                 );
