@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+
 use MvApi\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Security\Regexes;
+
 
 /**
  * @Route(
@@ -38,20 +40,23 @@ final class GenerateInvitationsController extends AbstractController
 
     public function __invoke(string $pollId, int $page, Request $request): Response
     {
-        $invitationsApi = $this->getApiFactory()->getInvitationApi();
-
         $page = $request->query->getInt('page', $page);
+        if (0 >= $page) {
+            $page = 1;  // pages start at 1, yoda says
+        }
 
         try {
-            // fixme: $page appears ignored -> upstream
-            $invitations = $invitationsApi->getForPollInvitationCollection($pollId, $page);
+            // fixme(upstream): $page appears ignored
+            $invitations = $this
+                ->getApiFactory()->getInvitationApi()
+                ->getForPollInvitationCollection($pollId, $page);
         } catch (ApiException $e) {
             return $this->renderApiException($e, $request);
         }
 
         $response = $this->render('poll/invitations.csv.twig', [
 //            'invitations' => $invitations,
-            // Generated client lib now requires ->getHydramember()
+            // fixme(upstream): Generated client lib now requires ->getHydramember()
             // I don't like this ; let's try and fix this upstream…
             'invitations' => $invitations->getHydramember(),
         ]);
