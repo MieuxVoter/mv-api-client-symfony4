@@ -32,10 +32,15 @@ services:
         restart: on-failure
         volumes:
             - public_assets:/usr/src/app/public
+#        # To experiment
+#        env_file:
+#            - .env
+#            - .env.local
         environment:
             BANANA: teapot
-            # Set to "dev" to enable the debug goodies
+            # Uncomment these two lines to enable the debug goodies
             #APP_ENV: dev
+            #APP_DEBUG: 1
             # Don't use this, since docker-compose loads .env and ignores .env.local
             # This has happened to me too many times >.<
             #APP_ENV: ${APP_ENV:-prod}
