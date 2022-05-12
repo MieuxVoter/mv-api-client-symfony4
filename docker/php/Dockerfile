@@ -36,7 +36,7 @@ RUN apt-get update && \
     unzip \
     # Our ugly way of dealing with permissions in ./var
     acl \
-    # We need git and ssh for composer
+    # We need git and ssh for composer because we use git repos as some sources
     ssh \
     git \
     # PHP exts

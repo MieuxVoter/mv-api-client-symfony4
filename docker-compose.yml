@@ -86,17 +86,17 @@ services:
             - goaccess_report:/srv/report
         entrypoint: /bin/sh /goaccess/goaccess_entrypoint.sh
         command:
-            - "--config-file=/goaccess/goaccess.conf"
             - "--no-global-config"
+            - "--config-file=/goaccess/goaccess.conf"
+            - "--debug-file=/srv/report/debug.log"
+            - "--output=/srv/report/index.html"
             - "--anonymize-ip"
             - "--anonymize-level=2"
             # I can't choose whether to ignore crawlers or not.
-            # This choice may also be done in the config file.
+            # This choice may also be done in the config file. (goaccess.conf)
             # Perhaps we should mod our entrypoint to provide both in separate outputs?
             # Or make a copy of this service?   Whatever.
 #            - "--ignore-crawlers"
-            - "--debug-file=/srv/report/debug.log"
-            - "--output=/srv/report/index.html"
             # Expensive.   We only want to generate from time to time.  See CRON.
 #            - "--real-time-html"
             # We read from stdin and zcat now to get logrotated files, see the entrypoint
