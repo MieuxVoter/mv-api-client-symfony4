@@ -6,7 +6,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "ext-sodium": "*",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.1",
@@ -17,7 +16,7 @@
         "phpdocumentor/reflection-docblock": "^5.2",
         "roipoussiere/miprem-php": "^0.1",
         "sensio/framework-extra-bundle": "^5.1",
-        "shivas/versioning-bundle": "^3.2",
+        "shivas/versioning-bundle": "^4.0",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
@@ -69,7 +68,10 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "files": [
