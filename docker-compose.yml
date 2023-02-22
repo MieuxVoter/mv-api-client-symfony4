@@ -85,7 +85,7 @@ services:
     # Or run `bin/goaccess` in a CRON task every hour or so?
     goaccess:
         container_name: cli_mieuxvoter_fr_goaccess
-        reetart: no
+        restart: no
         # latest=1.5.7 ATM
         #image: allinurl/goaccess:latest
         # Instead we use our own Dockerfile, mostly to get `zcat`.
