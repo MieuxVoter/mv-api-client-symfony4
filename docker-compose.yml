@@ -12,8 +12,10 @@
 #
 # The goaccess container will generate the webpage and then exit.  It is expected.
 #
+# https://cli.mieuxvoter.fr
+# https://cli.mieuxvoter.fr/goaccess
 
-# docker-compose on MV server is a bit behind
+# docker-compose on MV server is (was?) a bit behind
 # 3.9 does not work there (for now -- to retest, we bumped docker)
 version: '3.4'
 
@@ -85,7 +87,8 @@ services:
     # Or run `bin/goaccess` in a CRON task every hour or so?
     goaccess:
         container_name: cli_mieuxvoter_fr_goaccess
-        restart: no
+        # The quotes around the "no" discriminate from YAML's foolean
+        restart: "no"
         # latest=1.5.7 ATM
         #image: allinurl/goaccess:latest
         # Instead we use our own Dockerfile, mostly to get `zcat`.
