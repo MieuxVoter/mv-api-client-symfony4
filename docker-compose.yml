@@ -1,9 +1,20 @@
+# The bundle to run an OAS HTML client with a focus on accessibility.
+#
+# - A PHP (Symfony) server without a database, that connects to the OAS.
+# - An nginx instance to handle HTTP traffic
+# - A GoAccess utility (one-shot container: generates analytics and exits)
+#
 # Run with:
-#   docker-compose up
+#     docker-compose up
+# or
+#     docker compose up
+# depending on your Docker version.
+#
 # The goaccess container will generate the webpage and then exit.  It is expected.
+#
 
 # docker-compose on MV server is a bit behind
-# 3.9 does not work there (for now)
+# 3.9 does not work there (for now -- to retest, we bumped docker)
 version: '3.4'
 
 volumes:
@@ -26,10 +37,10 @@ services:
 
     php:
         container_name: cli_mieuxvoter_fr_php
+        restart: unless-stopped
         build:
             context: .
             dockerfile: docker/php/Dockerfile
-        restart: on-failure
         volumes:
             - public_assets:/usr/src/app/public
 #        # To experiment
@@ -41,15 +52,15 @@ services:
             # Uncomment these two lines to enable the debug goodies
             #APP_ENV: dev
             #APP_DEBUG: 1
-            # Don't use this, since docker-compose loads .env and ignores .env.local
+            # Don't use this syntax, since docker-compose loads .env and ignores .env.local
             # This has happened to me too many times >.<
             #APP_ENV: ${APP_ENV:-prod}
         #user: ${LOCAL_USER}
 
     nginx:
         container_name: cli_mieuxvoter_fr_nginx
+        restart: unless-stopped
         image: nginx:1.19.0-alpine
-        restart: on-failure
         ports:
             - "9001:80"
         volumes:
@@ -74,6 +85,7 @@ services:
     # Or run `bin/goaccess` in a CRON task every hour or so?
     goaccess:
         container_name: cli_mieuxvoter_fr_goaccess
+        reetart: no
         # latest=1.5.7 ATM
         #image: allinurl/goaccess:latest
         # Instead we use our own Dockerfile, mostly to get `zcat`.
@@ -97,16 +109,12 @@ services:
             # Perhaps we should mod our entrypoint to provide both in separate outputs?
             # Or make a copy of this service?   Whatever.
 #            - "--ignore-crawlers"
-            # Expensive.   We only want to generate from time to time.  See CRON.
+            # Expensive.   For our use, we only want to generate from time to time.
+            # Run this container using CRON, from time to time:   docker compose up goaccess
+            # Better yet, use ./bin/goaccess, which is a wrapper for the docker compose command.
 #            - "--real-time-html"
-            # We read from stdin and zcat now to get logrotated files, see the entrypoint
+            # We do not target log files here this way.
+            # We read from stdin and zcat, now, to get logrotated files, see the entrypoint
 #            - "--log-file=/var/log/nginx/access.log"
 #            - "--log-file=/var/log/nginx/error.log"
-#        # Config sample with default values
-#        ports:
-#            - published: 7890
-#              target: 7890
-#              protocol: tcp
-#              mode: host
-#        expose:
-#            - 7890
+

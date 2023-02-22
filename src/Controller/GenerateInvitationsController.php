@@ -49,16 +49,13 @@ final class GenerateInvitationsController extends AbstractController
             // fixme(upstream): $page appears ignored
             $invitations = $this
                 ->getApiFactory()->getInvitationApi()
-                ->getForPollInvitationCollection($pollId, $page);
+                ->getForPollInvitationCollection($pollId, 100, $page);
         } catch (ApiException $e) {
             return $this->renderApiException($e, $request);
         }
 
         $response = $this->render('poll/invitations.csv.twig', [
-//            'invitations' => $invitations,
-            // fixme(upstream): Generated client lib now requires ->getHydramember()
-            // I don't like this ; let's try and fix this upstream…
-            'invitations' => $invitations->getHydramember(),
+            'invitations' => $invitations,
         ]);
 
         // These tell the browser to start a download instead of opening a new tab

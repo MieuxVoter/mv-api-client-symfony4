@@ -24,6 +24,7 @@ page:
       proposals: Proposals
       invitation_only: |
         That poll is restricted to invitations only.
+        Each invitation may be redeemed only once.
 #        Enter your invitation token below to participate.
       cannot_participate: |
         You cannot participate.
